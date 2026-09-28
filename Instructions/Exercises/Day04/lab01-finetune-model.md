@@ -39,8 +39,6 @@ The goal is to understand how example-based training can make model behavior mor
 
 This exercise takes approximately **90 minutes**. The fine-tuning job itself may take approximately **60–90 minutes** depending on available cloud capacity.
 
-> **Note:** Some Microsoft Foundry features may be in preview or under active development. You may see warnings or minor differences in the portal interface.
-
 ## Prerequisites
 
 Before you start, ensure that you have:
@@ -76,7 +74,7 @@ Microsoft Foundry projects organize the models, resources, data, and other asset
 
 # Start a fine-tuning job (Optional)
 
-> **Tip:** The fine-tuning job can take approximately **60–90 minutes** to complete, depending on available cloud capacity. If you want to save time, you can **skip this section** and continue directly to **Test gpt-5.4-mini in the playground**. A prepared fine-tuned model is already available in the project, so you can use it later when you reach the **Test the fine-tuned model** section.
+> **Tip:** This section explains how to create and start a fine-tuning job and is **important for understanding the fine-tuning workflow**. However, completing the fine-tuning job is optional. The job can take approximately **60–90 minutes** to complete, depending on available cloud capacity. If you want to practice the fine-tuning process, follow the steps and start the job. If you want to save time, you can **skip the job execution** after reviewing the steps and continue directly to **Test gpt-5.4-mini in the playground**. A prepared fine-tuned model is already available in the project and can be used later in the **Test the fine-tuned model** section.
 
 If you want to experience the complete fine-tuning workflow, continue with the steps below.
 
