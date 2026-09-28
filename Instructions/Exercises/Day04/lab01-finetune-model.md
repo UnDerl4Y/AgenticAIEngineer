@@ -57,8 +57,8 @@ Before you start, ensure that you have:
 
 Microsoft Foundry projects organize the models, resources, data, and other assets used to build an AI solution.
 
-1. Open the [Microsoft Foundry portal](https://ai.azure.com) at `https://ai.azure.com` and sign in with your Azure credentials. Close any tips or quick-start panes that appear.
-1. On the home page, select the project prepared by your trainer or lab environment.
+1. Open the [Microsoft Foundry portal](https://ai.azure.com) and sign in with your Azure credentials if you haven’t already. Close any tips or quick-start panes that appear.
+1. On the home page, ensure that you are in the **hakunamatata** project.
 1. Open the model playground and confirm that the prepared **gpt-5.4-mini** model is available.
 
     > **Tip**: If you cannot find the project or gpt-5.4-mini, check with your trainer before continuing.
@@ -100,73 +100,93 @@ Start the job now. It may take a while, so you can test gpt-5.4-mini in the play
     - **Display name**: Keep the generated name, or enter `ft-credit`
     - **Seed**: Keep the default value, **Random**
     - **Automatically deploy model after job completion**: Turn this on
+    - **Deployment type**: Developer
     - **Hyperparameter tuning**: Keep **Default** selected for batch size, number of epochs, and learning-rate multiplier
 
     ![Optional settings page showing a generated display name, Random seed, automatic deployment control, and default hyperparameters.](../../media/fine-tune-004.png)
 
 1. Select **Submit** to start the job.
 
-> **Note**: Fine-tuning and automatic deployment can take 60 minutes or longer. To check progress, open the fine-tuning job and select the **Monitor tab**. The steps to reach the Monitor tab are shown in the following screenshots.
+> **Note:** Fine-tuning and deployment can take **60 minutes or longer**.
+
+> **Tip:** To save time, you can skip the fine-tuning and deployment process and use the fine-tuned model that has already been prepared for you. In the left panel, select **Models** and choose **`-1-mini-2025-04-14-ft-e964800ce9314ff48f02e707134951d8-ft-credit`**.
 
 ![Snippet](../../media/w8.png)
 
 # Test gpt-5.4-mini in the playground
 
-While the fine-tuning job runs, test the prepared **gpt-5.4-mini** model and note how prompt instructions affect its behavior.
+> **Tip:** Keep a copy of the **prompts and model responses in Notepad** as you work through the steps. This will make it easier to compare the **base model and fine-tuned model** later.
+
+While the fine-tuning job is running, test the prepared **gpt-5.4-mini** model in the playground. This will help you see how different instructions affect the model's responses.
 
 1. Open the model playground for **gpt-5.4-mini**.
 
-2. In the chat pane, enter:
+2. In the chat pane, enter the following question:
 
-   ```text
-   What can you do?
-   ```
+```text
+What can you do?
+```
 
-   The response may be generic. The credit risk application needs more specific behavior focused on business credit assessment.
+Review the response. It may be general because no task-specific instructions have been provided yet.
 
 3. In the **Instructions** field, enter:
 
-   ```text
-   You are an AI assistant that helps assess the creditworthiness of business clients.
-   ```
+```text
+You are an AI assistant that helps assess the creditworthiness of business clients.
+```
 
 4. Ask the same question again:
 
-   ```text
-   What can you do?
-   ```
+```text
+What can you do?
+```
 
-   The assistant may provide a general response. The credit risk application requires more specific behavior and should focus on document verification, compliance checks, financial analysis, external credit information, and industry risk.
+Compare this response with the previous one. The model may now focus more on helping with business credit assessment, but the behavior is still relatively general.
 
-5. Replace the instructions with the following prompt:
+5. Replace the instructions with the following more detailed credit risk prompt:
 
-   ```text
-   You are an AI credit risk management assistant that helps assess the creditworthiness of business clients. Your objective is to evaluate company documents, compliance status, financial ratios, external credit information, and industry risk using the provided credit risk assessment rules.
-   Do not invent missing financial or compliance information.
-   Clearly identify missing documents or data and explain how they affect the assessment.
-   ```
+```text
+You are an AI credit risk management assistant that helps assess the creditworthiness of business clients. Your objective is to evaluate company documents, compliance status, financial ratios, external credit information, and industry risk using the provided credit risk assessment rules.
 
-6. Test the model with these questions. Note the answers, tone, and writing style:
+Do not invent missing financial or compliance information.
 
-   ```text
-   What documents are required to start a credit risk assessment?
-   ```
+Clearly identify missing documents or data and explain how they affect the assessment.
+```
 
-   ```text
-   The client uploaded only the GST Certificate. Can we pass the document verification step?
-   ```
+6. Test the model using the following questions. For each response, record the **answer, tone, and writing style in Notepad**. You will use these responses later when testing the fine-tuned model.
 
-   ```text
-   A company has a Current Ratio of 1.56, Debt-to-Equity of 1.86, and Net Profit Margin of 5.56%. How many points does it receive for these three financial metrics?
-   ```
+**Question 1**
 
-   ```text
-   How does industry risk affect the credit score?
-   ```
+```text
+What documents are required to start a credit risk assessment?
+```
 
-   ```text
-   What happens if a sanctions or compliance match is confirmed?
-   ```
+**Question 2**
+
+```text
+The client uploaded only the GST Certificate. Can we pass the document verification step?
+```
+
+**Question 3**
+
+```text
+A company has a Current Ratio of 1.56, Debt-to-Equity of 1.86, and Net Profit Margin of 5.56%. How many points does it receive for these three financial metrics?
+```
+
+**Question 4**
+
+```text
+How does industry risk affect the credit score?
+```
+
+**Question 5**
+
+```text
+What happens if a sanctions or compliance match is confirmed?
+```
+
+7. Keep the responses in Notepad. You will compare these **gpt-5.4-mini base-model responses** with the responses from the **fine-tuned model** in the next section.
+
 
 # Review the training data
 
@@ -195,56 +215,81 @@ The training file contains examples of the behavior and writing style that you w
 
 Each entry includes system instructions, a credit-risk-related user question, and an assistant response that you want the model to learn. These examples help the fine-tuned model produce more consistent credit risk assessments and follow the defined scoring rules.
 
-# Test the fine-tuned model
+### Test the fine-tuned model
 
-1. In the left navigation, select **Fine-tune** and check the status of the job you started earlier.
+1. In the left navigation, select **Models**.
 
-2. Select the job to view its details. Open the **Logs** tab if you need to review completed tasks or errors.
+2. Find and open the prepared fine-tuned model:
 
-![Snippet](../../media/logs.png)
+   **`-1-mini-2025-04-14-ft-e964800ce9314ff48f02e707134951d8-ft-credit`**
 
-1. When fine-tuning finishes, verify that the fine-tuned model is available in **Deployments**.
+> **Tip:** Fine-tuning and deployment can take **60 minutes or longer**. To save time, you can skip waiting for the fine-tuning job and use the fine-tuned model that has already been prepared for you.
 
-   > **Tip**: If automatic deployment did not finish successfully, open the completed fine-tuning job and make the fine-tuned model available from its details page.
+3. Open the fine-tuned model in the **model playground**.
 
-2. Open the fine-tuned model in the model playground.
+4. In the **Instructions** field, enter the **same credit risk management prompt** used when testing the base model:
 
-3. Set the **Instructions** field to the same credit risk management prompt used earlier:
+```text
+You are an AI credit risk management assistant that helps assess the creditworthiness of business clients. Your objective is to evaluate company documents, compliance status, financial ratios, external credit information, and industry risk using the provided credit risk assessment rules.
 
-   ```text
-   You are an AI credit risk management assistant that helps assess the creditworthiness of business clients. Your objective is to evaluate company documents, compliance status, financial ratios, external credit information, and industry risk using the provided credit risk assessment rules.
-   Do not invent missing financial or compliance information.
-   Clearly identify missing documents or data and explain how they affect the assessment.
-   ```
+Do not invent missing financial or compliance information.
 
-4. Ask the same credit risk questions again:
+Clearly identify missing documents or data and explain how they affect the assessment.
+```
 
-   ```text
-   What documents are required to start a credit risk assessment?
-   ```
+5. Ask the **same five questions** that you tested with the base **gpt-5.4-mini** model:
 
-   ```text
-   The client uploaded only the GST Certificate. Can we pass the document verification step?
-   ```
+**Question 1**
 
-   ```text
-   A company has a Current Ratio of 1.56, Debt-to-Equity of 1.86, and Net Profit Margin of 5.56%. How many points does it receive for these three financial metrics?
-   ```
+```text
+What documents are required to start a credit risk assessment?
+```
 
-   ```text
-   How does industry risk affect the credit score?
-   ```
+**Question 2**
 
-   ```text
-   What happens if a sanctions or compliance match is confirmed?
-   ```
+```text
+The client uploaded only the GST Certificate. Can we pass the document verification step?
+```
 
-5. Compare the fine-tuned model's responses with the prepared **gpt-5.4-mini** base model. Note differences in tone, consistency, adherence to the credit risk instructions, and use of the defined assessment rules.
+**Question 3**
 
-## Summary
+```text
+A company has a Current Ratio of 1.56, Debt-to-Equity of 1.86, and Net Profit Margin of 5.56%. How many points does it receive for these three financial metrics?
+```
 
-In this lab, you tested **gpt-5.4-mini** in the playground and saw how instructions can guide the model's responses. You then prepared a **credit risk management dataset** in JSONL format and used it to start a supervised fine-tuning job with **gpt-4.1**.
+**Question 4**
 
-**Fine-tuning** means training a model with example conversations so it learns to respond in a more consistent way for a specific task or style. In this lab, the examples teach the model how to handle credit risk assessments, including document verification, compliance checks, financial ratios, credit scores, and industry risk.
+```text
+How does industry risk affect the credit score?
+```
 
-Finally, you tested the fine-tuned model with the same credit risk questions and compared its responses with the base model.
+**Question 5**
+
+```text
+What happens if a sanctions or compliance match is confirmed?
+```
+
+6. Compare these responses with the **base model responses saved in Notepad**. Look for differences in:
+
+   * **Response consistency**
+   * **Tone and writing style**
+   * **Adherence to the credit risk instructions**
+   * **Use of the defined credit risk assessment rules**
+   * **Handling of missing information**
+   * **Accuracy and completeness of the responses**
+
+> **Tip:** Use the responses you saved in Notepad as a direct reference when comparing the two models. This makes it easier to see what changed after fine-tuning.
+
+## Conclusion
+
+In this lab, you learned how **fine-tuning** can make a language model more consistent for a specific use case.
+
+You first tested **gpt-5.4-mini** in the playground and used different instructions to see how they affected the model's responses. You then worked with a **credit risk management dataset** in JSONL format and used it to fine-tune **gpt-4.1**. Finally, you tested the prepared fine-tuned model using the same credit risk questions and compared its responses with the **gpt-5.4-mini** responses saved in Notepad.
+
+The main takeaway is that fine-tuning is useful when you want a model to consistently follow **task-specific behavior, terminology, response patterns, or business rules**.
+
+In real-world applications, you can use fine-tuning for use cases such as **customer support, document processing, financial analysis, classification, coding assistants, and internal business workflows**. You are not limited to the models used in this lab. You can explore other supported models and choose an approach based on your application's requirements, cost, performance, and complexity.
+
+You can also combine fine-tuning with **prompt engineering, RAG, and tools** depending on the problem you are solving.
+
+**By completing this lab, you have gone through the complete fine-tuning workflow: preparing training examples, starting a fine-tuning job, testing the base model, testing the fine-tuned model, and comparing their responses.**
