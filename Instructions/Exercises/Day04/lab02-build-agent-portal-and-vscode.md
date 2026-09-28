@@ -42,7 +42,7 @@ Microsoft Foundry projects organize models, resources, data, and other assets us
 
    ![Microsoft Foundry project home page with the Start building button highlighted in the Build an agent card.](../../media/04-03-02.png)
 
-3. In the **Create an agent** dialog, enter `credit-risk-agent` as the **Agent name**.
+3. In the **Create an agent** dialog, enter `credit-risk-agent` as the **Agent name** and make sure **Interaction mode** is set to **Text**.
 
 4. Select **Create**.
 
@@ -86,9 +86,9 @@ Follow these guidelines:
 
 ### 2. Add the credit-risk grounding document
 
-Download the credit-risk assessment rules and supporting documentation provided with the lab.
+Download the **[textfiles.zip](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2FKiran-255666%2FAgenticAIEngineer%2Ftree%2Fmain%2Ftextfiles)** file and extract the ZIP file.
 
-The grounding material should contain the assessment process, including:
+The grounding material contains the assessment process, including:
 
 * Required company documents
 * Company-name verification rules
@@ -103,173 +103,179 @@ The grounding material should contain the assessment process, including:
 * Final 100-point scorecard
 * Credit-limit and payment-term recommendations
 
-Save the document locally using a suitable name such as:
-
-```text
-Credit_Risk_Assessment_Rules.txt
-```
-
 > **Note:** This document provides the rules the agent should follow when performing a credit-risk assessment. The agent should use the document as grounding data rather than relying only on its general knowledge.
 
 ### 3. Enable File search
 
 Return to the agent playground.
 
-In the **Tools** section, select **Add**. Under **Most Popular**, select **File search**.
+1. In the **Tools** section, select **Add**. Under **Most Popular**, select **File search**.
 
-If File search is not displayed, select **Add** again, choose **Add tools**, select **File search**, and then select **Add tool**.
+   **Tip:** If **File search** is not displayed under **Most Popular**, select **Add** again, choose **Add tools**, select **File search** under **Configured**, and then select **Add tool**.
 
-![Screenshot of the File search tool.](../../media/04-03-06.png)
+   ![Screenshot of the File search tool.](../../media/04-03-06.png)
 
-After adding File search, you will be redirected to a page where you can see **Drag and drop files here or browse for files**.
+2. After adding **File search**, you will be redirected to a page where you can create or select a vector index.
 
-Upload:
+3. Under **Vector index name**, enter:
 
-```text
-Credit_Risk_Assessment_Rules.txt
-```
+   ```text
+   credit-risk-assessment-index
+   ```
 
-After attaching the file, verify that its status shows **Success**, and then select **Attach**.
+4. Under **Drag and drop files here or browse for files**, upload:
 
-Wait for the file to be indexed before continuing.
+   ```text
+   Credit_Risk_Assessment_Rules.txt
+   ```
 
-### 4. Add the company documents
+5. After attaching the file, verify that its status shows **Success**, and then select **Attach**.
 
-Upload the company documents required for the assessment, such as:
+6. Wait for the file to be indexed before continuing.
 
-```text
-Company_Registration_Certificate
-GST_Certificate
-```
+### 4. Enable Code interpreter
 
-You can either drag and drop the files or browse your local files.
+1. In the **Tools** section, select **Add**. Under **Most Popular**, select **Code interpreter** and toggle it on.
 
-After attaching the documents, verify that the upload status shows **Success**.
+   **Tip:** If it is not displayed, select **Add** again, choose **Add tools**, select **Code interpreter**, and then select **Add tool**.
 
-These documents will allow the agent to verify whether the required company documentation is present and whether the company name matches across the submitted certificates.
+   ![Screenshot of Code interpreter.](../../media/04-03-07.png)
 
-### 5. Enable Code interpreter
+2. The `textfiles` folder provided with the lab already contains the following file:
 
-In the **Tools** section, select **Add**.
+   ```text
+   Credit_Risk_Calculation_Rules.txt
+   ```
 
-Under **Most Popular**, select **Code interpreter** and toggle it on.
+   This file contains the calculation rules for:
 
-If it is not displayed, select **Add** again, choose **Add tools**, select **Code interpreter**, and then select **Add tool**.
+   ```text
+   Current Ratio = Current Assets / Current Liabilities
 
-![Screenshot of Code interpreter.](../../media/04-03-07.png)
+   Debt-to-Equity = Total Debt / Shareholders' Equity
 
-Code interpreter will be used to process financial data and perform calculations such as:
+   Net Profit Margin = (Net Profit / Revenue) × 100
+   ```
 
-```text
-Current Ratio = Current Assets / Current Liabilities
+   It also specifies that the **latest available financial year** should be used for these calculations.
 
-Debt-to-Equity = Total Debt / Shareholders' Equity
+3. In the **Code interpreter** section, select **+ Files** and upload `Credit_Risk_Calculation_Rules.txt` from the `textfiles` folder using **Drag and drop files here** or **browse for files**.
 
-Net Profit Margin = Net Profit / Revenue × 100
-```
+4. Verify that the file status shows **Success**, then select **Attach**.
 
-### 6. Upload the financial data
+The Code interpreter can now use these calculation rules when analyzing the financial data.
 
-Download the financial data file provided with the lab and save it locally.
+### 5. Upload the financial data
 
-For example:
+1. Use the `financial_data.csv` file provided with the lab.
 
-```text
-financial_data.csv
-```
+2. The file contains the financial information required to calculate the credit-risk metrics for the latest financial year, including:
 
-The file should contain the financial information required to calculate the credit-risk metrics for the latest financial year, such as:
+   * Current Assets
+   * Current Liabilities
+   * Total Debt
+   * Shareholders' Equity
+   * Revenue
+   * Net Profit
+   * External Credit Bureau Score
+   * Industry
 
-* Current Assets
-* Current Liabilities
-* Total Debt
-* Shareholders' Equity
-* Revenue
-* Net Profit
-* External Credit Bureau Score
-* Industry
+3. To the right of **Code interpreter**, select **+ Files**.
 
-To the right of **Code interpreter**, select **+ Files**.
+4. Upload `financial_data.csv` using **Drag and drop files here** or **browse for files**.
 
-Upload `financial_data.csv` by dragging and dropping it or browsing to the file.
+5. After attaching the file, verify that the status shows **Success**, then select **Attach**.
 
-After attaching the file, verify that the status shows **Success**, then select **Attach**.
+   **Note:** The agent will use the uploaded financial data together with the calculation rules to calculate and analyze the required credit-risk metrics.
 
-> **Note:** The financial data is used by Code interpreter for calculations and analysis. The agent should use the latest available financial year when calculating the required ratios.
+### 6. Save the agent
 
-### 7. Save the agent
-
-Select **Save** to save the configured credit-risk agent.
+1. Select **Save** to save the configured credit-risk agent.
 
 ---
+
+Yeah man. Since you’re **not using PNG screenshots anymore**, the testing section should focus on **what the user should enter and what kind of result they should expect**, without forcing exact wording. Add a note that AI responses may differ but should contain the same key information.
+
+Here’s the cleaned-up version:
 
 ## Test your credit-risk agent
 
 Test the agent to confirm that it can retrieve information from the grounding documents and use Code interpreter for financial analysis.
 
+> **Note:** The agent's response may not match the examples word-for-word. Responses can vary depending on the model and context. Verify that the response contains the expected information, calculations, and reasoning described in each test.
+
 ### 1. Verify the required documents
 
-In the playground chat pane, enter:
+1. In the playground chat pane, enter:
 
 ```text
 Verify whether the Company Registration Certificate and GST Certificate are available for the client. Also compare the company name shown on both documents.
 ```
 
-Review the response.
+2. Review the response.
 
-The agent should identify the available documents and compare the company name across them.
+The agent should identify whether the required documents are available and compare the company name across the certificates.
 
-![Screenshot of document verification.](../../media/04-03-08.png)
+If a required document is missing, the agent should clearly state that it cannot complete the verification rather than assuming the document is available.
 
 ### 2. Test the credit-risk assessment rules
 
-Enter:
+1. Enter:
 
 ```text
 What checks must be completed before assigning a credit risk rating?
 ```
 
-Review the response.
+2. Review the response.
 
 The agent should retrieve the assessment process from the uploaded credit-risk grounding document.
 
-It should identify requirements such as:
+The response should cover the main checks, including:
 
 * Document verification
 * Company-name matching
 * Legal status
-* Compliance checks
+* Compliance and sanctions checks
 * Financial statements
 * Financial ratios
 * Credit bureau score
 * Industry risk
 * Final scorecard
 
-![Screenshot of credit-risk assessment rules.](../../media/04-03-09.png)
+The exact wording or order may differ, but the response should be consistent with the rules provided in `Credit_Risk_Assessment_Rules.txt`.
 
 ### 3. Test financial calculations with Code interpreter
 
-Enter:
+1. Enter:
 
 ```text
 Analyze the financial data and calculate the Current Ratio, Debt-to-Equity, and Net Profit Margin for the latest financial year.
 ```
 
-The agent should use **Code interpreter** to process the financial data and calculate the three required metrics.
+2. The agent should use **Code interpreter** to process `financial_data.csv` and calculate the required metrics.
 
-Review the calculations and verify that the values are based on the uploaded data.
+3. Review the calculations and verify that they are based on the uploaded financial data.
 
-![Screenshot of financial calculations.](../../media/04-03-10.png)
+The response should provide:
+
+* Current Ratio
+* Debt-to-Equity
+* Net Profit Margin
+* The latest financial year used for the calculation
+
+The numerical presentation may vary, but the calculated values should be consistent with the uploaded data and the rules in `Credit_Risk_Calculation_Rules.txt`.
 
 ### 4. Test the Industry Risk Matrix
 
-Enter:
+1. Enter:
 
 ```text
 Using the Industry Risk Matrix, determine the industry risk rating for the client and explain the score assigned.
 ```
 
-The agent should use the provided Industry Risk Matrix:
+2. Review the response.
+
+The agent should use the Industry Risk Matrix from the credit-risk rules:
 
 | Industry Risk | Industries                                                                                  | Score |
 | ------------- | ------------------------------------------------------------------------------------------- | ----: |
@@ -277,19 +283,21 @@ The agent should use the provided Industry Risk Matrix:
 | Medium        | Manufacturing, FMCG distribution, IT services                                               |     8 |
 | High          | Construction, Real estate developers, Airlines, Commodity trading, Startups, Mining & Metal |     3 |
 
-The response should clearly identify the industry category and corresponding score.
+The response should identify the client's industry, corresponding risk category, and assigned score.
 
 ### 5. Generate the final credit-risk assessment
 
-Enter:
+1. Enter:
 
 ```text
 Using all available documents and financial data, complete the credit-risk assessment. Calculate the required financial ratios, apply the scorecard, determine the final risk rating, and provide the recommended credit limit and payment terms. Clearly show how the final score was calculated.
 ```
 
-The agent should combine the information retrieved through **File search** with the calculations performed using **Code interpreter**.
+2. Review the response.
 
-The scorecard is:
+The agent should combine information retrieved through **File search** with calculations performed using **Code interpreter**.
+
+The assessment should consider:
 
 | Category                   | Maximum Score |
 | -------------------------- | ------------: |
@@ -301,23 +309,23 @@ The scorecard is:
 | Industry Risk              |            15 |
 | **Total**                  |       **100** |
 
-The agent should apply the provided scoring rules consistently and explain the resulting assessment.
+3. Verify that the agent explains how the individual scores contribute to the final score and applies the rules from the uploaded credit-risk documentation.
+
+> **Note:** The final response may be formatted differently or use different wording. The important point is that the agent uses the available evidence, applies the supplied scoring rules, and does not invent missing information.
 
 ### 6. Request a visualization
 
-Enter:
+1. Enter:
 
 ```text
 Create a chart showing the company's Current Ratio, Debt-to-Equity, and Net Profit Margin.
 ```
 
-The agent should use **Code interpreter** to process the financial values and generate a suitable visualization.
+2. The agent should use **Code interpreter** to process the financial values and generate a suitable visualization.
 
-![Screenshot of the generated financial visualization.](../../media/04-03-11.png)
+3. Review the generated visualization and confirm that it represents the calculated financial metrics.
 
-The visualization may be generated successfully, but in some cases you may not be able to download the generated file directly from the agent playground. If this happens, you can copy the code generated by the agent and run it in **VS Code**, **Jupyter Notebook**, or **Google Colab** using the same financial data.
-
-![Screenshot of the visualization output.](../../media/04-03-12.png)
+> **Note:** The chart style, layout, labels, and presentation may vary. The visualization should represent the Current Ratio, Debt-to-Equity, and Net Profit Margin calculated from the uploaded financial data.
 
 ---
 
@@ -329,24 +337,20 @@ The agent combines document grounding, financial analysis, and the credit-risk s
 flowchart TD
     A[Client Documents] --> B[File Search]
     B --> C[Document & Compliance Verification]
-
     D[Financial Data] --> E[Code Interpreter]
     E --> F[Calculate Financial Ratios]
-
     C --> G[Credit Risk Assessment]
     F --> G
     H[Credit Bureau Score] --> G
     I[Industry Risk Matrix] --> G
-
     G --> J[100-Point Scorecard]
     J --> K{Final Risk Rating}
-
     K -->|Low > 80| L[$5M Limit<br/>60-Day Terms]
     K -->|Medium 50-80| M[$2M Limit<br/>30-Day Terms]
     K -->|High < 50| N[No Credit<br/>Advance Payment]
 ```
 
-> **Tip:** The exact decision should always be based on the supplied documents and data. If required information is missing or cannot be verified, the agent should clearly identify the missing information rather than inventing a result.
+**Tip:** The exact decision should always be based on the supplied documents and data. If required information is missing or cannot be verified, the agent should clearly identify the missing information rather than inventing a result.
 
 ---
 
@@ -357,7 +361,7 @@ You used an existing Microsoft Foundry project and its deployed model to create 
 You:
 
 * Configured the agent with credit-risk assessment instructions.
-* Grounded the agent with company and credit-risk documentation using **File search**.
+* Grounded the agent with credit-risk documentation using **File search**.
 * Verified required company documents and company-name consistency.
 * Used **Code interpreter** to calculate Current Ratio, Debt-to-Equity, and Net Profit Margin.
 * Applied the Industry Risk Matrix and 100-point credit-risk scorecard.
@@ -365,4 +369,4 @@ You:
 * Tested the agent with document-verification, financial-analysis, scoring, and visualization prompts.
 * Generated a visualization from the financial data using **Code interpreter**.
 
-This demonstrates how a Microsoft Foundry agent can combine **grounded business documents + financial calculations + structured decision rules** to support a practical credit-risk assessment workflow.
+This demonstrates how a Microsoft Foundry agent can combine **grounded business documents, financial calculations, and structured decision rules** to support a practical credit-risk assessment workflow.
