@@ -66,7 +66,7 @@ Microsoft Foundry projects organize the models, resources, data, and other asset
 
 # Download the training data
 
-1. Open the [training dataset](https://github.com/Kiran-255666/AgenticAIEngineer/blob/main/labfiles/Day03/lab04-fine-tuning/credit_risk_management.jsonl) in a browser.
+1. Open the [training dataset](https://github.com/Kiran-255666/AgenticAIEngineer/blob/main/labfiles/Day04/lab01-fine-tuning/credit_risk_management.jsonl) in a browser.
 
 2. Download the file and save it locally as `credit_risk_management.jsonl`.
 
@@ -229,7 +229,7 @@ If you skipped the fine-tuning job, use the **prepared fine-tuned model** that i
 
 1. In the left navigation, select **Models**.
 
-2. Find and open the prepared fine-tuned model:
+2. Find and open the prepared fine-tuned model you might find its name similar to:
 
    **`-1-mini-2025-04-14-ft-e964800ce9314ff48f02e707134951d8-ft-credit`**
 
