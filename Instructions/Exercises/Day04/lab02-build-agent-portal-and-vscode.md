@@ -196,7 +196,7 @@ Test the agent to confirm that it can retrieve information from the grounding do
 
 > **Note:** The agent's response may not match the examples word-for-word. Responses can vary depending on the model and context. Verify that the response contains the expected information, calculations, and reasoning described in each test.
 
-### 1. Verify the required documents
+### Verify the required documents
 
 1. In the playground chat pane, enter:
 
