@@ -39,7 +39,7 @@ Before starting this exercise, ensure you have:
 
    ![Screenshot of the Azure CLI installation setup wizard.](../../media/azure-cli-install-wizard.png)
 
-3. Open the integrated terminal using ****Ctrl+Shift+`**** and run the following command to sign in to Azure:
+3. Open the integrated terminal using **`Ctrl+Shift+`** and run the following command to sign in to Azure:
 
 ```powershell
 az login
@@ -114,37 +114,29 @@ Use the deployed model that's already available in your Foundry project. Right-c
 
 # Get the application files from GitHub
 
-> **Note**: If you've already downloaded and extracted the repository in a previous lab, skip ahead to step 5 below.
-
-1. If you already downloaded and extracted this repository's ZIP file in a previous exercise, skip ahead to the next step, and navigate directly to the folder path below. Otherwise, follow the steps below to download it first.
+1. If you have already downloaded and extracted the repository in a previous lab, delete the existing ZIP file and the extracted folder. This will allow us to use the PowerShell commands in the following steps and help avoid long path issues.
 
 2. Open a web browser and go to the [lab files on GitHub](https://github.com/Kiran-255666/AgenticAIEngineer).
 
 3. On the repository page, select the green **`<> Code`** button, and then select **Download ZIP**.
 
-4. Once the download finishes, locate the ZIP file and extract it to a folder on your computer.
+4. Once the download finishes, extract the ZIP file
 
-5. In the extracted folder, navigate to:
+5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
-   ```
-   AgenticAIEngineer\labfiles\Day-05\Lab-01-agent-custom-tools\Python
-   ```
+```powershell
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab01-agent-custom-tools" "$env:USERPROFILE\Desktop\lab01-agent-custom-tools" -Recurse
 
-   This folder already contains the application files and the required code for this exercise.
+code "$env:USERPROFILE\Desktop\lab01-agent-custom-tools"
+```
 
-   > **Note**: The `agent.py` and `functions.py` files have already been updated with the implementation required for this exercise. You do not need to manually enter the code again. However, we strongly recommend reviewing the code and understanding each section before running the application.
+The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
 
-6. In **File Explorer**, select the address bar at the top of the window, type the following command, and press **Enter**:
+This folder already contains the application files and the required code for this exercise.
 
-   ```
-   code .
-   ```
+> ****Note:**** The `agent.py` and `functions.py` files have already been updated with the implementation required for this exercise. You do not need to enter the code manually again. However, we recommend reviewing the code to understand each section before running the application.
 
-   This opens the folder directly in Visual Studio Code.
-
-   > **Tip**: If `code .` doesn't work, open the folder manually in Visual Studio Code.
-
-7. Right-click on the **requirements.txt** file and select **Open in Integrated Terminal**.
+7. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
 
 8. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
 
@@ -154,18 +146,9 @@ Use the deployed model that's already available in your Foundry project. Right-c
    pip install -r requirements.txt
    ```
 
-9. Open the **.env** file and configure the following values:
+9. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-   ```
-   PROJECT_ENDPOINT="<your-project-endpoint>"
-   MODEL_DEPLOYMENT_NAME="<your-model-deployment-name>"
-   ```
-
-   Replace `<your-project-endpoint>` with the endpoint for your project and `<your-model-deployment-name>` with the name of your deployed model.
-
-   Use **Ctrl+S** to save the file.
-
-   > **Tip**: The project endpoint can be copied from the project deployment resource in the Foundry Toolkit VS Code extension.
+> ****Tip:**** In general, if the ****.env**** file is not configured, you can use the previously installed ****Azure AI Foundry**** extension to get the required values. The **project endpoint** can be copied from the project deployment resource in the ****Foundry Toolkit**** extension in Visual Studio Code. You may need to do this in upcoming labs or when setting up your own projects in the future.
 
 You are now ready to review and run an AI agent that uses custom function tools.
 
@@ -636,10 +619,20 @@ flowchart LR
 
 ## Run the agent application
 
-1. In the integrated terminal, authenticate with Azure:
+1. In the integrated terminal, verify that your Azure credentials are authenticated:
 
+   ```powershell
+   az account show
    ```
+
+   You should see your Azure account and subscription details.
+
+   > **Tip:** If your Azure credentials are not displayed, run the following commands and try again:
+
+   ```powershell
+   az logout
    az login
+   az account show
    ```
 
 2. Make sure the virtual environment is activated:
