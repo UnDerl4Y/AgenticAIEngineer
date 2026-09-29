@@ -210,9 +210,7 @@ Verify whether the Company Registration Certificate and GST Certificate are avai
 
 2. Review the response.
 
-The agent should identify whether the required documents are available and compare the company name across the certificates.
-
-If a required document is missing, the agent should clearly state that it cannot complete the verification rather than assuming the document is available.
+The agent should state that the required document is missing and clearly explain that it cannot complete the verification without it, rather than assuming the document is available.
 
 ### 2. Test the credit-risk assessment rules
 
