@@ -3,7 +3,7 @@ lab:
     title: 'Use a custom function in an AI agent'
     description: 'Learn how to use functions to add custom capabilities to your agents.'
     level: 300
-    duration: 50
+    duration: 45
     islab: true
     status: 'released'
 ---
@@ -12,7 +12,7 @@ lab:
 
 > **Note:** We have already updated the mentioned files with the code provided in the instructions. However, we highly recommend going through the code once before executing it.
 
-In this exercise, you'll explore how an AI agent can use custom functions as tools to perform specific tasks. These functions can be used to support different steps in a credit-risk assessment workflow, such as retrieving information, performing calculations, or generating reports. You'll define the functions, connect them to the agent, and see how the agent processes function calls and uses their results.
+In this exercise, you'll explore how an AI agent can use custom functions as tools to perform specific tasks. These functions support different steps in a credit-risk assessment workflow, such as verifying required documents, performing financial calculations, and generating risk summaries. You'll review the functions, connect them to the agent, and see how the agent processes function calls and uses their results.
 
 This exercise should take approximately **45** minutes to complete.
 
@@ -22,12 +22,12 @@ Before starting this exercise, ensure you have:
 
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
 - An active [Azure subscription](https://azure.microsoft.com/free/)
-- [Python 3.13](https://www.python.org/downloads/) or later installed
+- [Python 3.13.12](https://www.python.org/downloads/) is recommended
 - [Git](https://git-scm.com/downloads) installed on your local machine
 
-> \* Python 3.14 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.13.12.
+> \* Python 3.13.12 is the recommended version for this lab. Python 3.14 is available, but some dependencies are not yet compiled for that release.
 
-## Create a Foundry project with the Foundry Toolkit for VS Code extension
+## Set up Azure CLI and the Foundry Toolkit for VS Code
 
 1. Before starting the lab, install ****Azure CLI**** using the following link: [https://aka.ms/installazurecliwindows]. Click the link to download the installer. The download will start automatically and the installer will be available in your ****Downloads**** folder.
 
@@ -103,12 +103,12 @@ As a developer, you may spend time working in the **Microsoft Foundry portal**, 
 
    ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/foundry-toolkit-sidebar.png)
 
-9. You can now directly copy the **API keys** and **endpoints** from the **Azure AI Foundry** extension in Visual Studio Code.
+9. You can now use the **Azure AI Foundry** extension to view and manage your Foundry project resources directly from Visual Studio Code.
 
 
 ## Use the deployed model
 
-Use the deployed model that's already available in your Foundry project. Right-click the name of the project deployment and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
+Use the deployed model that's already available in your Foundry project. Right-click the deployed model in your Foundry project and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
 
 ![Screenshot of copying the project endpoint in the Foundry Toolkit VS Code extension.](../../media/vs-code-endpoint.png)
 
@@ -120,7 +120,7 @@ Use the deployed model that's already available in your Foundry project. Right-c
 
 3. On the repository page, select the green **`<> Code`** button, and then select **Download ZIP**.
 
-4. Once the download finishes, extract the ZIP file
+4. Once the download finishes, extract the ZIP file.
 
 5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
@@ -136,9 +136,9 @@ This folder already contains the application files and the required code for thi
 
 > ****Note:**** The `agent.py` and `functions.py` files have already been updated with the implementation required for this exercise. You do not need to enter the code manually again. However, we recommend reviewing the code to understand each section before running the application.
 
-7. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
+6. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
 
-8. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
+7. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
 
    ```
    python -m venv labenv
@@ -146,7 +146,7 @@ This folder already contains the application files and the required code for thi
    pip install -r requirements.txt
    ```
 
-9. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
+8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
 > ****Tip:**** In general, if the ****.env**** file is not configured, you can use the previously installed ****Azure AI Foundry**** extension to get the required values. The **project endpoint** can be copied from the project deployment resource in the ****Foundry Toolkit**** extension in Visual Studio Code. You may need to do this in upcoming labs or when setting up your own projects in the future.
 
@@ -158,119 +158,177 @@ The required functions have already been added to **`functions.py`**. Review the
 
 The file contains three functions:
 
-* `next_visible_event()` — finds the next astronomical event visible from a specified location.
-* `calculate_observation_cost()` — calculates telescope observation costs based on telescope tier, duration, and priority.
-* `generate_observation_report()` — generates a summary of an astronomical observation.
+* `verify_documents()` — checks whether the required company registration and GST documents are available.
+* `calculate_financial_ratios()` — calculates basic financial ratios used in credit-risk assessment.
+* `generate_risk_summary()` — generates a credit-risk summary using the calculated financial indicators and configured thresholds.
 
-### `next_visible_event`
+The file also loads the document requirements and risk thresholds from the `data` folder:
+
+```python
+DOCUMENT_REQUIREMENTS = _load_requirements()
+RISK_THRESHOLDS = _load_thresholds()
+```
+
+The document requirements are loaded from:
+
+```text
+data/document_requirements.txt
+```
+
+The risk thresholds are loaded from:
+
+```text
+data/risk_thresholds.txt
+```
+
+### `verify_documents`
 
 The implementation is:
 
 ```python
-# Determine the next visible astronomical event for a given location
-def next_visible_event(location: str) -> str:
-    """Returns the next visible astronomical event for a location."""
+def verify_documents(
+    company_registration: bool,
+    gst_certificate: bool
+) -> str:
+    """Check whether the required company documents are available."""
 
-    today = int(datetime.now().strftime("%m%d"))
-    loc = location.lower().replace(" ", "_")
-
-    for name, event_type, date, date_str, locs in EVENTS:
-        if loc in locs and date >= today:
-            return json.dumps({
-                "event": name,
-                "type": event_type,
-                "date": date_str,
-                "visible_from": sorted(locs)
-            })
+    documents_complete = (
+        company_registration and gst_certificate
+    )
 
     return json.dumps({
-        "message": f"No upcoming events found for {location}."
+        "required_documents": list(
+            DOCUMENT_REQUIREMENTS.values()
+        ),
+        "company_registration": company_registration,
+        "gst_certificate": gst_certificate,
+        "documents_complete": documents_complete,
+        "status": (
+            "Documents verified"
+            if documents_complete
+            else "Required documents are missing"
+        )
     })
 ```
 
-This function searches the sample astronomical event data and returns the next event visible from the specified location as a JSON string.
+This function checks whether the **Company Registration Certificate** and **GST Certificate** are marked as available.
 
-### `calculate_observation_cost`
+If both documents are available, `documents_complete` is set to `True` and the function returns a successful verification status. Otherwise, it reports that required documents are missing.
+
+### `calculate_financial_ratios`
 
 The implementation is:
 
 ```python
-# Calculate the cost of an astronomical observation
-def calculate_observation_cost(
-    telescope_tier: str,
-    hours: float,
-    priority: str
+def calculate_financial_ratios(
+    current_assets: float,
+    current_liabilities: float,
+    total_debt: float,
+    equity: float,
+    net_profit: float,
+    revenue: float
 ) -> str:
-    """Calculate telescope observation cost."""
+    """Calculate basic financial ratios for credit-risk assessment."""
 
-    tier_rates = {
-        "standard": 100,
-        "advanced": 200,
-        "premium": 350
-    }
-
-    priority_multipliers = {
-        "low": 0.8,
-        "normal": 1.0,
-        "high": 1.5
-    }
-
-    tier = telescope_tier.lower()
-    priority_level = priority.lower()
-
-    if tier not in tier_rates:
+    if current_liabilities <= 0:
         return json.dumps({
-            "error": f"Unknown telescope tier: {telescope_tier}"
+            "error": "Current liabilities must be greater than zero."
         })
 
-    if priority_level not in priority_multipliers:
+    if equity <= 0:
         return json.dumps({
-            "error": f"Unknown priority level: {priority}"
+            "error": "Equity must be greater than zero."
         })
 
-    base_cost = tier_rates[tier] * hours
-    total_cost = base_cost * priority_multipliers[priority_level]
+    if revenue <= 0:
+        return json.dumps({
+            "error": "Revenue must be greater than zero."
+        })
+
+    current_ratio = current_assets / current_liabilities
+    debt_to_equity = total_debt / equity
+    net_profit_margin = (net_profit / revenue) * 100
 
     return json.dumps({
-        "telescope_tier": telescope_tier,
-        "hours": hours,
-        "priority": priority,
-        "cost": total_cost
+        "current_ratio": round(current_ratio, 2),
+        "debt_to_equity": round(debt_to_equity, 2),
+        "net_profit_margin": round(net_profit_margin, 2),
+        "thresholds": {
+            "current_ratio_good": RISK_THRESHOLDS[
+                "current_ratio_good"
+            ],
+            "current_ratio_medium": RISK_THRESHOLDS[
+                "current_ratio_medium"
+            ],
+            "debt_to_equity_good": RISK_THRESHOLDS[
+                "debt_to_equity_good"
+            ],
+            "debt_to_equity_medium": RISK_THRESHOLDS[
+                "debt_to_equity_medium"
+            ],
+            "net_profit_margin_good": RISK_THRESHOLDS[
+                "net_profit_margin_good"
+            ],
+            "net_profit_margin_medium": RISK_THRESHOLDS[
+                "net_profit_margin_medium"
+            ]
+        }
     })
 ```
 
-This function calculates the observation cost by combining the telescope's hourly rate with the priority multiplier.
+This function calculates three financial indicators:
 
-### `generate_observation_report`
+* **Current Ratio** = Current Assets ÷ Current Liabilities
+* **Debt-to-Equity Ratio** = Total Debt ÷ Equity
+* **Net Profit Margin** = (Net Profit ÷ Revenue) × 100
+
+It also returns the configured thresholds used for evaluating these indicators.
+
+The function checks that current liabilities, equity, and revenue are greater than zero before performing the calculations.
+
+### `generate_risk_summary`
 
 The implementation is:
 
 ```python
-# Generate an observation report
-def generate_observation_report(
-    event_name: str,
-    location: str,
-    telescope_tier: str,
-    hours: float,
-    priority: str,
-    observer_name: str
+def generate_risk_summary(
+    company_name: str,
+    current_ratio: float,
+    debt_to_equity: float,
+    net_profit_margin: float
 ) -> str:
-    """Generate a summary report for an astronomical observation."""
+    """Generate a summary of the calculated credit-risk indicators."""
+
+    if (
+        current_ratio >= RISK_THRESHOLDS["current_ratio_good"]
+        and debt_to_equity <= RISK_THRESHOLDS["debt_to_equity_good"]
+        and net_profit_margin >= RISK_THRESHOLDS["net_profit_margin_good"]
+    ):
+        risk_level = "Low"
+
+    elif (
+        current_ratio >= RISK_THRESHOLDS["current_ratio_medium"]
+        and debt_to_equity <= RISK_THRESHOLDS["debt_to_equity_medium"]
+        and net_profit_margin >= RISK_THRESHOLDS["net_profit_margin_medium"]
+    ):
+        risk_level = "Medium"
+
+    else:
+        risk_level = "High"
 
     return json.dumps({
-        "event_name": event_name,
-        "location": location,
-        "telescope_tier": telescope_tier,
-        "hours": hours,
-        "priority": priority,
-        "observer_name": observer_name,
-        "status": "Observation report generated successfully"
+        "company_name": company_name,
+        "current_ratio": current_ratio,
+        "debt_to_equity": debt_to_equity,
+        "net_profit_margin": net_profit_margin,
+        "risk_level": risk_level,
+        "status": "Risk summary generated successfully"
     })
 ```
 
-This function receives the observation details and returns them as a JSON-formatted report.
+This function uses the calculated financial indicators and the thresholds loaded from `risk_thresholds.txt` to determine a **Low**, **Medium**, or **High** risk level.
 
-> **Important**: The functions have already been added to `functions.py`. Review the implementation rather than adding the functions manually.
+> **Important:** The functions have already been added to `functions.py`. Review the implementation rather than adding the functions manually.
 
 ## Review the Foundry project connection
 
@@ -283,7 +341,6 @@ import os
 import json
 from dotenv import load_dotenv
 
-# Add references
 from azure.ai.projects import AIProjectClient
 from azure.ai.projects.models import PromptAgentDefinition, FunctionTool
 from azure.identity import AzureCliCredential
@@ -293,9 +350,9 @@ from openai.types.responses.response_input_param import (
 )
 
 from functions import (
-    next_visible_event,
-    calculate_observation_cost,
-    generate_observation_report,
+    verify_documents,
+    calculate_financial_ratios,
+    generate_risk_summary,
 )
 ```
 
@@ -312,7 +369,6 @@ model_deployment = os.getenv("MODEL_DEPLOYMENT_NAME")
 The application then connects to the Foundry project using `AzureCliCredential`:
 
 ```python
-# Connect to the project client
 with (
     AzureCliCredential() as credential,
     AIProjectClient(
@@ -323,73 +379,41 @@ with (
 ):
 ```
 
-> **Note**: The application uses `AzureCliCredential`, so make sure you authenticate with Azure CLI before running the application.
+> **Note:** The application uses `AzureCliCredential`, so make sure you authenticate with Azure CLI before running the application.
 
 ## Review the function tools
 
 The three function tools have already been defined in **`agent.py`**.
 
-### Event function tool
+### Document verification function tool
 
 ```python
-# Define the event function tool
-event_tool = FunctionTool(
-    name="next_visible_event",
-    description="Get the next visible event in a given location.",
-    parameters={
-        "type": "object",
-        "properties": {
-            "location": {
-                "type": "string",
-                "description": (
-                    "continent to find the next visible event in "
-                    "(e.g. 'north_america', 'south_america', 'australia')"
-                ),
-            },
-        },
-        "required": ["location"],
-        "additionalProperties": False,
-    },
-    strict=True,
-)
-```
-
-### Observation cost function tool
-
-```python
-# Define the observation cost function tool
-cost_tool = FunctionTool(
-    name="calculate_observation_cost",
+document_tool = FunctionTool(
+    name="verify_documents",
     description=(
-        "Calculate the cost of an observation based on the "
-        "telescope tier, number of hours, and priority level."
+        "Check whether the required company registration "
+        "and GST documents are available."
     ),
     parameters={
         "type": "object",
         "properties": {
-            "telescope_tier": {
-                "type": "string",
+            "company_registration": {
+                "type": "boolean",
                 "description": (
-                    "the tier of the telescope "
-                    "(e.g. 'standard', 'advanced', 'premium')"
+                    "Whether the Company Registration Certificate "
+                    "is available."
                 ),
             },
-            "hours": {
-                "type": "number",
-                "description": "the number of hours for the observation",
-            },
-            "priority": {
-                "type": "string",
+            "gst_certificate": {
+                "type": "boolean",
                 "description": (
-                    "the priority level of the observation "
-                    "(e.g. 'low', 'normal', 'high')"
+                    "Whether the GST Certificate is available."
                 ),
             },
         },
         "required": [
-            "telescope_tier",
-            "hours",
-            "priority",
+            "company_registration",
+            "gst_certificate",
         ],
         "additionalProperties": False,
     },
@@ -397,61 +421,52 @@ cost_tool = FunctionTool(
 )
 ```
 
-### Observation report function tool
+This tool allows the agent to request verification of the required company registration and GST documents.
+
+### Financial ratio calculation function tool
 
 ```python
-# Define the observation report generation function tool
-report_tool = FunctionTool(
-    name="generate_observation_report",
-    description="Generate a report summarizing an astronomical observation",
+ratio_tool = FunctionTool(
+    name="calculate_financial_ratios",
+    description=(
+        "Calculate basic financial ratios used in "
+        "credit-risk assessment."
+    ),
     parameters={
         "type": "object",
         "properties": {
-            "event_name": {
-                "type": "string",
-                "description": (
-                    "the name of the astronomical event being observed"
-                ),
-            },
-            "location": {
-                "type": "string",
-                "description": "the location of the observer",
-            },
-            "telescope_tier": {
-                "type": "string",
-                "description": (
-                    "the tier of the telescope used for the observation "
-                    "(e.g. 'standard', 'advanced', 'premium')"
-                ),
-            },
-            "hours": {
+            "current_assets": {
                 "type": "number",
-                "description": (
-                    "the number of hours the telescope was used "
-                    "for the observation"
-                ),
+                "description": "Current assets of the company.",
             },
-            "priority": {
-                "type": "string",
-                "description": (
-                    "the priority level of the observation "
-                    "(e.g. 'low', 'normal', 'high')"
-                ),
+            "current_liabilities": {
+                "type": "number",
+                "description": "Current liabilities of the company.",
             },
-            "observer_name": {
-                "type": "string",
-                "description": (
-                    "the name of the person who conducted the observation"
-                ),
+            "total_debt": {
+                "type": "number",
+                "description": "Total debt of the company.",
+            },
+            "equity": {
+                "type": "number",
+                "description": "Total equity of the company.",
+            },
+            "net_profit": {
+                "type": "number",
+                "description": "Net profit of the company.",
+            },
+            "revenue": {
+                "type": "number",
+                "description": "Total revenue of the company.",
             },
         },
         "required": [
-            "event_name",
-            "location",
-            "telescope_tier",
-            "hours",
-            "priority",
-            "observer_name",
+            "current_assets",
+            "current_liabilities",
+            "total_debt",
+            "equity",
+            "net_profit",
+            "revenue",
         ],
         "additionalProperties": False,
     },
@@ -459,27 +474,74 @@ report_tool = FunctionTool(
 )
 ```
 
-> **Important**: These tool definitions are already present in `agent.py`. Review the JSON schema for each tool to understand how the agent supplies arguments to the Python functions.
+This tool provides the agent with the parameters required to calculate the company's basic financial ratios.
+
+### Risk summary function tool
+
+```python
+summary_tool = FunctionTool(
+    name="generate_risk_summary",
+    description=(
+        "Generate a simple credit-risk assessment summary "
+        "using company information and calculated financial ratios."
+    ),
+    parameters={
+        "type": "object",
+        "properties": {
+            "company_name": {
+                "type": "string",
+                "description": "Name of the company.",
+            },
+            "current_ratio": {
+                "type": "number",
+                "description": "Current ratio of the company.",
+            },
+            "debt_to_equity": {
+                "type": "number",
+                "description": "Debt-to-equity ratio.",
+            },
+            "net_profit_margin": {
+                "type": "number",
+                "description": "Net profit margin as a percentage.",
+            },
+        },
+        "required": [
+            "company_name",
+            "current_ratio",
+            "debt_to_equity",
+            "net_profit_margin",
+        ],
+        "additionalProperties": False,
+    },
+    strict=True,
+)
+```
+
+This tool allows the agent to generate a credit-risk summary using the company's name and calculated financial indicators.
+
+> **Important:** These tool definitions are already present in `agent.py`. Review the JSON schema for each tool to understand how the agent supplies arguments to the Python functions.
 
 ## Review the agent creation
 
-The application creates an astronomy agent using the three function tools:
+The application creates a **credit-risk agent** using the three function tools:
 
 ```python
-# Create a new agent with the function tools
 agent = project_client.agents.create_version(
-    agent_name="astronomy-agent",
+    agent_name="credit-risk-agent",
     definition=PromptAgentDefinition(
         model=model_deployment,
         instructions="""
-        You are an astronomy observations assistant that helps users find
-        information about astronomical events and calculate telescope rental costs.
-        Use the available tools to assist users with their inquiries.
+        You are a credit-risk assessment assistant.
+
+        Help users perform basic credit-risk assessment tasks.
+        Use the available tools when document verification,
+        financial calculations, or risk summaries are required.
+        Explain the results clearly.
         """,
         tools=[
-            event_tool,
-            cost_tool,
-            report_tool,
+            document_tool,
+            ratio_tool,
+            summary_tool,
         ],
     ),
 )
@@ -488,31 +550,28 @@ agent = project_client.agents.create_version(
 The agent is configured with:
 
 * The deployed model specified by `MODEL_DEPLOYMENT_NAME`.
-* Instructions describing its role.
-* Three custom function tools.
+* Instructions describing its role as a credit-risk assessment assistant.
+* Three custom function tools for document verification, financial calculations, and risk summaries.
 
-> **Important**: The agent creation code has already been added. Review it before executing the application.
+> **Important:** The agent creation code has already been added. Review it before executing the application.
 
 ## Review the conversation and function-call flow
 
 The application creates a conversation:
 
 ```python
-# Create a conversation for the chat session
 conversation = openai_client.conversations.create()
 ```
 
 A list is also created to hold function-call outputs:
 
 ```python
-# Create a list to hold function call outputs
 input_list: ResponseInputParam = []
 ```
 
 When the user enters a prompt, it is added to the conversation:
 
 ```python
-# Send a prompt to the agent
 openai_client.conversations.items.create(
     conversation_id=conversation.id,
     items=[
@@ -528,7 +587,6 @@ openai_client.conversations.items.create(
 The application then retrieves the agent's response:
 
 ```python
-# Retrieve the agent's response
 response = openai_client.responses.create(
     conversation=conversation.id,
     extra_body={
@@ -540,7 +598,6 @@ response = openai_client.responses.create(
     input=input_list,
 )
 
-# Check the run status for failures
 if response.status == "failed":
     print(f"Response failed: {response.error}")
 ```
@@ -550,25 +607,26 @@ if response.status == "failed":
 When the model requests a function, the application identifies the requested function and executes the corresponding Python function:
 
 ```python
-# Process function calls
 for item in response.output:
 
     if item.type == "function_call":
 
         result = None
 
-        if item.name == "next_visible_event":
-            result = next_visible_event(
+        print(f"Calling tool: {item.name}")
+
+        if item.name == "verify_documents":
+            result = verify_documents(
                 **json.loads(item.arguments)
             )
 
-        elif item.name == "calculate_observation_cost":
-            result = calculate_observation_cost(
+        elif item.name == "calculate_financial_ratios":
+            result = calculate_financial_ratios(
                 **json.loads(item.arguments)
             )
 
-        elif item.name == "generate_observation_report":
-            result = generate_observation_report(
+        elif item.name == "generate_risk_summary":
+            result = generate_risk_summary(
                 **json.loads(item.arguments)
             )
 
@@ -584,7 +642,6 @@ for item in response.output:
 The function output is then sent back to the agent:
 
 ```python
-# Send function call outputs back to the model
 if input_list:
 
     response = openai_client.responses.create(
@@ -598,7 +655,6 @@ if input_list:
         },
     )
 
-# Display the agent's response
 print(f"AGENT: {response.output_text}")
 ```
 
@@ -606,16 +662,15 @@ This creates the following flow:
 
 ```mermaid
 flowchart LR
-    A[User Prompt] --> B[AI Agent]
+    A[User Prompt] --> B[Credit-Risk Agent]
     B --> C[Function Call]
     C --> D[Python Function]
     D --> E[Function Result]
-    E --> F[AI Agent Processes Result]
+    E --> F[Agent Processes Result]
     F --> G[Final Response]
 ```
 
-> **Important**: All of this functionality has already been implemented in `agent.py`. Review the code and understand how the function-call cycle works before running the application.
-
+> **Important:** All of this functionality has already been implemented in `agent.py`. Review the code and understand how the function-call cycle works before running the application.
 
 ## Run the agent application
 
@@ -637,112 +692,129 @@ flowchart LR
 
 2. Make sure the virtual environment is activated:
 
-   ```
+   ```powershell
    .\labenv\Scripts\Activate.ps1
    ```
 
 3. Run the application:
 
-   ```
+   ```powershell
    python agent.py
    ```
 
-4. The application will create the agent and display a prompt similar to:
+4. The application creates the credit-risk agent and displays a prompt similar to:
 
    ```text
-   Enter a prompt for the astronomy agent. Use 'quit' to exit.
+   Enter a prompt for the credit-risk agent. Use 'quit' to exit.
    USER:
    ```
 
-5. Enter a prompt such as:
+5. Enter a prompt to verify the required company documents, such as:
 
-   ```
-   Find me the next event I can see from South America and give me the cost for 5 hours of premium telescope time at normal priority.
-   ```
-
-   This prompt asks the agent to use both `next_visible_event` and `calculate_observation_cost`.
-
-   The agent should invoke the appropriate function tools, process their results, and return a response.
-
-   > **Tip**: The initial startup may take some time because the application connects to Azure and creates the agent in the Foundry project.
-
-   > **Tip**: If the application fails because the rate limit is exceeded, wait a few seconds and try again. If there is insufficient model quota in your subscription, the model may not be able to respond.
-
-6. Enter a follow-up prompt to generate an observation report, such as:
-
-   ```
-   Generate that information in a report for Bellows College.
+   ```text
+   Verify whether the company registration certificate and GST certificate are available for Apex Manufacturing Pvt Ltd.
    ```
 
-   The agent should use the `generate_observation_report` function and return the generated report information.
+   The agent should identify the `verify_documents` function and use it to check whether the required documents are available.
 
-7. Review the response returned by the agent.
+6. Enter a prompt to calculate financial ratios, such as:
 
-8. Enter:
-
+   ```text
+   Calculate the financial ratios for Apex Manufacturing Pvt Ltd using current assets of 500000, current liabilities of 250000, total debt of 300000, equity of 600000, net profit of 80000, and revenue of 1000000.
    ```
+
+   The agent should use the `calculate_financial_ratios` function to calculate the **current ratio**, **debt-to-equity ratio**, and **net profit margin**.
+
+7. Enter a prompt to generate a risk summary, such as:
+
+   ```text
+   Generate a credit-risk summary for Apex Manufacturing Pvt Ltd using a current ratio of 2.0, debt-to-equity ratio of 0.5, and net profit margin of 8.0.
+   ```
+
+   The agent should use the `generate_risk_summary` function and return the calculated risk level based on the thresholds defined in `data/risk_thresholds.txt`.
+
+8. Review the response returned by the agent.
+
+   > **Tip:** The initial startup may take some time because the application connects to Azure and creates the agent in the Foundry project.
+
+   > **Tip:** If the application fails because the rate limit is exceeded, wait a few seconds and try again. If there is insufficient model quota in your subscription, the model may not be able to respond.
+
+9. Enter:
+
+   ```text
    quit
    ```
 
    to exit the application.
 
-9. The application deletes the agent version before exiting:
+10. When the application exits, it deletes the agent version:
 
-   ```python
-   # Delete the agent when done
-   project_client.agents.delete_version(
-       agent_name=agent.name,
-       agent_version=agent.version,
-   )
-
-   print("Deleted agent.")
-   ```
-
-10. You can also use the following command to deactivate the Python virtual environment:
-
+```python
+project_client.agents.delete_version(
+    agent_name=agent.name,
+    agent_version=agent.version,
+)
 ```
+
+The terminal should display:
+
+```text
+Deleted agent.
+```
+
+11. You can also deactivate the Python virtual environment:
+
+```powershell
 deactivate
 ```
 
-> **Note**: The application files in this exercise have already been updated with the complete implementation. The purpose of these sections is to help you review and understand the implementation rather than requiring you to manually re-enter the code.
+> **Note:** The application files in this exercise have already been updated with the complete implementation. The purpose of these sections is to help you review and understand how the custom functions are connected to the agent and used during the credit-risk assessment workflow.
 
 ## Review the results
 
 After running the application, verify that:
 
-- The astronomy agent is created successfully.
-- The agent can identify the appropriate function tool based on the user's prompt.
-- `next_visible_event` returns the next visible astronomical event.
-- `calculate_observation_cost` calculates the telescope observation cost.
-- `generate_observation_report` generates the observation report details.
-- The function results are returned to the agent and incorporated into the final response.
-- The application exits successfully when you enter `quit`.
-- The agent version is deleted when the application exits.
+* The **credit-risk agent** is created successfully.
+* The agent can identify the appropriate function tool based on the user's prompt.
+* `verify_documents` checks whether the required company registration and GST documents are available.
+* `calculate_financial_ratios` calculates the current ratio, debt-to-equity ratio, and net profit margin.
+* `generate_risk_summary` generates a credit-risk summary and determines the risk level using the configured thresholds.
+* The function results are returned to the agent and incorporated into the final response.
+* The application exits successfully when you enter `quit`.
+* The agent version is deleted when the application exits.
 
 The overall function-calling flow is:
 
 ```mermaid
 flowchart LR
-    A[User Prompt] --> B[AI Agent]
+    A[User Prompt] --> B[Credit-Risk Agent]
     B --> C[Function Call]
     C --> D[Python Function]
     D --> E[Function Result]
-    E --> F[AI Agent Processes Result]
+    E --> F[Agent Processes Result]
     F --> G[Final Response]
-````
+```
 
 ## Summary
 
-In this exercise, you reviewed how to create an Azure AI agent with custom function tools. The application:
+In this exercise, you explored how an AI agent can use custom Python functions as tools to support a **credit-risk assessment workflow**.
+
+The application:
 
 * Connects to an Azure AI Foundry project.
-* Defines custom Python functions as agent tools.
-* Creates an agent with multiple function tools.
+* Defines custom Python functions for credit-risk tasks.
+* Creates a credit-risk agent with multiple function tools.
 * Sends user prompts to the agent.
-* Processes function calls requested by the agent.
-* Executes the corresponding Python functions.
-* Sends the function results back to the agent.
-* Displays the agent's final response.
+* Determines which function is required for the requested task.
+* Executes the corresponding Python function.
+* Returns the function results to the agent.
+* Uses the results to generate a final response.
 * Deletes the agent version when the application exits.
 
-You have now completed the custom function tools workflow and can use the same pattern to extend an AI agent with additional application-specific functionality.
+The three functions used in this workflow are:
+
+* `verify_documents` — verifies the required company documents.
+* `calculate_financial_ratios` — calculates basic financial ratios.
+* `generate_risk_summary` — generates a credit-risk summary using the calculated indicators and configured thresholds.
+
+You have now completed the **custom function tools workflow** and seen how application-specific Python functions can be connected to an AI agent to perform different steps in a credit-risk assessment process.
