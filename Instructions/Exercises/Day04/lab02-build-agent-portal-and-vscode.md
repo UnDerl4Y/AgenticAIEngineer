@@ -206,9 +206,7 @@ Verify whether the Company Registration Certificate and GST Certificate are avai
 
 2. Review the response.
 
-The agent should verify that both required documents are available and that the company names match exactly.
-
-If either document is missing, or the company name does not match, the agent should clearly state that the document verification or compliance check fails. It should not assume that a missing document is available.
+The agent should clearly state that the required documents cannot be verified because the Company Registration Certificate and GST Certificate are not provided in the available files. It should not assume that either document is available or that the company name matches.
 
 ### 2. Test the credit-risk assessment rules
 
