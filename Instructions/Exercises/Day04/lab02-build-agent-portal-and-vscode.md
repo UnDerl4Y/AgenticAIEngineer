@@ -88,7 +88,7 @@ Follow these guidelines:
 
 Download the **[textfiles.zip](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2FKiran-255666%2FAgenticAIEngineer%2Ftree%2Fmain%2Ftextfiles)** file and extract the ZIP file.
 
-The grounding material contains the assessment process, including:
+The grounding material (i.e., ****Credit_Risk_Assessment_Rules.txt***) contains the assessment process, including:
 
 * Required company documents
 * Company-name verification rules
@@ -123,11 +123,7 @@ Return to the agent playground.
    credit-risk-assessment-index
    ```
 
-4. Under **Drag and drop files here or browse for files**, upload:
-
-   ```text
-   Credit_Risk_Assessment_Rules.txt
-   ```
+4. Under ****Drag and drop files here or browse for files****, upload ****Credit_Risk_Assessment_Rules.txt****, which you downloaded earlier.
 
 5. After attaching the file, verify that its status shows **Success**, and then select **Attach**.
 
@@ -141,7 +137,7 @@ Return to the agent playground.
 
    ![Screenshot of Code interpreter.](../../media/04-03-07.png)
 
-2. The `textfiles` folder provided with the lab already contains the following file:
+2. The `textfiles` folder, which you downloaded earlier as part of the lab, already contains the following file:
 
    ```text
    Credit_Risk_Calculation_Rules.txt
@@ -167,7 +163,7 @@ The Code interpreter can now use these calculation rules when analyzing the fina
 
 ### 5. Upload the financial data
 
-1. Use the `financial_data.csv` file provided with the lab.
+1. Use the `financial_data.csv` file that you downloaded earlier as part of the lab.
 
 2. The file contains the financial information required to calculate the credit-risk metrics for the latest financial year, including:
 
