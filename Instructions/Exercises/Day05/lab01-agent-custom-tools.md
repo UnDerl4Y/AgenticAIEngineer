@@ -29,79 +29,82 @@ Before starting this exercise, ensure you have:
 
 ## Create a Foundry project with the Foundry Toolkit for VS Code extension
 
-1. Before starting the lab, install Azure CLI using the following link: [https://aka.ms/installazurecliwindows](https://aka.ms/installazurecliwindows). Click the link to download the installer. The download will start automatically and the installer will be available in your **Downloads** folder. If the download does not start automatically, copy and paste the link into your browser.
+1. Before starting the lab, install ****Azure CLI**** using the following link: [https://aka.ms/installazurecliwindows]. Click the link to download the installer. The download will start automatically and the installer will be available in your ****Downloads**** folder.
 
-   ![Screenshot of the Azure CLI installer downloaded in the Downloads folder.](../../media/azure-cli-download.png)
+> If the download does not start automatically, copy and paste the link into your browser.
 
-2. After the download is complete, run the installer and follow the installation steps.
+![Screenshot of the Azure CLI installer downloaded in the Downloads folder.](../../media/azure-cli-download.png)
+
+2. After the download is complete, open the ****Downloads**** folder and double-click the downloaded installer. Follow the instructions shown by the installer to complete the installation.
 
    ![Screenshot of the Azure CLI installation setup wizard.](../../media/azure-cli-install-wizard.png)
 
-As a developer, you may spend time working in the Microsoft Foundry portal, but most development tasks are typically performed in Visual Studio Code. The Foundry Toolkit extension enables you to work with Foundry project resources directly within Visual Studio Code, allowing you to stay within your development environment.
+3. Open the integrated terminal using ****Ctrl+Shift+`**** and run the following command to sign in to Azure:
 
-3. Open Visual Studio Code.
+```powershell
+az login
+```
 
-4. Select **Extensions** from the left pane (or press **Ctrl+Shift+X**).
+A browser window or pop-up will open asking you to sign in. If you do not see the sign-in window, minimize all open windows and tabs to check if it is open in the background. Sign in using the account provided by your trainer.
 
-5. Search the Extensions Marketplace for the **Foundry Toolkit** extension from Microsoft and select **Install**.
-
-   > **Note:** The extension is currently listed as **Foundry Toolkit for VS Code**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience. Below is a snippet of the new version, which is the official **Foundry Toolkit for VS Code** extension published by Microsoft.
-
-   ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/foundry-toolkit-extension.png)
-
-6. After installing the extension, select its icon in the sidebar to open the Foundry Toolkit view.
-
-   You'll initially see the default **My Resources** and **Developer Tools** sections in the panel, but they won't be populated with your actual project data. To use the extension's full functionality and complete this lab, you need to sign in to your Azure account.
-
-   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/foundry-toolkit-sidebar.png)
-
-7. Open the integrated terminal (**Ctrl+Shift+`**) and run the following command to sign in to Azure:
-
-   ```powershell
-   az login
-    ````
-
-A browser window will open automatically, asking you to sign in. Select the email address provided by your trainer, then select **Continue**.
-
-Back in the terminal, you'll see a prompt similar to:
+After a successful sign-in, you may see the following prompt in the terminal:
 
 ```text
 Select a subscription and tenant (Type a number or Enter for no changes):
 ```
 
-Type **1** and press **Enter** to select the default subscription (or the one provided by your trainer). You'll then see confirmation that the default subscription has been set, along with your account details.
+Type ****1**** and press ****Enter**** to select the subscription provided by your trainer.
 
-> **Note:** Sometimes you might additionally be prompted to sign in to Azure below this step too. If so, complete that sign-in the same way, using the same assigned account. You might be prompted to authenticate more than once during the setup process. If prompted, use the same assigned account to complete each authentication request.
+To verify that you are successfully signed in, run:
 
-If the sign-in completes without any issues, skip ahead to step 10. If you see an error saying the `az` command isn't recognized, go to step 8. If the sign-in window closes or gets cancelled partway through, go to step 9.
+```powershell
+az account show
+```
 
-8. If the `az` command isn't recognized (for example, `'az' is not recognized as a name of a cmdlet, function, script file, or executable program`), Azure CLI likely isn't installed correctly, or the terminal session started before the installation finished updating your PATH.
+This command will display your current Azure account and subscription details.
 
-   > **Troubleshooting:** To fix this:
-   >
-   > 1. Close and reopen the integrated terminal (or restart VS Code entirely), then try `az login` again.
-   >
-   > 2. If the error persists, uninstall and reinstall Azure CLI using the following commands:
-   >
-   >    ```powershell
-   >    winget uninstall Microsoft.AzureCLI
-   >    winget install Microsoft.AzureCLI
-   >    ```
-   >
-   > 3. Restart the terminal after installation completes, then run `az login` again.
+> ****Tip:**** If you face an error during sign-in, run the following commands and try again:
+>
+> ```powershell
+> az logout
+> az login
+> az account show
+> ```
+>
+> Complete the sign-in again using the account provided by your trainer.
 
-9. If the sign-in window is closed accidentally or cancelled (you may see `User cancelled the Accounts Control Operation`), run the following commands to reset the session and try again:
+4. If the `az` command is not recognized, for example, `'az' is not recognized as a name of a cmdlet, function, script file, or executable program`, Azure CLI may not have been installed correctly, or the terminal may have been opened before the installation updated the system PATH.
 
-   ```powershell
-   az logout
-   az login
-   ```
+> ****Troubleshooting:**** Try the following steps:
+>
+> 1. Close and reopen the integrated terminal, then run `az login` again. If the issue persists, restart **Visual Studio Code** and try again.
+>
+> 2. If the error still persists, uninstall and reinstall Azure CLI using the following commands:
+>
+> ```powershell
+> winget uninstall Microsoft.AzureCLI
+> winget install Microsoft.AzureCLI
+> ```
+>
+> 3. After the installation is complete, restart the integrated terminal and run `az login` again.
 
-10. Verify that a default project is already active. The project name will appear under **My Resources**.
 
-    > **Tip:** To switch to a different project, select **Models** in the left panel under **My Resources**. You'll see two options: **Switch Project** and **Create Project**. Select **Switch Project** to change your default Azure Resources project.
+As a developer, you may spend time working in the **Microsoft Foundry portal**, but most development tasks are typically performed in **Visual Studio Code**. The **Foundry Toolkit** extension allows you to work with Foundry project resources directly within **Visual Studio Code**, so you can manage and develop your Foundry projects without leaving your development environment.
 
-    ![Screenshot of the Foundry Toolkit sidebar showing the active default project under My Resources after signing in.](../../media/foundry-toolkit-default-project.png)
+5. Open **Visual Studio Code** by typing **Code** in the Windows search bar, then click **Code** to open it.
+
+6. Select **Extensions** from the left pane (or press **Ctrl+Shift+X**).
+
+7. Search the Extensions Marketplace for the **Foundry Toolkit for VS Code** extension from Microsoft and select **Install**.
+
+   ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/foundry-toolkit-extension.png)
+
+8. After installing the extension, you will see two new icons in the sidebar: ****AI Toolkit**** and ****Azure AI Foundry****. Select the ****Azure AI Foundry**** icon to view your Foundry resources directly in Visual Studio Code without opening **ai.azure.com**.
+
+   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/foundry-toolkit-sidebar.png)
+
+9. You can now directly copy the **API keys** and **endpoints** from the **Azure AI Foundry** extension in Visual Studio Code.
+
 
 ## Use the deployed model
 
@@ -124,7 +127,7 @@ Use the deployed model that's already available in your Foundry project. Right-c
 5. In the extracted folder, navigate to:
 
    ```
-   agentic-ai-azure-ai-foundry-labs\labfiles\Day-05\Lab-01-agent-custom-tools\Python
+   AgenticAIEngineer\labfiles\Day-05\Lab-01-agent-custom-tools\Python
    ```
 
    This folder already contains the application files and the required code for this exercise.

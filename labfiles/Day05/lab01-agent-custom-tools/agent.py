@@ -12,9 +12,9 @@ from openai.types.responses.response_input_param import (
 )
 
 from functions import (
-    next_visible_event,
-    calculate_observation_cost,
-    generate_observation_report,
+    verify_documents,
+    calculate_financial_ratios,
+    generate_risk_summary,
 )
 
 
@@ -46,118 +46,119 @@ def main():
 
         print("4. Connected to Azure AI Project")
 
-        # Define the event function tool
-        event_tool = FunctionTool(
-            name="next_visible_event",
-            description="Get the next visible event in a given location.",
-            parameters={
-                "type": "object",
-                "properties": {
-                    "location": {
-                        "type": "string",
-                        "description": (
-                            "continent to find the next visible event in "
-                            "(e.g. 'north_america', 'south_america', 'australia')"
-                        ),
-                    },
-                },
-                "required": ["location"],
-                "additionalProperties": False,
-            },
-            strict=True,
-        )
-
-        # Define the observation cost function tool
-        cost_tool = FunctionTool(
-            name="calculate_observation_cost",
+        # Define the document verification function tool
+        document_tool = FunctionTool(
+            name="verify_documents",
             description=(
-                "Calculate the cost of an observation based on the "
-                "telescope tier, number of hours, and priority level."
+                "Check whether the required company registration "
+                "and GST documents are available."
             ),
             parameters={
                 "type": "object",
                 "properties": {
-                    "telescope_tier": {
-                        "type": "string",
+                    "company_registration": {
+                        "type": "boolean",
                         "description": (
-                            "the tier of the telescope "
-                            "(e.g. 'standard', 'advanced', 'premium')"
+                            "Whether the Company Registration Certificate "
+                            "is available."
                         ),
                     },
-                    "hours": {
-                        "type": "number",
-                        "description": "the number of hours for the observation",
-                    },
-                    "priority": {
-                        "type": "string",
+                    "gst_certificate": {
+                        "type": "boolean",
                         "description": (
-                            "the priority level of the observation "
-                            "(e.g. 'low', 'normal', 'high')"
+                            "Whether the GST Certificate is available."
                         ),
                     },
                 },
                 "required": [
-                    "telescope_tier",
-                    "hours",
-                    "priority",
+                    "company_registration",
+                    "gst_certificate",
                 ],
                 "additionalProperties": False,
             },
             strict=True,
         )
 
-        # Define the observation report generation function tool
-        report_tool = FunctionTool(
-            name="generate_observation_report",
-            description="Generate a report summarizing an astronomical observation",
+        # Define the financial ratio calculation tool
+        ratio_tool = FunctionTool(
+            name="calculate_financial_ratios",
+            description=(
+                "Calculate basic financial ratios used in "
+                "credit-risk assessment."
+            ),
             parameters={
                 "type": "object",
                 "properties": {
-                    "event_name": {
-                        "type": "string",
-                        "description": (
-                            "the name of the astronomical event being observed"
-                        ),
-                    },
-                    "location": {
-                        "type": "string",
-                        "description": "the location of the observer",
-                    },
-                    "telescope_tier": {
-                        "type": "string",
-                        "description": (
-                            "the tier of the telescope used for the observation "
-                            "(e.g. 'standard', 'advanced', 'premium')"
-                        ),
-                    },
-                    "hours": {
+                    "current_assets": {
                         "type": "number",
-                        "description": (
-                            "the number of hours the telescope was used "
-                            "for the observation"
-                        ),
+                        "description": "Current assets of the company.",
                     },
-                    "priority": {
-                        "type": "string",
-                        "description": (
-                            "the priority level of the observation "
-                            "(e.g. 'low', 'normal', 'high')"
-                        ),
+                    "current_liabilities": {
+                        "type": "number",
+                        "description": "Current liabilities of the company.",
                     },
-                    "observer_name": {
-                        "type": "string",
-                        "description": (
-                            "the name of the person who conducted the observation"
-                        ),
+                    "total_debt": {
+                        "type": "number",
+                        "description": "Total debt of the company.",
+                    },
+                    "equity": {
+                        "type": "number",
+                        "description": "Total equity of the company.",
+                    },
+                    "net_profit": {
+                        "type": "number",
+                        "description": "Net profit of the company.",
+                    },
+                    "revenue": {
+                        "type": "number",
+                        "description": "Total revenue of the company.",
                     },
                 },
                 "required": [
-                    "event_name",
-                    "location",
-                    "telescope_tier",
-                    "hours",
-                    "priority",
-                    "observer_name",
+                    "current_assets",
+                    "current_liabilities",
+                    "total_debt",
+                    "equity",
+                    "net_profit",
+                    "revenue",
+                ],
+                "additionalProperties": False,
+            },
+            strict=True,
+        )
+
+        # Define the risk summary function tool
+        summary_tool = FunctionTool(
+            name="generate_risk_summary",
+            description=(
+                "Generate a simple credit-risk assessment summary "
+                "using company information and calculated financial ratios."
+            ),
+            parameters={
+                "type": "object",
+                "properties": {
+                    "company_name": {
+                        "type": "string",
+                        "description": "Name of the company.",
+                    },
+                    "current_ratio": {
+                        "type": "number",
+                        "description": "Current ratio of the company.",
+                    },
+                    "debt_to_equity": {
+                        "type": "number",
+                        "description": "Debt-to-equity ratio.",
+                    },
+                    "net_profit_margin": {
+                        "type": "number",
+                        "description": "Net profit margin as a percentage.",
+                    },
+                },
+                "required": [
+                    "company_name",
+                    "current_ratio",
+                    "debt_to_equity",
+                    "net_profit_margin",
                 ],
                 "additionalProperties": False,
             },
@@ -165,21 +166,24 @@ def main():
         )
 
         # Create a new agent with the function tools
-        print("5. Creating astronomy agent...")
+        print("5. Creating credit-risk agent...")
 
         agent = project_client.agents.create_version(
-            agent_name="astronomy-agent",
+            agent_name="credit-risk-agent",
             definition=PromptAgentDefinition(
                 model=model_deployment,
                 instructions="""
-                You are an astronomy observations assistant that helps users find
-                information about astronomical events and calculate telescope rental costs.
-                Use the available tools to assist users with their inquiries.
+                You are a credit-risk assessment assistant.
+
+                Help users perform basic credit-risk assessment tasks.
+                Use the available tools when document verification,
+                financial calculations, or risk summaries are required.
+                Explain the results clearly.
                 """,
                 tools=[
-                    event_tool,
-                    cost_tool,
-                    report_tool,
+                    document_tool,
+                    ratio_tool,
+                    summary_tool,
                 ],
             ),
         )
@@ -199,7 +203,7 @@ def main():
         while True:
 
             user_input = input(
-                "Enter a prompt for the astronomy agent. "
+                "Enter a prompt for the credit-risk agent. "
                 "Use 'quit' to exit.\nUSER: "
             ).strip()
 
@@ -244,18 +248,18 @@ def main():
 
                     print(f"Calling tool: {item.name}")
 
-                    if item.name == "next_visible_event":
-                        result = next_visible_event(
+                    if item.name == "verify_documents":
+                        result = verify_documents(
                             **json.loads(item.arguments)
                         )
 
-                    elif item.name == "calculate_observation_cost":
-                        result = calculate_observation_cost(
+                    elif item.name == "calculate_financial_ratios":
+                        result = calculate_financial_ratios(
                             **json.loads(item.arguments)
                         )
 
-                    elif item.name == "generate_observation_report":
-                        result = generate_observation_report(
+                    elif item.name == "generate_risk_summary":
+                        result = generate_risk_summary(
                             **json.loads(item.arguments)
                         )
 
