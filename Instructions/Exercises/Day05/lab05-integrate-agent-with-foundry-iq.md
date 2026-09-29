@@ -78,7 +78,7 @@ First, add instructions to your agent. Then create a search resource, upload the
 
 The search resource provides the retrieval layer for the knowledge base. Next, upload the source credit-risk assessment documents.
 
-1. Open the prepared credit-risk assessment PDF files from `labfiles\Day05\lab02-integrate-agent-with-foundry-iq\data`.
+1. Open the prepared credit-risk assessment PDF files from `labfiles\Day05\lab05-integrate-agent-with-foundry-iq\data`.
 
     The folder contains the following files:
 
@@ -215,9 +215,9 @@ Now that the agent and knowledge base work in the portal, use the provided Pytho
 5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
 ```powershell
-Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab02-integrate-agent-with-foundry-iq" "$env:USERPROFILE\Desktop\lab02-integrate-agent-with-foundry-iq" -Recurse
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab05-integrate-agent-with-foundry-iq" "$env:USERPROFILE\Desktop\lab05-integrate-agent-with-foundry-iq" -Recurse
 
-code "$env:USERPROFILE\Desktop\lab02-integrate-agent-with-foundry-iq" 
+code "$env:USERPROFILE\Desktop\lab05-integrate-agent-with-foundry-iq" 
 ```
 
 The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.

@@ -51,9 +51,9 @@ Before starting this exercise, ensure you have:
    ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/POWERSHELL.png)
 
 ```powershell
-Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab05-mcp-integration" "$env:USERPROFILE\Desktop\lab05-mcp-integration" -Recurse
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab04-mcp-integration" "$env:USERPROFILE\Desktop\lab04-mcp-integration" -Recurse
 
-code "$env:USERPROFILE\Desktop\lab05-mcp-integration"
+code "$env:USERPROFILE\Desktop\lab04-mcp-integration"
 ```
 
 The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.

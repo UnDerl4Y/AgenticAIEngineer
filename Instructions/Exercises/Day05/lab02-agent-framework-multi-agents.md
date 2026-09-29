@@ -54,12 +54,10 @@ Use the deployed model that's already available in your Foundry project.
 
 5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
-   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/POWERSHELL.png)
-
 ```powershell
-Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab03-agent-framework-multi-agents" "$env:USERPROFILE\Desktop\lab03-agent-framework-multi-agents" -Recurse
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab02-agent-framework-multi-agents" "$env:USERPROFILE\Desktop\lab02-agent-framework-multi-agents" -Recurse
 
-code "$env:USERPROFILE\Desktop\lab03-agent-framework-multi-agents"
+code "$env:USERPROFILE\Desktop\lab02-agent-framework-multi-agents"
 ```
 
 The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
