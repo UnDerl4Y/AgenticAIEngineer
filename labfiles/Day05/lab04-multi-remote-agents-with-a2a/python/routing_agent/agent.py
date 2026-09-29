@@ -3,15 +3,11 @@ import json
 import os
 import time
 import uuid
-import httpx
-
-from typing import Any, Callable
-from azure.ai.agents import AgentsClient
-from azure.identity import DefaultAzureCredential
-from azure.ai.agents.models import ListSortOrder, FunctionTool, MessageRole
 from collections.abc import Callable
-from dotenv import load_dotenv
-from a2a.client import A2ACardResolver, A2AClient
+from typing import Any
+
+import httpx
+from a2a.client import A2AClient, A2ACardResolver
 from a2a.types import (
     AgentCard,
     MessageSendParams,
@@ -22,6 +18,10 @@ from a2a.types import (
     TaskArtifactUpdateEvent,
     TaskStatusUpdateEvent,
 )
+from azure.ai.agents import AgentsClient
+from azure.ai.agents.models import FunctionTool, ListSortOrder, MessageRole
+from azure.identity import DefaultAzureCredential
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -30,7 +30,7 @@ TaskUpdateCallback = Callable[[TaskCallbackArg, AgentCard], Task]
 
 
 class RemoteAgentConnections:
-    """A class to hold the connections to the remote agents."""
+    """Hold the A2A connection information for a remote agent."""
 
     def __init__(self, agent_card: AgentCard, agent_url: str):
         self._httpx_client = httpx.AsyncClient(timeout=30)
@@ -47,31 +47,29 @@ class RemoteAgentConnections:
 class RoutingAgent:
 
     def __init__(self, task_callback: TaskUpdateCallback | None = None):
-
         self.task_callback = task_callback
         self.remote_agent_connections: dict[str, RemoteAgentConnections] = {}
         self.cards: dict[str, AgentCard] = {}
-        self.agents: str = ''
+        self.agents: str = ""
 
-        # Initialize Azure AI Agents client
         self.agents_client = AgentsClient(
             endpoint=os.environ["PROJECT_ENDPOINT"],
             credential=DefaultAzureCredential(
                 exclude_environment_credential=True,
-                exclude_managed_identity_credential=True
-            )
+                exclude_managed_identity_credential=True,
+            ),
         )
 
         self.azure_agent = None
         self.current_thread = None
+        self.azure_available = True
 
     @classmethod
     async def create(
         cls,
         remote_agent_addresses: list[str],
-        task_callback: TaskUpdateCallback | None = None
-    ) -> 'RoutingAgent':
-        """Create and asynchronously initialize an instance of the RoutingAgent."""
+        task_callback: TaskUpdateCallback | None = None,
+    ) -> "RoutingAgent":
         instance = cls(task_callback)
         await instance._async_init_components(remote_agent_addresses)
         return instance
@@ -80,135 +78,159 @@ class RoutingAgent:
         if not self.remote_agent_connections:
             return "[]"
 
-        lines = []
-        for card in self.cards.values():
-            lines.append(f"{card.name}: {card.description}")
-
+        lines = [f"{card.name}: {card.description}" for card in self.cards.values()]
         return "[\n  " + ",\n  ".join(lines) + "\n]"
 
     async def _async_init_components(self, remote_agent_addresses: list[str]) -> None:
-        """Asynchronous part of initialization."""
-
-        # Use a single httpx.AsyncClient for all card resolutions for efficiency
         async with httpx.AsyncClient(timeout=30) as client:
             for address in remote_agent_addresses:
                 card_resolver = A2ACardResolver(client, address)
                 try:
                     card = await card_resolver.get_agent_card()
-
                     remote_connection = RemoteAgentConnections(agent_card=card, agent_url=address)
                     self.remote_agent_connections[card.name] = remote_connection
                     self.cards[card.name] = card
+                except Exception:
+                    continue
 
-                except httpx.ConnectError as e:
-                    print(f"ERROR: Failed to get agent card from {address}: {e}")
-                except Exception as e:  # Catch other potential errors
-                    print(f"ERROR: Failed to initialize connection for {address}: {e}")
-            print(f"Found remote agents: {self.list_remote_agents()}")
+    def determine_agent(self, user_message: str) -> str:
+        question = user_message.lower()
+
+        if any(term in question for term in ["document", "registration", "gst", "certificate", "company documents"]):
+            return "Document Verification Agent"
+
+        if any(term in question for term in ["ratio", "financial", "revenue", "profit", "debt", "liability", "equity", "asset"]):
+            return "Financial Analysis Agent"
+
+        if any(term in question for term in ["assess", "credit", "risk", "industry", "bureau", "score"]):
+            return "Credit Risk Assessment Agent"
+
+        return "Credit Risk Assessment Agent"
 
     async def send_message(self, agent_name: str, task: str):
-        # Sends a task to remote agent.
-
         if agent_name not in self.remote_agent_connections:
             raise ValueError(f"Agent {agent_name} not found")
 
-        # Retrieve the remote agent's A2A client using the agent name
         client = self.remote_agent_connections[agent_name]
-
         if not client:
             raise ValueError(f"Client not available for {agent_name}")
 
         message_id = str(uuid.uuid4())
-
-        # Construct the payload to send to the remote agent
         payload: dict[str, Any] = {
             "message": {
                 "role": "user",
-                "parts": [
-                    {
-                        "kind": "text",
-                        "text": task,
-                    }
-                ],
+                "parts": [{"kind": "text", "text": task}],
                 "messageId": message_id,
             }
         }
 
-        # Wrap the payload in a SendMessageRequest object
         message_request = SendMessageRequest(
             id=message_id,
             params=MessageSendParams.model_validate(payload),
         )
 
-        # Send the message to the remote agent client and await the response
-        send_response: SendMessageResponse = await client.send_message(
-            message_request=message_request
-        )
+        send_response: SendMessageResponse = await client.send_message(message_request=message_request)
 
         if not isinstance(send_response.root, SendMessageSuccessResponse):
-            print("received non-success response. Aborting get task")
-            return
+            return None
 
         if not isinstance(send_response.root.result, Task):
-            print("received non-task response. Aborting get task")
-            return
+            return None
 
         return send_response.root.result
 
     def create_agent(self):
-        # Create an Azure AI Agent instance
-
         try:
-            # Create Azure AI Agent with the send_message function
             functions = FunctionTool({self.send_message})
             self.azure_agent = self.agents_client.create_agent(
                 model=os.environ["MODEL_DEPLOYMENT_NAME"],
                 name="routing-agent",
                 instructions=f"""
-                You are an expert Routing Delegator that helps users with requests.
+                You are an expert credit-risk routing agent.
 
-                Your role:
-                - Delegate user inquiries to appropriate specialized remote agents
-                - Provide clear and helpful responses to users
+                Your job is to analyze the user's question and route it to the most relevant remote credit-risk specialist.
 
-                Available Agents: {self.list_remote_agents()}
+                Available agents:
+                {self.list_remote_agents()}
 
-                Always be helpful and route requests to the most appropriate agent.""",
-                tools=functions.definitions
+                Use the appropriate specialist agent for:
+                - document verification questions
+                - financial information and ratio questions
+                - credit risk assessment and bureau questions
+
+                If a question requires information that is not available in the documents, clearly state that it is unavailable.
+                """,
+                tools=functions.definitions,
             )
 
-            # Create a thread for conversation
             self.current_thread = self.agents_client.threads.create()
-
+            self.azure_available = True
             return self.azure_agent
+        except Exception:
+            self.azure_available = False
+            self.azure_agent = None
+            self.current_thread = None
+            return None
 
-        except Exception as e:
-            print(f"Error creating Azure AI agent: {e}")
-            raise
+    @staticmethod
+    def _extract_task_text(task: Any) -> str:
+        if task is None:
+            return ""
+
+        if hasattr(task, "status") and task.status is not None:
+            status = task.status
+            if hasattr(status, "message") and status.message is not None:
+                message = status.message
+                if hasattr(message, "parts"):
+                    for part in message.parts:
+                        if getattr(part, "root", None) is not None and hasattr(part.root, "text"):
+                            return str(part.root.text)
+                        if hasattr(part, "text"):
+                            return str(part.text)
+            if hasattr(status, "state"):
+                return str(status.state)
+
+        if hasattr(task, "artifacts"):
+            for artifact in task.artifacts:
+                if hasattr(artifact, "parts"):
+                    for part in artifact.parts:
+                        if getattr(part, "root", None) is not None and hasattr(part.root, "text"):
+                            return str(part.root.text)
+                        if hasattr(part, "text"):
+                            return str(part.text)
+
+        if hasattr(task, "model_dump"):
+            try:
+                return str(task.model_dump())
+            except Exception:
+                pass
+
+        return ""
 
     async def process_user_message(self, user_message: str) -> str:
+        if not self.azure_available or not self.azure_agent or not self.current_thread:
+            agent_name = self.determine_agent(user_message)
+            if agent_name not in self.remote_agent_connections:
+                return "Unable to retrieve the required credit-risk information. Please verify that the assessment data files are available and try again."
 
-        if not hasattr(self, 'azure_agent') or not self.azure_agent:
-            return "Azure AI Agent not initialized. Please ensure the agent is properly created."
-
-        if not hasattr(self, 'current_thread') or not self.current_thread:
-            return "Azure AI Thread not initialized. Please ensure the agent is properly created."
+            result = await self.send_message(agent_name, user_message)
+            extracted = self._extract_task_text(result)
+            if extracted:
+                return extracted
+            return "Unable to retrieve the required credit-risk information. Please verify that the assessment data files are available and try again."
 
         try:
-            # Create message in the thread
             self.agents_client.messages.create(
                 thread_id=self.current_thread.id,
-                role=MessageRole.User,
-                content=user_message
+                role=MessageRole.USER,
+                content=user_message,
             )
 
-            # Create and run the agent
             run = self.agents_client.runs.create(
                 thread_id=self.current_thread.id,
-                agent_id=self.azure_agent.id
+                agent_id=self.azure_agent.id,
             )
 
-            # Need to await send_message function
             while run.status in ["queued", "in_progress", "requires_action"]:
                 time.sleep(1)
                 run = self.agents_client.runs.get(thread_id=self.current_thread.id, run_id=run.id)
@@ -225,69 +247,53 @@ class RoutingAgent:
                             try:
                                 result = await self.send_message(
                                     agent_name=function_args["agent_name"],
-                                    task=function_args["task"]
+                                    task=function_args["task"],
                                 )
                                 output = json.dumps(
                                     result.model_dump() if hasattr(result, "model_dump") else str(result)
                                 )
-
-                            except Exception as e:
-                                output = json.dumps({"error": str(e)})
+                            except Exception:
+                                output = json.dumps({"error": "Unable to retrieve the required credit-risk information."})
                         else:
                             output = json.dumps({"error": f"Unknown function: {function_name}"})
 
                         tool_outputs.append({"tool_call_id": tool_call.id, "output": output})
 
-                    # Submit the tool outputs
                     self.agents_client.runs.submit_tool_outputs(
                         thread_id=self.current_thread.id,
                         run_id=run.id,
-                        tool_outputs=tool_outputs
+                        tool_outputs=tool_outputs,
                     )
 
             if run.status == "failed":
-                error_info = f"Run error: {run.last_error}"
-                print(error_info)
-                return f"Error processing request: {error_info}"
+                last_error = getattr(run, "last_error", None)
+                return f"Unable to process the request. The required credit-risk information could not be retrieved."
 
-            # Return the response
             messages = self.agents_client.messages.list(
                 thread_id=self.current_thread.id,
-                order=ListSortOrder.DESCENDING
+                order=ListSortOrder.DESCENDING,
             )
             for msg in messages:
                 if msg.role == MessageRole.AGENT and msg.text_messages:
                     last_text = msg.text_messages[-1]
                     return last_text.text.value
 
-            return "No response received from agent."
+            return "No response received from the credit-risk agent."
 
-        except Exception as e:
-            error_msg = f"Error in process_user_message: {e}"
-            print(error_msg)
-            return "An error occurred while processing your message."
+        except Exception:
+            return "Unable to retrieve the required credit-risk information. Please verify that the assessment data files are available and try again."
 
 
 async def _get_initialized_routing_agent_sync() -> RoutingAgent:
-
     async def _async_main() -> RoutingAgent:
         routing_agent_instance = await RoutingAgent.create(
             remote_agent_addresses=[
-                f"http://{os.environ['SERVER_URL']}:{os.environ['TITLE_AGENT_PORT']}",
-                f"http://{os.environ['SERVER_URL']}:{os.environ['OUTLINE_AGENT_PORT']}",
+                f"http://{os.environ['SERVER_URL']}:{os.environ['DOCUMENT_AGENT_PORT']}",
+                f"http://{os.environ['SERVER_URL']}:{os.environ['FINANCIAL_AGENT_PORT']}",
+                f"http://{os.environ['SERVER_URL']}:{os.environ['CREDIT_RISK_AGENT_PORT']}",
             ]
         )
-
-        # Create the Azure AI agent
         routing_agent_instance.create_agent()
-
         return routing_agent_instance
 
-    try:
-        return asyncio.run(_async_main())
-    except RuntimeError as e:
-        raise
-
-
-# Initialize the routing agent
-routing_agent = _get_initialized_routing_agent_sync()
+    return await _async_main()

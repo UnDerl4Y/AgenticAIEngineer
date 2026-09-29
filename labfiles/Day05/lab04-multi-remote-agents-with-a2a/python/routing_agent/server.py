@@ -15,19 +15,15 @@ routing_agent = None
 async def lifespan(app: FastAPI):
     global routing_agent
 
-    print("Starting up: Initializing routing agent...")
-
     routing_agent = await RoutingAgent.create(
         [
-            f"http://{os.environ['SERVER_URL']}:{os.environ['TITLE_AGENT_PORT']}",
-            f"http://{os.environ['SERVER_URL']}:{os.environ['OUTLINE_AGENT_PORT']}",
+            f"http://{os.environ['SERVER_URL']}:{os.environ['DOCUMENT_AGENT_PORT']}",
+            f"http://{os.environ['SERVER_URL']}:{os.environ['FINANCIAL_AGENT_PORT']}",
+            f"http://{os.environ['SERVER_URL']}:{os.environ['CREDIT_RISK_AGENT_PORT']}",
         ]
     )
 
     routing_agent.create_agent()
-
-    print("Routing agent initialized.")
-
     yield
 
 
@@ -36,8 +32,6 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/message")
 async def handle_message(request: Request):
-    print("Agent: Processing request, please wait.")
-
     data = await request.json()
     user_message = data.get("message")
 
@@ -46,26 +40,19 @@ async def handle_message(request: Request):
 
     try:
         response = await routing_agent.process_user_message(user_message)
-
-    except Exception as e:
-        return {"error": f"Failed to process message: {str(e)}"}
+    except Exception:
+        return {"error": "Unable to retrieve the required credit-risk information. Please verify that the assessment data files are available and try again."}
 
     return {"response": response}
 
 
 @app.get("/health")
 async def health_check():
-    return {"status": "Routing agent is running!"}
+    return {"status": "Routing agent is running."}
 
 
 if __name__ == "__main__":
     import uvicorn
 
     port = int(os.getenv("ROUTING_AGENT_PORT"))
-
-    uvicorn.run(
-        "routing_main:app",
-        host="127.0.0.1",
-        port=port,
-        reload=True,
-    )
+    uvicorn.run("routing_agent.server:app", host="127.0.0.1", port=port, reload=False)
