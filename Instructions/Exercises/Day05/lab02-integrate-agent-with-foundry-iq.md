@@ -198,7 +198,7 @@ By default, the Foundry IQ knowledge tool runs without asking for approval. To l
 
 Your agent now requests approval whenever it uses Foundry IQ. The Python client you complete next will prompt you to approve or deny each request.
 
-## Connect to your agent from an app
+# Connect to your agent from an app
 
 Now that the agent and knowledge base work in the portal, use the provided Python application to communicate with the agent programmatically.
 
