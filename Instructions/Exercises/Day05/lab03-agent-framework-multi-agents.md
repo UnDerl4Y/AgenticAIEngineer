@@ -40,9 +40,7 @@ Before starting this exercise, ensure you have:
 
 ## Use the deployed model
 
-Use the deployed model that's already available in your Foundry project. Right-click the name of the project deployment and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
-
-![Screenshot of copying the project endpoint in the Foundry Toolkit VS Code extension.](../../media/vs-code-endpoint.png)
+Use the deployed model that's already available in your Foundry project.
 
 # Get the application files from GitHub
 
@@ -230,8 +228,33 @@ The first agent should provide a document verification result similar to:
 ------------------------------------------------------------
 01 [document_verification]
 
-Documents available and company names match.
-```
+### Document Verification Status: PASS
+
+#### Required Documents
+- Company Registration Certificate: Available
+- GST Certificate: Available
+
+#### Company Name Match Check
+- Registration Certificate: Apex Manufacturing Pvt Ltd
+- GST Certificate: Apex Manufacturing Pvt Ltd
+- Match Status: Matched
+
+#### Registration Status
+- Active
+
+### Credit-Risk Summary
+- Credit Bureau Score: 720
+- Credit Bureau Status: No adverse records reported
+- Industry: Manufacturing
+
+### Financial Snapshot
+- Current Assets: 7,800,000
+- Current Liabilities: 5,000,000
+- Total Debt: 9,300,000
+- Shareholders' Equity: 5,000,000
+- Revenue: 9,000,000
+- Net Profit: 500,000
+````
 
 The financial analysis agent should calculate values similar to:
 
@@ -239,9 +262,20 @@ The financial analysis agent should calculate values similar to:
 ------------------------------------------------------------
 02 [financial_analysis]
 
-Current Ratio: 1.56
-Debt-to-Equity Ratio: 1.86
-Net Profit Margin: 5.56%
+### Credit-Risk Assessment: Apex Manufacturing Pvt Ltd
+
+#### Financial Ratios
+
+- Current Ratio = 7,800,000 / 5,000,000 = 1.56
+- Debt-to-Equity Ratio = 9,300,000 / 5,000,000 = 1.86
+- Net Profit Margin = (500,000 / 9,000,000) × 100 = 5.56%
+
+#### Credit-Risk View
+- Adequate short-term liquidity
+- Moderate leverage
+- Modest profitability
+- External Credit Bureau Score: 720
+- Credit Bureau Status: No adverse records reported
 ```
 
 The credit-risk assessment agent should then summarize the information, for example:
@@ -250,19 +284,30 @@ The credit-risk assessment agent should then summarize the information, for exam
 ------------------------------------------------------------
 03 [credit_risk_assessment]
 
-Credit-risk assessment for Apex Manufacturing Pvt Ltd:
+### Credit-risk assessment: Apex Manufacturing Pvt Ltd
 
-- Document verification: Documents available and company names match.
+Document verification status:
+- Company Registration Certificate: Available
+- GST Certificate: Available
+- Company names match on both documents: Yes
+- Registration status: Active
+
+Financial ratios:
 - Current Ratio: 1.56
 - Debt-to-Equity Ratio: 1.86
 - Net Profit Margin: 5.56%
+
+Credit bureau information:
 - External Credit Bureau Score: 720
+- Credit Bureau Status: No adverse records reported
 - Industry: Manufacturing
 
-The assessment is based on the information provided in the workflow.
+Overall assessment:
+The company shows acceptable liquidity, moderate leverage,
+and positive bureau standing. Profitability is modest.
 ```
 
-> **Note:** The exact responses may differ from these examples because the agents generate their responses dynamically. Focus on verifying that all three agents run successfully and that the output from each stage is passed through the sequential workflow.
+> **Note:** The exact responses may differ from these examples because the agents generate their responses dynamically. The output may contain additional details such as document verification status, financial values, credit bureau information, financial ratio calculations, or an overall assessment. Focus on verifying that all three agents run successfully and that the output from each stage is passed through the sequential workflow.
 
 4. You can modify the sample company or financial values in `credit_risk_data` and run the application again to observe how the agents respond to different inputs.
 

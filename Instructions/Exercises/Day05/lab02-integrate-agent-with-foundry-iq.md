@@ -14,11 +14,7 @@ lab:
 
 In this exercise, you'll configure an AI agent that uses Foundry IQ to search and retrieve information from a knowledge base. You'll use your existing Foundry project and deployed models, create a search resource and knowledge base with credit-risk assessment data, configure an agent, and then connect to it from Visual Studio Code.
 
-> **Tip**: The code used in this exercise is based on the Microsoft Foundry SDK for Python. You can develop similar solutions using the SDKs for Microsoft .NET, JavaScript, and Java. Refer to [Microsoft Foundry SDK client libraries](https://learn.microsoft.com/azure/ai-foundry/how-to/develop/sdk-overview) for details.
-
 This exercise should take approximately **45** minutes to complete.
-
-> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
 
 ## Prerequisites
 
@@ -35,24 +31,26 @@ Before starting this exercise, ensure you have:
 This lab uses the Foundry project and deployed models that are already available to you. You don't need to create a new Foundry project or deploy a new model for this exercise.
 
 1. In a web browser, open the [Foundry portal](https://ai.azure.com) and sign in using your Azure credentials.
-
-    > **Important**: Make sure the **New Foundry** toggle is *On* so you use the updated interface for this lab.
-
 1. Select your existing Foundry project **(hakunamatata1)** from the project selector.
-1. On the project home page, verify that a chat model and an embedding model are already deployed and available.
+1. On the project home page, verify that **gpt-5.4-mini** chat model and **text-embedding-3-small** embedding model are already deployed and available.
 1. Keep the Foundry portal open. You'll use the existing chat model when creating the agent and knowledge base, and the existing embedding model when creating the knowledge source.
 
 ## Create an agent
 
-With the Foundry project selected and the deployed model available, create an agent that will search the credit-risk knowledge base.
+Create an agent that will search the credit-risk knowledge base.
 
-1. On the project home page, select the **Build** tab. On the **Agents** tab, select **Create agent**.
-1. Create an agent with a descriptive name, such as `credit-risk-assessment-agent`.
-1. Select your existing deployed chat model if prompted.
+1. On the project home page, find the **Build an agent** card and select **Start building**.
 
-    After the agent is created, the agent playground opens. You'll now configure the agent with credit-risk assessment information from Foundry IQ.
+2. Create an agent with a descriptive name, such as `credit-risk-assessment-agent`, and set the **Interaction mode** to **Text**.
 
-## Configure data and Foundry IQ (The instructor/moderator has already created AI search and Storage account resources for your use; feel free to skip the creation of created AI search and Storage account resources )
+3. Select **Create**.
+
+4. After the agent is created, the agent playground opens. You'll now configure the agent with credit-risk assessment information from Foundry IQ.
+
+
+## Configure data and Foundry IQ
+
+> ****Important:**** The following resource creation steps are ****optional****. We have already provisioned the required Azure AI Search and Storage Account resources for this lab, so you can skip these steps and use the provided resources. You can still go through these steps separately to explore and learn how these resources are created and configured.
 
 First, add instructions to your agent. Then create a search resource, upload the credit-risk assessment documents, and create a knowledge base that connects those documents to the agent.
 
@@ -80,7 +78,7 @@ First, add instructions to your agent. Then create a search resource, upload the
 
 The search resource provides the retrieval layer for the knowledge base. Next, upload the source credit-risk assessment documents.
 
-1. Open the `data` folder for this lab and locate the prepared credit-risk assessment PDF files.
+1. Open the prepared credit-risk assessment PDF files from `labfiles\Day05\lab02-integrate-agent-with-foundry-iq\data`.
 
     The folder contains the following files:
 
@@ -102,6 +100,7 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
     - **Performance**: Standard
     - **Redundancy**: Locally-redundant storage (LRS)
 
+1. Click Review + Create then Create again.
 1. After the storage account is created, open it and select **Upload** from the top bar.
 1. In the **Upload blob** pane, create a new container named `creditriskdocuments`.
 1. Browse to the prepared credit-risk assessment files, select all four PDFs, and select **Upload**.
@@ -111,14 +110,15 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
 1. On the **Knowledge** page, select **Create a knowledge base**. Choose **Azure Blob Storage** as the knowledge source, then select **Connect**.
 1. Configure the knowledge source with the following settings:
 
-    - **Name**: `ks-creditriskdocuments`
-    - **Description**: `Credit risk assessment documents`
-    - **Storage account name**: Select your storage account
-    - **Container name**: `creditriskdocuments`
-    - **Authentication type**: API Key
-    - **Content extraction mode**: minimal
-    - **Embedding model**: Select your available deployed embedding model **(text-embedding-3-small)**
-    - **Chat completions model**: Select your available deployed chat model **(gpt-5.4-mini)**
+   * **Name**: `ks-creditriskdocuments`
+   * **Description**: `Credit risk assessment documents`
+   * **Storage account name**: Select your storage account
+   * **Container name**: `creditriskdocuments`
+   * **Authentication type**: API Key
+   * **Content extraction mode**: minimal
+   * **Embedding model**: Select your available deployed embedding model (text-embedding-3-small)
+   * **Chat completions model**: Select your available deployed chat model (gpt-5.2)
+   > **Note:** `gpt-5.4-mini` isn't available, so select `gpt-5.2` as the chat completions model.
 
 1. Select **Create**.
 1. On the knowledge base creation page, select your deployed chat model from the **Chat completions model** dropdown and leave the remaining settings unchanged.
@@ -130,26 +130,41 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
 
 Your Foundry IQ knowledge base is now connected to the credit-risk assessment documents and ready for use by your agent.
 
+## Configure the playground
+
+1. Navigate back to your agent from the project home page. Select **View Deployments**, then select **Agents** from the side panel. Click the agent you created earlier, such as `credit-risk-assessment-agent`.
+
+2. Under **Tools**, select **Knowledge**, click **Add**, and then select **Connect to Foundry IQ**.
+
+3. In the **Connect to Foundry IQ** pop-up, configure the following:
+
+   * **Connection**: `hakunamatata-srch-vtdm`
+   * **Knowledge base**: `ks-creditriskdocuments`
+
+   Then select **Connect**.
+
+4. Click Save
+
 ## Test the agent in the playground
 
-Before using code, confirm that the portal agent can retrieve credit-risk assessment information from the knowledge base.
+1. Test the agent with the following queries. Each query should ask the agent to retrieve the information from the **Foundry IQ knowledge source** connected to the agent:
 
-1. Navigate back to your agent from **Build** > **Agents**, then select `credit-risk-assessment-agent`.
-1. In the playground, find the knowledge section and add Foundry IQ by selecting the connection and knowledge base you created.
-1. Test the agent with the following queries:
+   * `Using Foundry IQ, retrieve information from the connected knowledge source and tell me what documents are available for Apex Manufacturing Pvt Ltd. List each available document and include the company name and registration status mentioned in the documents.`
 
-    - `What documents are available for Apex Manufacturing Pvt Ltd?`
-    - `What financial information is available for Apex Manufacturing Pvt Ltd for 2025?`
-    - `What is the external credit bureau score and industry for Apex Manufacturing Pvt Ltd?`
+   * `Using Foundry IQ, retrieve the financial information for Apex Manufacturing Pvt Ltd for the financial year 2025 from the connected knowledge source. Include current assets, current liabilities, total debt, shareholders' equity, revenue, and net profit.`
+
+   * `Using Foundry IQ, retrieve the external credit bureau information for Apex Manufacturing Pvt Ltd from the connected knowledge source. Tell me the external credit bureau score, industry, and credit bureau status, and mention whether any adverse records are reported.`
+
 
 1. Review the responses. The agent should provide company-specific information, remain grounded in the available data, and may include citations or document references.
 1. You can also use **Preview agent** for a more refined web application experience.
 1. In the agent details page, copy the following information to a notepad. You'll use these values when configuring the client application:
 
     - **Agent name**: The name you created, such as `credit-risk-assessment-agent`
-    - **Project endpoint**: Available from the project home page or project settings
+    - **Project endpoint**: Available from the project home page such as `https://hakunamatata11.services.ai.azure.com/api/projects/hakunamatata`
 
 ### Configure approval for tool calls
+
 **Note: We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it**
 
 By default, the Foundry IQ knowledge tool runs without asking for approval. To let your application review and control each knowledge-base lookup, configure the agent to require approval before it uses the tool.
