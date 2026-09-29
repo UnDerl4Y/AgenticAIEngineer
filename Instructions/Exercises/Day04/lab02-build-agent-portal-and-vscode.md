@@ -155,7 +155,7 @@ Return to the agent playground.
 
    It also specifies that the **latest available financial year** should be used for these calculations.
 
-3. In the **Code interpreter** section, select **+ Files** and upload `Credit_Risk_Calculation_Rules.txt` from the `textfiles` folder using **Drag and drop files here** or **browse for files**.
+3. In the **Code interpreter** section, select **+ Files** and upload `Forumlas.txt` from the `textfiles` folder using **Drag and drop files here** or **browse for files**.
 
 4. Verify that the file status shows **Success**, then select **Attach**.
 
