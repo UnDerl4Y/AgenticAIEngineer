@@ -202,240 +202,362 @@ Your agent now requests approval whenever it uses Foundry IQ. The Python client 
 
 Now that the agent and knowledge base work in the portal, use the provided Python application to communicate with the agent programmatically.
 
-### Get the application files from GitHub
+# Get the application files from GitHub
 
-> **Note**: If you've already downloaded and extracted the repository in a previous lab, skip ahead to step 5 below.
+1. If you have already downloaded and extracted the repository in a previous lab, delete the existing ZIP file and the extracted folder. This will allow us to use the PowerShell commands in the following steps and help avoid long path issues.
 
-1. If you already downloaded and extracted this repository's ZIP file in a previous exercise, skip ahead to the next step and navigate directly to the folder path below. Otherwise, follow the remaining steps to download it.
-1. Open a web browser and go to the [lab files on GitHub](https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs).
-1. On the repository page, select the green **`<> Code`** button, then select **Download ZIP**.
+2. Open a web browser and go to the [lab files on GitHub](https://github.com/Kiran-255666/AgenticAIEngineer).
 
-    ![Screenshot of the Code button.](../../media/code.png)
+3. On the repository page, select the green **`<> Code`** button, and then select **Download ZIP**.
 
-1. After the download finishes, locate the ZIP file and extract it to a folder on your computer.
-1. In the extracted folder, navigate to:
+4. Once the download finishes, extract the ZIP file.
 
-    ```
-    agentic-ai-azure-ai-foundry-labs\labfiles\Day-05\Lab-02-integrate-agent-with-foundry-iq\python
-    ```
+5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
-    This folder already contains everything you need for this exercise.
+```powershell
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab02-integrate-agent-with-foundry-iq" "$env:USERPROFILE\Desktop\lab02-integrate-agent-with-foundry-iq" -Recurse
 
-    > **Tip**: If you're not sure which folder contains the exercise files, check with your trainer.
+code "$env:USERPROFILE\Desktop\lab02-integrate-agent-with-foundry-iq" 
+```
 
-1. In **File Explorer**, select the address bar, type the following command, and press **Enter**:
+The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
 
-    ```
-    code .
-    ```
+This folder already contains the application files and the required code for this exercise.
 
-    This opens the folder directly in Visual Studio Code.
+6. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
 
-    > **Tip**: If `code .` doesn't work, open the folder manually in Visual Studio Code.
+7. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
 
-1. In the **Explorer** pane, view the code files for this exercise. The folder includes application code, configuration settings, and the agent client starter code.
+   ```
+   python -m venv labenv
+   .\labenv\Scripts\Activate.ps1
+   pip install -r requirements.txt
+   ```
 
-### Configure the application settings
+8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-The application needs the project endpoint and the name of the agent you created in the portal.
+### Review the agent client code
 
-1. In Visual Studio Code, open the **.env** file in the `Lab-02-integrate-agent-with-foundry-iq\\python` folder.
-1. Replace the **your_project_endpoint** placeholder with your project endpoint.
-1. Set the `AGENT_NAME` variable to your agent name, such as `credit-risk-assessment-agent`.
-1. Save the file with **Ctrl+S**.
+The required client code has already been added to **`agent_client.py`**. Review the file before running the application.
 
-### Complete the agent client code
+The client connects to the existing Foundry agent, creates a conversation, sends user messages, handles MCP approval requests for Foundry IQ lookups, and maintains conversation history.
 
-> **Note**: We have already updated the mentioned files with the code in these instructions, but verify the code before you run it so there are no indentation issues.
+### `send_message_to_agent`
 
-> **Tip**: As you add code, maintain the correct indentation. Use the comment indentation levels as a guide.
+The implementation is:
 
-1. In the `Lab-02-integrate-agent-with-foundry-iq\\python` folder, open **agent_client.py**.
-1. Review the starter code, including the imports and configuration loading, the `send_message_to_agent()` and `display_conversation_history()` functions, and the main program loop.
-1. Find the first **TODO** comment and add the following code to connect to the project and agent, then create a conversation:
+```python
+def send_message_to_agent(user_message):
+    """
+    Send a message to the credit-risk agent and handle the response
+    using the conversations API.
+    """
+    try:
+        print("\nAgent: ", end="", flush=True)
 
-    ```python
-    # Connect to the project and agent
-    credential = DefaultAzureCredential(
-        exclude_environment_credential=True,
-        exclude_managed_identity_credential=True
-    )
-    project_client = AIProjectClient(
-        credential=credential,
-        endpoint=project_endpoint
-    )
-
-    # Get the OpenAI client
-    openai_client = project_client.get_openai_client()
-
-    # Get the agent
-    agent = project_client.agents.get(agent_name=agent_name)
-    print(f"Connected to agent: {agent.name} (id: {agent.id})\n")
-
-    # Create a new conversation
-    conversation = openai_client.conversations.create(items=[])
-    print(f"Created conversation (id: {conversation.id})\n")
-    ```
-
-1. Find the second **TODO** comment inside `send_message_to_agent()` and add the following code to send messages and handle MCP approval requests:
-
-    ```python
-    # Add user message to the conversation
-    openai_client.conversations.items.create(
-        conversation_id=conversation.id,
-        items=[{"type": "message", "role": "user", "content": user_message}],
-    )
-
-    # Store in conversation history (client-side)
-    conversation_history.append({
-        "role": "user",
-        "content": user_message
-    })
-
-    # Create a response using the agent
-    response = openai_client.responses.create(
-        conversation=conversation.id,
-        extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
-        input=""
-    )
-
-    # Check if the response output contains an MCP approval request
-    approval_request = None
-    if hasattr(response, 'output') and response.output:
-        for item in response.output:
-            if hasattr(item, 'type') and item.type == 'mcp_approval_request':
-                approval_request = item
-                break
-
-    # Handle approval request if present
-    if approval_request:
-        print(f"[Approval required for: {approval_request.name}]\n")
-        print(f"Server: {approval_request.server_label}")
-
-        # Parse and display the arguments (optional, for transparency)
-        import json
-        try:
-            args = json.loads(approval_request.arguments)
-            print(f"Arguments: {json.dumps(args, indent=2)}\n")
-        except:
-            print(f"Arguments: {approval_request.arguments}\n")
-
-        # Prompt user for approval
-        approval_input = input("Approve this action? (yes/no): ").strip().lower()
-
-        if approval_input in ['yes', 'y']:
-            print("Approving action...\n")
-            approval_response = {
-                "type": "mcp_approval_response",
-                "approval_request_id": approval_request.id,
-                "approve": True
-            }
-        else:
-            print("Action denied.\n")
-            approval_response = {
-                "type": "mcp_approval_response",
-                "approval_request_id": approval_request.id,
-                "approve": False
-            }
-
-        # Add the approval response to the conversation
         openai_client.conversations.items.create(
             conversation_id=conversation.id,
-            items=[approval_response]
+            items=[
+                {
+                    "type": "message",
+                    "role": "user",
+                    "content": user_message
+                }
+            ],
         )
 
-        # Get the actual response after approval or denial
+        conversation_history.append({
+            "role": "user",
+            "content": user_message
+        })
+
         response = openai_client.responses.create(
             conversation=conversation.id,
-            extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
+            extra_body={
+                "agent_reference": {
+                    "name": agent.name,
+                    "type": "agent_reference"
+                }
+            },
             input=""
         )
-    ```
 
-1. Save **agent_client.py**.
-1. Review the completed code. It creates a conversation, adds user messages with `conversations.items.create()`, creates agent responses with `responses.create()`, detects `mcp_approval_request` responses, and sends an `mcp_approval_response` after you approve or deny the lookup.
+        approval_request = None
+
+        if hasattr(response, "output") and response.output:
+            for item in response.output:
+                if (
+                    hasattr(item, "type")
+                    and item.type == "mcp_approval_request"
+                ):
+                    approval_request = item
+                    break
+
+        if approval_request:
+            print(
+                f"[Approval required for: {approval_request.name}]\n"
+            )
+            print(f"Server: {approval_request.server_label}")
+
+            approval_input = input(
+                "Approve this action? (yes/no): "
+            ).strip().lower()
+
+            if approval_input in ["yes", "y"]:
+                approval_response = {
+                    "type": "mcp_approval_response",
+                    "approval_request_id": approval_request.id,
+                    "approve": True
+                }
+            else:
+                approval_response = {
+                    "type": "mcp_approval_response",
+                    "approval_request_id": approval_request.id,
+                    "approve": False
+                }
+
+            openai_client.conversations.items.create(
+                conversation_id=conversation.id,
+                items=[approval_response]
+            )
+
+            response = openai_client.responses.create(
+                conversation=conversation.id,
+                extra_body={
+                    "agent_reference": {
+                        "name": agent.name,
+                        "type": "agent_reference"
+                    }
+                },
+                input=""
+            )
+
+        if response and response.output_text:
+            response_text = response.output_text
+            print(f"{response_text}\n")
+
+            conversation_history.append({
+                "role": "assistant",
+                "content": response_text
+            })
+
+            return response_text
+
+        return None
+
+    except Exception as e:
+        print(f"\n\nError: {str(e)}\n")
+        return None
+````
+
+This function sends the user's message to the Foundry agent and creates a response. If the agent needs to access the Foundry IQ knowledge source, it checks for an `mcp_approval_request` and asks the user to approve or deny the lookup. After the approval decision, it retrieves the agent's response and stores it in the conversation history.
+
+### `display_conversation_history`
+
+The implementation is:
+
+```python
+def display_conversation_history():
+    """
+    Display the full conversation history.
+    """
+    print("\n" + "=" * 60)
+    print("CONVERSATION HISTORY")
+    print("=" * 60 + "\n")
+
+    for turn in conversation_history:
+        role = turn["role"].upper()
+        content = turn["content"]
+
+        print(f"{role}: {content}\n")
+
+    print("=" * 60 + "\n")
+```
+
+This function displays all user and agent messages stored in the current conversation history.
+
+### `main`
+
+The implementation is:
+
+```python
+def main():
+    """
+    Main interaction loop.
+    """
+    print("Credit Risk Assessment Agent")
+    print("Ask questions about the credit-risk assessment.")
+    print(
+        "Type 'history' to see conversation history, "
+        "or 'quit' to exit.\n"
+    )
+
+    while True:
+        try:
+            user_input = input("You: ").strip()
+
+            if not user_input:
+                continue
+
+            if user_input.lower() == "quit":
+                print("\nEnding conversation...")
+                break
+
+            if user_input.lower() == "history":
+                display_conversation_history()
+                continue
+
+            send_message_to_agent(user_input)
+
+        except KeyboardInterrupt:
+            print("\n\nInterrupted by user.")
+            break
+
+        except Exception as e:
+            print(f"\nUnexpected error: {str(e)}\n")
+
+    print("\nConversation ended.")
+```
+
+The `main()` function provides the command-line interaction. It sends user questions to the agent, supports `history` for viewing the conversation, and uses `quit` to exit the application.
 
 ## Test the integration
 
-You're ready to run the client and confirm that it can retrieve knowledge-base information through the agent.
+1. In the integrated terminal, verify your Azure account:
 
-1. In the `Lab-02-integrate-agent-with-foundry-iq\\python` folder, right-click and select **Open in Integrated Terminal**.
-1. Create a virtual environment and install dependencies:
+   ```powershell
+   az account show
+   ```
 
-    ```
-    python -m venv labenv
-    .\labenv\Scripts\Activate.ps1
-    pip install -r requirements.txt
-    ```
+   > **Note:** If you encounter an authentication issue, run `az logout`, then `az login`, and run `az account show` again.
 
-1. Sign in to Azure:
+2. Run the client:
 
-    ```
-    az login
-    ```
+   ```powershell
+   python agent_client.py
+   ```
 
-    > **Note**: If you have subscriptions in multiple tenants, you may need to include the `--tenant` parameter. For details, see [Sign into Azure interactively using the Azure CLI](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively).
+3. Test the following queries. When prompted for approval, enter **`yes`** to allow the Foundry IQ knowledge-base lookup.
 
-1. Complete the browser sign-in flow and select the subscription that contains your Foundry project if prompted.
-1. Run the application:
+   **Available company documents**
 
-    ```
-    python agent_client.py
-    ```
+   ```text
+   What documents are available for Apex Manufacturing Pvt Ltd?
+   ```
 
-1. Test the following queries. When prompted, enter **yes** to approve the Foundry IQ lookup.
+   **Financial information**
 
-    **Available company documents**
+   ```text
+   What financial information is available for Apex Manufacturing Pvt Ltd for 2025?
+   ```
 
-    ```
-    What documents are available for Apex Manufacturing Pvt Ltd?
-    ```
+   **Financial ratio analysis**
 
-    **Financial information**
+   ```text
+   What are the current ratio, debt-to-equity ratio, and net profit margin for Apex Manufacturing Pvt Ltd?
+   ```
 
-    ```
-    What financial information is available for Apex Manufacturing Pvt Ltd for 2025?
-    ```
+   **Credit bureau information**
 
-    **Financial ratio analysis**
+   ```text
+   What is the external credit bureau score and industry for Apex Manufacturing Pvt Ltd?
+   ```
 
-    ```
-    What are the current ratio, debt-to-equity ratio, and net profit margin for Apex Manufacturing Pvt Ltd?
-    ```
+   **Credit-risk assessment rules**
 
-    **Credit bureau information**
+   ```text
+   What credit-risk assessment rules should be used for Apex Manufacturing Pvt Ltd?
+   ```
 
-    ```
-    What is the external credit bureau score and industry for Apex Manufacturing Pvt Ltd?
-    ```
+4. Type `history` to view the complete conversation history.
 
-    **Credit-risk assessment rules**
+5. Type `quit` when you are done testing.
 
-    ```
-    What credit-risk assessment rules should be used for Apex Manufacturing Pvt Ltd?
-    ```
+### Expected output
 
-1. Type `history` to view the complete conversation history.
-1. Type `quit` when you're done testing.
+The exact wording can vary because the responses are generated by the AI agent. After approving the Foundry IQ lookup, you should see responses similar to the following.
+
+**Available company documents**
+
+```text
+The following documents are available for Apex Manufacturing Pvt Ltd:
+
+- Company Registration Certificate
+- GST Certificate
+
+Company Name: Apex Manufacturing Pvt Ltd
+Registration Status: Active
+
+Both required documents are available and the company names match.
+```
+
+**Financial information**
+
+```text
+Financial information for Apex Manufacturing Pvt Ltd for 2025:
+
+- Current Assets: 7,800,000
+- Current Liabilities: 5,000,000
+- Total Debt: 9,300,000
+- Shareholders' Equity: 5,000,000
+- Revenue: 9,000,000
+- Net Profit: 500,000
+```
+
+**Financial ratio analysis**
+
+```text
+- Current Ratio = 1.56
+- Debt-to-Equity Ratio = 1.86
+- Net Profit Margin = 5.56%
+```
+
+**Credit bureau information**
+
+```text
+- External Credit Bureau Score: 720
+- Industry: Manufacturing
+- Credit Bureau Status: No adverse records reported
+```
+
+**Credit-risk assessment rules**
+
+```text
+The credit-risk assessment uses document verification,
+compliance checks, financial ratio analysis, external credit
+bureau information, and industry risk.
+
+The scorecard includes:
+- Compliance: 20
+- Liquidity: 20
+- Leverage: 15
+- Profitability: 15
+- External Credit Bureau: 15
+- Industry Risk: 15
+```
+
+> **Note:** The exact response format and wording may differ. The important point is that the agent retrieves the relevant information from the connected Foundry IQ knowledge source and uses it to answer the questions.
 
 ### Review the results
 
 Consider the following aspects of the agent's responses:
 
-- **MCP approval flow**: Each knowledge-base lookup requires your approval.
-- **Accuracy**: The agent retrieves information from the indexed credit-risk assessment documents.
-- **Citations**: The response may include source references or document IDs.
-- **Context awareness**: The agent maintains context for follow-up messages in the same conversation.
-- **Grounding**: The agent should state clearly when no relevant information is found in the knowledge base.
-- **Error handling**: The client handles connection and response errors gracefully.
+* **MCP approval flow**: The client requests approval before performing the Foundry IQ lookup.
+* **Accuracy**: The agent retrieves information from the connected credit-risk assessment documents.
+* **Citations**: The response may include source references when available.
+* **Context awareness**: The same conversation is maintained across multiple questions.
+* **Grounding**: The agent should indicate when relevant information is not available in the knowledge source.
+* **Conversation history**: The `history` command displays the messages exchanged during the session.
 
 ## Summary
 
 In this exercise, you:
 
-- Used an existing Foundry project and deployed models.
-- Created a credit-risk-assessment agent and configured Foundry IQ.
-- Added credit-risk assessment documents to an Azure Blob Storage knowledge source.
-- Created and connected an Azure AI Search-backed knowledge base.
-- Configured the agent to request approval before querying the knowledge base.
-- Connected a Python client application to the agent and tested approval-controlled knowledge retrieval.
+* Connected a Python client to an existing Microsoft Foundry agent.
+* Created and maintained a conversation using the Conversations API.
+* Sent credit-risk assessment questions to the agent.
+* Connected the agent to the Foundry IQ knowledge source.
+* Implemented MCP approval handling so knowledge-base lookups require user approval.
+* Retrieved company documents, financial information, financial ratios, credit bureau information, and credit-risk assessment rules from the connected knowledge source.
+* Displayed available citations and maintained conversation history.
+* Tested the complete approval-controlled knowledge retrieval workflow from a Python client application.
