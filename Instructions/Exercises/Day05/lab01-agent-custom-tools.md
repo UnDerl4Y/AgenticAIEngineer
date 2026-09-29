@@ -105,10 +105,21 @@ As a developer, you may spend time working in the **Microsoft Foundry portal**, 
 
 9. You can now use the **Azure AI Foundry** extension to view and manage your Foundry project resources directly from Visual Studio Code.
 
-
 ## Use the deployed model
 
-Use the deployed model that's already available in your Foundry project. Right-click the deployed model in your Foundry project and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
+Use the deployed model already available in your Foundry project. Under **Models**, find your deployed model, right-click it, and select the endpoint option based on your use case:
+
+* **Azure AI Model inference endpoint** for Azure AI model inference client libraries.
+* **Azure OpenAI in Foundry Models endpoint** for Azure OpenAI in Foundry Models client libraries.
+
+For this lab, you need the **Project endpoint**, which is already prefilled in the `.env` file.
+
+> **Note:** You can get the Project endpoint from the Azure AI Foundry portal. If you prefer not to use the portal, copy any available endpoint, remove everything after `.com/`, and append `api/projects/<your-project-name>`.
+>
+> Example:
+> `https://hakunamatata11.services.ai.azure.com/models`
+> → `https://hakunamatata11.services.ai.azure.com/api/projects/hakunamatata`
+
 
 ![Screenshot of copying the project endpoint in the Foundry Toolkit VS Code extension.](../../media/vs-code-endpoint.png)
 
@@ -750,6 +761,8 @@ flowchart LR
    to exit the application.
 
 10. When the application exits, it deletes the agent version:
+
+> **Note:** The agent is created through the application code each time you run the application. The deletion step is included to clean up the agent created during the current run. If you want to keep it after the application exits, you can remove or comment out the following code block. If you run the application again, the code will create the agent again.
 
 ```python
 project_client.agents.delete_version(
