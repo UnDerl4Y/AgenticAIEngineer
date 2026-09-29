@@ -41,7 +41,7 @@ Before starting this exercise, ensure you have:
 
 3. Open **Visual Studio Code** by typing **Code** in the Windows search bar, then click **Code** to open it.
 
-4. Open the integrated terminal using **`Ctrl+Shift+`** and run the following command to sign in to Azure:
+4. Open the integrated terminal using ****Ctrl+Shift+`**** and run the following command to sign in to Azure:
 
 ```powershell
 az login

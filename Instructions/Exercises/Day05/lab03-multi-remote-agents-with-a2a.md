@@ -118,56 +118,110 @@ At the prompt, try these questions one at a time. The wording may vary, but each
 
 ### Test 1: Company documents
 
-Ask: `What company documents are available?`
+Ask:
 
-Expected information:
+```text
+What company documents are available?
+```
 
-- Company: Apex Manufacturing Pvt Ltd.
-- Company Registration Certificate: Available.
-- GST Certificate: Available.
-- Registration status: Active.
-- The company name shown on both certificates matches.
+The agent should return information similar to:
+
+* Company: Apex Manufacturing Pvt Ltd.
+* Company Registration Certificate: Available.
+* GST Certificate: Available.
+* Registration status: Active.
+* The company name shown on both certificates matches.
 
 ### Test 2: Financial ratios
 
-Ask: `What are the financial ratios?`
+Ask:
 
-Expected information from `financial_data.txt`:
+```text
+What are the financial ratios?
+```
 
-- Current Assets: 7,800,000; Current Liabilities: 5,000,000.
-- Total Debt: 9,300,000; Shareholders' Equity: 5,000,000.
-- Revenue: 9,000,000; Net Profit: 500,000.
-- Current Ratio: 1.56.
-- Debt-to-Equity Ratio: 1.86.
-- Net Profit Margin: 5.56%.
+The agent should return information similar to:
 
-The source file does not state a currency, so the answer should not guess one.
+* Current Assets: 7,800,000.
+* Current Liabilities: 5,000,000.
+* Total Debt: 9,300,000.
+* Shareholders' Equity: 5,000,000.
+* Revenue: 9,000,000.
+* Net Profit: 500,000.
+* Current Ratio: 1.56.
+* Debt-to-Equity Ratio: 1.86.
+* Net Profit Margin: 5.56%.
+
+The source file does not specify a currency, so the agent should not assume or add one.
 
 ### Test 3: Credit bureau and industry
 
-Ask: `What is the external credit bureau score and industry?`
+Ask:
 
-Expected information:
+```text
+What is the external credit bureau score and industry?
+```
 
-- External Credit Bureau Score: 720.
-- Industry listed: Manufacturing.
-- Credit Bureau Status: No adverse records reported.
-- A separate industry risk rating is not provided in the documents.
+The agent should return information similar to:
+
+* External Credit Bureau Score: 720.
+* Industry: Manufacturing.
+* Credit Bureau Status: No adverse records reported.
+* A separate industry risk rating is not provided in the available information.
 
 ### Test 4: Overall assessment
 
-Ask: `Assess the available credit-risk information.`
+Ask:
 
-Expected information:
+```text
+Assess the available credit-risk information.
+```
 
-- Summarize the available company documents, financial values and ratios, bureau score, and industry.
-- Make clear which items are document facts and which are calculated ratios.
-- Mention that the documents do not provide an industry risk rating or enough criteria to confirm a final credit decision.
-- Do not approve or reject the company.
+The agent should provide a summary similar to:
 
-Type `help` for the example questions or `quit` to exit. The agent may organize its answer differently, but it should not invent facts or a final credit decision.
+* Company documents and their verification status.
+* Available financial values.
+* Calculated financial ratios.
+* External Credit Bureau Score: 720.
+* Credit Bureau Status: No adverse records reported.
+* Industry: Manufacturing.
+* Any relevant information that is not available in the provided data.
 
-Yep man. For this lab, the **summary** can be:
+The response should distinguish between **document facts** and **calculated financial ratios**. It should also make clear that the available information does not provide an industry risk rating or enough criteria to confirm a final credit decision.
+
+The agent should not approve or reject the company based on the available information.
+
+> **Note:** The exact wording and structure of the responses may vary because the responses are generated dynamically by the agents. Focus on verifying that the expected information is retrieved and passed through the multi-agent workflow.
+
+### Additional test
+
+You can also enter:
+
+```text
+help
+```
+
+The application should display example questions similar to:
+
+```text
+Example questions:
+1. What company documents are available?
+2. What financial information is available?
+3. What are the financial ratios?
+4. What is the external credit bureau score?
+5. Assess the available credit-risk information.
+```
+
+When you are finished, enter:
+
+```text
+quit
+```
+
+to exit the application.
+
+
+Type `quit` to exit. The agent may organize its answer differently, but it should not invent facts or a final credit decision.
 
 ### Summary
 

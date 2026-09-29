@@ -48,8 +48,6 @@ Before starting this exercise, ensure you have:
 
 5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
-   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/POWERSHELL.png)
-
 ```powershell
 Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab04-mcp-integration" "$env:USERPROFILE\Desktop\lab04-mcp-integration" -Recurse
 
