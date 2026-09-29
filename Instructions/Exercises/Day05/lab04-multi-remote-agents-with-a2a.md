@@ -64,283 +64,144 @@ This folder already contains the application files and the required code for thi
 
 8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-## Create a discoverable agent (We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it)
-
-In this task, you create the title agent that helps writers create trendy headlines for their articles. You also define the agent's skills and card required by the A2A protocol to make the agent discoverable.
-
-> **Tip**: As you add code, be sure to maintain the correct indentation. Use the existing comments as a guide, entering the new code at the same level of indentation.
-
-1. Open the **title_agent/agent.py** file in the code editor.
-
-1. Find the comment **Create the agents client** and add the following code to connect to the Azure AI project:
-
-    > **Tip**: Be careful to maintain the correct indentation level.
-
-    ```python
-   # Create the agents client
-   self.client = AgentsClient(
-       endpoint=os.environ['PROJECT_ENDPOINT'],
-       credential=DefaultAzureCredential(
-           exclude_environment_credential=True,
-           exclude_managed_identity_credential=True
-       )
-   )
-    ```
-
-1. Find the comment **Create the title agent** and add the following code to create the agent:
-
-    ```python
-   # Create the title agent
-   self.agent = self.client.create_agent(
-       model=os.environ['MODEL_DEPLOYMENT_NAME'],
-       name='title-agent',
-       instructions="""
-       You are a helpful writing assistant.
-       Given a topic the user wants to write about, suggest a single clear and catchy blog post title.
-       """,
-   )
-    ```
+# Review Before You Run
 
-1. Find the comment **Create a thread for the chat session** and add the following code to create the chat thread:
+This project is already filled in. You do not need to add the example code from older lab instructions. First read the files below and follow how one question travels through the application. Then run it and try a few questions.
 
-    ```python
-   # Create a thread for the chat session
-   thread = self.client.threads.create()
-    ```
-
-1. Locate the comment **Send user message** and add this code to submit the user's prompt:
-
-    ```python
-   # Send user message
-   self.client.messages.create(thread_id=thread.id, role=MessageRole.USER, content=user_message)
-    ```
+## What the application does
 
-1. Under the comment **Create and run the agent**, add the following code to initiate the agent's response generation:
+You type a question. The Routing Agent sends it to the right specialist, and the specialist looks up information in `data/` and sends back an answer.
 
-    ```python
-   # Create and run the agent
-   run = self.client.runs.create_and_process(thread_id=thread.id, agent_id=self.agent.id)
-    ```
+```text
+You -> CLI -> Routing Agent -> Specialist Agent -> Answer
+```
 
-    The code provided in the rest of the file will process and return the agent's response.
+The specialists are:
 
-1. Save the code file (*CTRL+S*). Now you're ready to share the agent's skills and card with the A2A protocol.
+- **Document Verification Agent**: checks which company documents are listed and whether names match.
+- **Financial Analysis Agent**: reports financial values and works out financial ratios.
+- **Credit Risk Assessment Agent**: summarizes the available risk information and explains what is missing.
 
-1. Open the **title_agent/server.py** file in the code editor.
+The agents talk to each other using A2A. Think of A2A as the agreed format they use to send a request and receive a reply.
 
-1. Find the comment **Define agent skills** and add the following code to specify the agent’s functionality:
-   **(We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it)**
-
-    ```python
-   # Define agent skills
-   skills = [
-       AgentSkill(
-           id='generate_blog_title',
-           name='Generate Blog Title',
-           description='Generates a blog title based on a topic',
-           tags=['title'],
-           examples=[
-               'Can you give me a title for this article?',
-           ],
-       ),
-   ]
-    ```
-
-1. Find the comment **Create agent card** and add this code to define the metadata that makes the agent discoverable:
+## Review the source documents first
 
-    ```python
-   # Create agent card
-   agent_card = AgentCard(
-       name='Microsoft Foundry Title Agent',
-       description='An intelligent title generator agent powered by Foundry. '
-       'I can help you generate catchy titles for your articles.',
-       url=f'http://{host}:{port}/',
-       version='1.0.0',
-       default_input_modes=['text'],
-       default_output_modes=['text'],
-       capabilities=AgentCapabilities(),
-       skills=skills,
-   )
-    ```
+Open the `data/` folder. These files contain the facts and rules the application should use:
 
-1. Locate the comment **Create agent executor** and add the following code to initialize the agent executor using the agent card:
+- `company_documents.txt`: company identity and document availability.
+- `financial_data.txt`: the company's reported financial numbers.
+- `credit_bureau_report.txt`: external credit score and industry details.
+- `document_verification_instructions.txt`: what to check in the company documents.
+- `financial_analysis_instructions.txt`: which financial ratios to calculate and how.
+- `credit_risk_instructions.txt`: what the final risk summary should cover.
 
-    ```python
-   # Create agent executor
-   agent_executor = create_foundry_agent_executor(agent_card)
-    ```
+The Python code should read these files. The company name, financial numbers, score, and rules should not be typed directly into Python code. If a document does not contain an answer, the agent should say it is unavailable.
 
-    The agent executor will act as a wrapper for the title agent you created.
+## A few important functions
 
-1. Find the comment **Create request handler** and add the following to handle incoming requests using the executor:
+The code is already written. Before running it, follow these four functions to understand the main path:
 
-    ```python
-   # Create request handler
-   request_handler = DefaultRequestHandler(
-       agent_executor=agent_executor, task_store=InMemoryTaskStore()
-   )
-    ```
+- `load_all_data()` in `credit_risk_data.py` opens the files in `data/`.
+- `compute_financial_ratios()` in `credit_risk_data.py` calculates ratios from the documented numbers.
+- `send_message(...)` in `routing_agent/agent.py` passes your question from the router to a specialist using A2A.
+- `run_conversation(...)` in a specialist's `agent.py` prepares that specialist's answer using the documents.
 
-1. Under the comment **Create A2A application**, add this code to create the A2A-compatible application instance:
+The names on each agent's card tell the router what specialists are available. You do not need to edit these functions for the review exercise.
 
-    ```python
-   # Create A2A application
-   a2a_app = A2AStarletteApplication(
-       agent_card=agent_card, http_handler=request_handler
-   )
-    ```
+## Try the application
 
-    This code creates an A2A server that will share the title agent's information and handle incoming requests for this agent using the title agent executor.
+The environment and packages are already set up. From the project folder, run:
 
-1. Save the code file (*CTRL+S*) when you have finished.
+```text
+python run_all.py
+```
 
-## Enable messages between the agents (We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it)
+At the prompt, try these questions one at a time. The wording may vary, but each answer should include the expected information below.
 
-In this task, you use the A2A protocol to enable the routing agent to send messages to the other agents. You also allow the title agent to receive messages by implementing the agent executor class.
+### Test 1: Company documents
 
-1. Open the **routing_agent/agent.py** file in the code editor.
+Ask: `What company documents are available?`
 
-    The routing agent acts as an orchestrator that handles user messages and determines which remote agent should process the request.
+Expected information:
 
-    When a user message is received, the routing agent:
-    - Starts a conversation thread.
-    - Uses the `create_and_process` method to evaluate the best-matching agent for the user's message.
-    - The message is routed to the appropriate agent over HTTP using the `send_message` function.
-    - The remote agent processes the message and returns a response.
+- Company: Apex Manufacturing Pvt Ltd.
+- Company Registration Certificate: Available.
+- GST Certificate: Available.
+- Registration status: Active.
+- The company name shown on both certificates matches.
 
-    The routing agent finally captures the response and returns it to the user through the thread.
+### Test 2: Financial ratios
 
-    Notice that the `send_message` method is async and must be awaited for the agent run to complete successfully.
+Ask: `What are the financial ratios?`
 
-1. Add the following code under the comment **Retrieve the remote agent's A2A client using the agent name**:
+Expected information from `financial_data.txt`:
 
-    ```python
-   # Retrieve the remote agent's A2A client using the agent name 
-   client = self.remote_agent_connections[agent_name]
-    ```
+- Current Assets: 7,800,000; Current Liabilities: 5,000,000.
+- Total Debt: 9,300,000; Shareholders' Equity: 5,000,000.
+- Revenue: 9,000,000; Net Profit: 500,000.
+- Current Ratio: 1.56.
+- Debt-to-Equity Ratio: 1.86.
+- Net Profit Margin: 5.56%.
 
-1. Locate the comment **Construct the payload to send to the remote agent** and add the following code:
+The source file does not state a currency, so the answer should not guess one.
 
-    ```python
-   # Construct the payload to send to the remote agent
-   payload: dict[str, Any] = {
-       'message': {
-           'role': 'user',
-           'parts': [{'kind': 'text', 'text': task}],
-           'messageId': message_id,
-       },
-   }
-    ```
+### Test 3: Credit bureau and industry
 
-1. Find the comment **Wrap the payload in a SendMessageRequest object** and add the following code:
+Ask: `What is the external credit bureau score and industry?`
 
-    ```python
-   # Wrap the payload in a SendMessageRequest object
-   message_request = SendMessageRequest(id=message_id, params=MessageSendParams.model_validate(payload))
-    ```
+Expected information:
 
-1. Add the following code under the comment **Send the message to the remote agent client and await the response**:
+- External Credit Bureau Score: 720.
+- Industry listed: Manufacturing.
+- Credit Bureau Status: No adverse records reported.
+- A separate industry risk rating is not provided in the documents.
 
-    ```python
-   # Send the message to the remote agent client and await the response
-   send_response: SendMessageResponse = await client.send_message(message_request=message_request)
-    ```
+### Test 4: Overall assessment
 
-1. Save the code file (*CTRL+S*) when you have finished. Now the routing agent is able to discover and send messages to the title agent. Let's create the agent executor code to handle those incoming messages from the routing agent.
+Ask: `Assess the available credit-risk information.`
 
-1. Open the **title_agent/agent_executor.py** file in the code editor. (We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it)
+Expected information:
 
-    The `AgentExecutor` class implementation must contain the methods `execute` and `cancel`. The cancel method has been provided for you. The `execute` method includes a `TaskUpdater` object that manages events and signals to the caller when the task is complete. Let's add the logic for task execution.
+- Summarize the available company documents, financial values and ratios, bureau score, and industry.
+- Make clear which items are document facts and which are calculated ratios.
+- Mention that the documents do not provide an industry risk rating or enough criteria to confirm a final credit decision.
+- Do not approve or reject the company.
 
-1. In the `execute` method, add the following code under the comment **Process the request**:
+Type `help` for the example questions or `quit` to exit. The agent may organize its answer differently, but it should not invent facts or a final credit decision.
 
-    ```python
-   # Process the request
-   await self._process_request(context.message.parts, context.context_id, updater)
-    ```
+Yep man. For this lab, the **summary** can be:
 
-1. In the `_process_request` method, add the following code under the comment **Get the title agent**:
+### Summary
 
-    ```python
-   # Get the title agent
-   agent = await self._get_or_create_agent()
-    ```
+In this exercise, you use **Azure AI Agent Service with the A2A protocol** to build a Credit Risk Assessment application with multiple specialist agents.
 
-1. Add the following code under the comment **Update the task status**:
+The application follows this flow:
 
-    ```python
-   # Update the task status
-   await task_updater.update_status(
-       TaskState.working,
-       message=new_agent_text_message('Title Agent is processing your request...', context_id=context_id),
-   )
-    ```
+```text
+User → CLI → Routing Agent → Specialist Agent → Answer
+```
 
-1. Find the comment **Run the agent conversation** and add the following code:
+The Routing Agent sends each question to the appropriate specialist:
 
-    ```python
-   # Run the agent conversation
-   responses = await agent.run_conversation(user_message)
-    ```
+* **Document Verification Agent** — checks company documents, availability, status, and name matching.
+* **Financial Analysis Agent** — provides financial information and calculates financial ratios.
+* **Credit Risk Assessment Agent** — summarizes the available credit-risk information and identifies missing information.
 
-1. Find the comment **Update the task with the responses** and add the following code:
+The application reads the required information from the files in the `data/` folder rather than hardcoding company details or financial values in Python.
 
-    ```python
-   # Update the task with the responses
-   for response in responses:
-       await task_updater.update_status(
-           TaskState.working,
-           message=new_agent_text_message(response, context_id=context_id),
-       )
-    ```
+The main functions to review are:
 
-1. Find the comment **Mark the task as complete** and add the following code:
+* `load_all_data()` — loads the source documents.
+* `compute_financial_ratios()` — calculates the required financial ratios.
+* `send_message(...)` — sends requests between agents using A2A.
+* `run_conversation(...)` — prepares the specialist agent's response.
 
-    ```python
-   # Mark the task as complete
-   final_message = responses[-1] if responses else 'Task completed.'
-   await task_updater.complete(
-       message=new_agent_text_message(final_message, context_id=context_id)
-   )
-    ```
+You then run the application with:
 
-    Now your title agent has been wrapped with an agent executor that the A2A protocol will use to handle messages. Great work!
+```text
+python run_all.py
+```
 
-## Test the application
+and test company documents, financial ratios, credit bureau information, and the overall credit-risk assessment.
 
-1. In the integrated terminal, check whether you're already signed in to Azure:
-
-    ```bash
-    az account show
-    ```
-
-    - If the command displays your account details, you're already signed in and can proceed to the next step.
-    - If it returns an error or no account information, sign in by running:
-
-    ```bash
-    az login
-    ```
-
-1. Run the application:
-
-    ```bash
-    python run_all.py
-    ```
-
-    The application uses the credentials from your authenticated Azure session to connect to your Azure AI Foundry project and create and run the agent. You should see output from each server as it starts.
-
-    ![Screenshot of the application starting and connecting each server](../../media/application-start-lab5.jpeg)
-
-1. Wait until the prompt for input appears, then enter a prompt such as:
-
-    ```
-    Create a title and outline for an article about React programming.
-    ```
-
-    After a few moments, you should see a response from the agent with the result.
-
-    ![Screenshot of the agent's response with the generated title and outline](../../media/lab5result.jpeg)
-
-1. Enter `quit` to exit the program and stop the servers.
-
-    You can also use `deactivate` to exit the Python virtual environment in the terminal.
+The application should **only use information available in the source documents**, clearly distinguish calculated values from document facts, and state when information is unavailable rather than inventing it.
