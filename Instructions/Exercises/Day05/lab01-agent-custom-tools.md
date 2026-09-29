@@ -39,7 +39,9 @@ Before starting this exercise, ensure you have:
 
    ![Screenshot of the Azure CLI installation setup wizard.](../../media/azure-cli-install-wizard.png)
 
-3. Open the integrated terminal using **`Ctrl+Shift+`** and run the following command to sign in to Azure:
+3. Open **Visual Studio Code** by typing **Code** in the Windows search bar, then click **Code** to open it.
+
+4. Open the integrated terminal using **`Ctrl+Shift+`** and run the following command to sign in to Azure:
 
 ```powershell
 az login
@@ -73,7 +75,7 @@ This command will display your current Azure account and subscription details.
 >
 > Complete the sign-in again using the account provided by your trainer.
 
-4. If the `az` command is not recognized, for example, `'az' is not recognized as a name of a cmdlet, function, script file, or executable program`, Azure CLI may not have been installed correctly, or the terminal may have been opened before the installation updated the system PATH.
+5. If the `az` command is not recognized, for example, `'az' is not recognized as a name of a cmdlet, function, script file, or executable program`, Azure CLI may not have been installed correctly, or the terminal may have been opened before the installation updated the system PATH.
 
 > ****Troubleshooting:**** Try the following steps:
 >
@@ -90,8 +92,6 @@ This command will display your current Azure account and subscription details.
 
 
 As a developer, you may spend time working in the **Microsoft Foundry portal**, but most development tasks are typically performed in **Visual Studio Code**. The **Foundry Toolkit** extension allows you to work with Foundry project resources directly within **Visual Studio Code**, so you can manage and develop your Foundry projects without leaving your development environment.
-
-5. Open **Visual Studio Code** by typing **Code** in the Windows search bar, then click **Code** to open it.
 
 6. Select **Extensions** from the left pane (or press **Ctrl+Shift+X**).
 
@@ -123,6 +123,8 @@ Use the deployed model that's already available in your Foundry project. Right-c
 4. Once the download finishes, extract the ZIP file.
 
 5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
+
+   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/POWERSHELL.png)
 
 ```powershell
 Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab01-agent-custom-tools" "$env:USERPROFILE\Desktop\lab01-agent-custom-tools" -Recurse
