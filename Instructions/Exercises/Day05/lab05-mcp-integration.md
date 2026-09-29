@@ -275,7 +275,7 @@ Enter:
 
 ```text
 Verify whether the company registration certificate and GST certificate are available for Apex Manufacturing Pvt Ltd.
-```
+````
 
 The agent should call:
 
@@ -283,7 +283,13 @@ The agent should call:
 Calling tool: verify_documents
 ```
 
-Review the response returned by the agent.
+Review the response returned by the agent. It should indicate that the company name does not match across the provided documents.
+
+For example:
+
+```text
+The documents could not be verified because there is a company name mismatch across the documents.
+```
 
 ## Test Financial Ratio Calculation
 
@@ -299,7 +305,7 @@ The agent should call:
 Calling tool: calculate_financial_ratios
 ```
 
-The expected calculations are:
+Review the response returned by the agent. It should be similar to:
 
 * Current Ratio: **2.00**
 * Debt-to-Equity Ratio: **0.50**
@@ -319,7 +325,18 @@ The agent should call:
 Calling tool: generate_risk_summary
 ```
 
-Review the credit-risk summary returned by the agent.
+Review the credit-risk summary returned by the agent. It should be similar to:
+
+* Risk level: **Low**
+* Liquidity: **Strong**, with a current ratio of 2.0
+* Leverage: **Low**, with a debt-to-equity ratio of 0.5
+* Profitability: **Healthy**, with a net profit margin of 8.0%
+
+The response may also include an overall assessment similar to:
+
+```text
+Overall assessment: The company appears financially stable based on the provided ratios.
+```
 
 ## Continue Testing
 
@@ -343,15 +360,33 @@ Finally, deactivate the virtual environment:
 deactivate
 ```
 
-## Key Takeaway
+## Summary
 
-In this exercise, you reviewed how MCP connects an Azure AI Agent with custom tools.
+In this exercise, you tested an Azure AI Agent that uses tools exposed through the Model Context Protocol (MCP).
+
+You verified that:
+
+* The **`verify_documents`** tool checks the availability of the required company documents and validates the company name across them.
+* The **`calculate_financial_ratios`** tool calculates the Current Ratio, Debt-to-Equity Ratio, and Net Profit Margin from the provided financial data.
+* The **`generate_risk_summary`** tool generates a credit-risk summary based on the provided financial ratios.
+
+The overall flow is:
+
+```mermaid
+flowchart LR
+    A[User] --> B[Azure AI Agent]
+    B --> C[MCP Client]
+    C --> D[MCP Server]
+    D --> E[Credit Risk Tools]
+    E --> C
+    C --> B
+    B --> A
+```
 
 The main components are:
 
 * **`server.py`** → defines and exposes the Credit Risk MCP tools.
-* **`client.py`** → connects to the MCP server, discovers its tools, and passes them to the Azure AI Agent.
-* **Azure AI Agent** → decides when to use the available tools and uses their results to respond to the user.
+* **`client.py`** → connects to the MCP server, discovers its tools, and makes them available to the Azure AI Agent.
+* **Azure AI Agent** → decides when to use the available MCP tools and uses their results to respond to the user.
 
-The important concept is that the agent does not directly implement the Credit Risk functions. The functions are exposed through MCP, discovered by the client, and made available to the agent as callable tools.
-
+The key takeaway is that the agent does not directly implement the Credit Risk functions. The functions are exposed through MCP, discovered by the client, and made available to the agent as callable tools.

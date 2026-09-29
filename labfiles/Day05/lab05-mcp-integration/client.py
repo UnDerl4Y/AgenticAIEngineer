@@ -38,12 +38,14 @@ async def connect_to_server(exit_stack: AsyncExitStack):
     stdio_transport = await exit_stack.enter_async_context(
         stdio_client(server_params)
     )
+
     stdio, write = stdio_transport
 
     # Create an MCP client session
     session = await exit_stack.enter_async_context(
         ClientSession(stdio, write)
     )
+
     await session.initialize()
 
     # List available tools
@@ -76,13 +78,15 @@ async def chat_loop(session):
         # Build a function for each MCP tool
         def make_tool_func(tool_name):
             async def tool_func(**kwargs):
-                result = await session.call_tool(tool_name, kwargs)
-                return result
+                return await session.call_tool(
+                    tool_name,
+                    kwargs,
+                )
 
             tool_func.__name__ = tool_name
             return tool_func
 
-        # Store the functions in a dictionary for processing function calls
+        # Store the functions in a dictionary
         functions_dict = {
             tool.name: make_tool_func(tool.name)
             for tool in tools
@@ -98,9 +102,10 @@ async def chat_loop(session):
                 parameters=tool.input_schema,
                 strict=True,
             )
+
             mcp_function_tools.append(function_tool)
 
-        # Create the credit-risk agent
+        # Create the Credit Risk Agent
         agent = project_client.agents.create_version(
             agent_name="credit-risk-agent",
             definition=PromptAgentDefinition(
@@ -116,9 +121,11 @@ async def chat_loop(session):
                 - Calculating financial ratios
                 - Generating credit-risk summaries
 
-                Use the available MCP tools when they are relevant to
-                the user's request. Do not invent missing financial,
-                compliance, document, or credit information.
+                Use the available MCP tools when they are relevant
+                to the user's request.
+
+                Do not invent missing financial, compliance,
+                document, or credit information.
                 """,
                 tools=mcp_function_tools,
             ),
@@ -132,79 +139,36 @@ async def chat_loop(session):
         # Create a conversation for the chat session
         conversation = openai_client.conversations.create()
 
-        while True:
-            user_input = input(
-                "Enter a prompt for the credit-risk agent. "
-                "Use 'quit' to exit.\nUSER: "
-            ).strip()
+        try:
+            while True:
+                user_input = input(
+                    "Enter a prompt for the credit-risk agent. "
+                    "Use 'quit' to exit.\nUSER: "
+                ).strip()
 
-            if user_input.lower() == "quit":
-                print("Exiting chat.")
-                break
+                if user_input.lower() == "quit":
+                    print("Exiting chat.")
+                    break
 
-            # Send the user message to the conversation
-            openai_client.conversations.items.create(
-                conversation_id=conversation.id,
-                items=[
-                    {
-                        "type": "message",
-                        "role": "user",
-                        "content": user_input,
-                    }
-                ],
-            )
+                # Add the user message to the conversation
+                openai_client.conversations.items.create(
+                    conversation_id=conversation.id,
+                    items=[
+                        {
+                            "type": "message",
+                            "role": "user",
+                            "content": user_input,
+                        }
+                    ],
+                )
 
-            # Start with an empty list for this request
-            input_list: ResponseInputParam = []
+                # Start with an empty list for this request
+                input_list: ResponseInputParam = []
 
-            # Retrieve the agent response
-            response = openai_client.responses.create(
-                conversation=conversation.id,
-                extra_body={
-                    "agent_reference": {
-                        "name": agent.name,
-                        "type": "agent_reference",
-                    }
-                },
-                input=input_list,
-            )
-
-            # Check the response status
-            if response.status == "failed":
-                print(f"Response failed: {response.error}")
-                continue
-
-            # Process function calls
-            for item in response.output:
-                if item.type == "function_call":
-                    function_name = item.name
-                    kwargs = json.loads(item.arguments)
-
-                    required_function = functions_dict.get(function_name)
-
-                    if required_function is None:
-                        print(f"Tool not found: {function_name}")
-                        continue
-
-                    print(f"Calling tool: {function_name}")
-
-                    # Invoke the MCP tool
-                    output = await required_function(**kwargs)
-
-                    # Send the tool output back to the model
-                    input_list.append(
-                        FunctionCallOutput(
-                            type="function_call_output",
-                            call_id=item.call_id,
-                            output=output.content[0].text,
-                        )
-                    )
-
-            # Send function outputs back to the agent
-            if input_list:
+                # Get the agent response
                 response = openai_client.responses.create(
+                    conversation=conversation.id,
                     input=input_list,
-                    previous_response_id=response.id,
                     extra_body={
                         "agent_reference": {
                             "name": agent.name,
@@ -213,17 +177,74 @@ async def chat_loop(session):
                     },
                 )
 
-            print(f"AGENT: {response.output_text}")
+                # Check the response status
+                if response.status == "failed":
+                    print(f"Response failed: {response.error}")
+                    continue
 
-        # Delete the agent when done
-        print("Deleting agent...")
+                # Process function calls
+                for item in response.output:
 
-        project_client.agents.delete_version(
-            agent_name=agent.name,
-            agent_version=agent.version,
-        )
+                    if item.type != "function_call":
+                        continue
 
-        print("Deleted agent.")
+                    function_name = item.name
+                    kwargs = json.loads(item.arguments)
+
+                    required_function = functions_dict.get(
+                        function_name
+                    )
+
+                    if required_function is None:
+                        print(f"Tool not found: {function_name}")
+                        continue
+
+                    print(f"Calling tool: {function_name}")
+
+                    # Call the MCP tool
+                    output = await required_function(**kwargs)
+
+                    # Extract text from the MCP tool result
+                    tool_output = "\n".join(
+                        content.text
+                        for content in output.content
+                        if hasattr(content, "text")
+                    )
+
+                    # Send the MCP result back to the agent
+                    input_list.append(
+                        FunctionCallOutput(
+                            type="function_call_output",
+                            call_id=item.call_id,
+                            output=tool_output,
+                        )
+                    )
+
+                # Send tool results back to the same conversation
+                if input_list:
+                    response = openai_client.responses.create(
+                        conversation=conversation.id,
+                        input=input_list,
+                        extra_body={
+                            "agent_reference": {
+                                "name": agent.name,
+                                "type": "agent_reference",
+                            }
+                        },
+                    )
+
+                print(f"AGENT: {response.output_text}")
+
+        finally:
+            # Delete the agent when the application exits
+            print("Deleting agent...")
+
+            project_client.agents.delete_version(
+                agent_name=agent.name,
+                agent_version=agent.version,
+            )
+
+            print("Deleted agent.")
 
 
 async def main():
@@ -232,6 +253,7 @@ async def main():
     try:
         session = await connect_to_server(exit_stack)
         await chat_loop(session)
+
     finally:
         await exit_stack.aclose()
 
