@@ -1,3 +1,4 @@
+````markdown
 ---
 lab:
     title: 'Integrate an AI agent with Foundry IQ'
@@ -9,12 +10,15 @@ lab:
 ---
 
 # Integrate an AI agent with Foundry IQ
+**Note: We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it**
 
-> Note: We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it
+In this exercise, you'll configure an AI agent that uses Foundry IQ to search and retrieve information from a knowledge base. You'll use your existing Foundry project and deployed models, create a search resource and knowledge base with credit-risk assessment data, configure an agent, and then connect to it from Visual Studio Code.
 
-In this exercise, you'll configure an AI agent that uses Foundry IQ to search and retrieve information from a knowledge base. You'll use your existing Foundry project and deployed models, create a search resource and knowledge base with sample data, configure an agent, and then connect to it from Visual Studio Code.
+> **Tip**: The code used in this exercise is based on the Microsoft Foundry SDK for Python. You can develop similar solutions using the SDKs for Microsoft .NET, JavaScript, and Java. Refer to [Microsoft Foundry SDK client libraries](https://learn.microsoft.com/azure/ai-foundry/how-to/develop/sdk-overview) for details.
 
 This exercise should take approximately **45** minutes to complete.
+
+> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
 
 ## Prerequisites
 
@@ -22,7 +26,7 @@ Before starting this exercise, ensure you have:
 
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
-- [Python 3.12 or above](https://www.python.org/downloads/) or later installed
+- [Python 3.13](https://www.python.org/downloads/) or later installed
 - An existing Foundry project with deployed chat and embedding models
 - Basic familiarity with the Microsoft Foundry portal and Python programming
 
@@ -30,33 +34,35 @@ Before starting this exercise, ensure you have:
 
 This lab uses the Foundry project and deployed models that are already available to you. You don't need to create a new Foundry project or deploy a new model for this exercise.
 
+1. In a web browser, open the [Foundry portal](https://ai.azure.com) and sign in using your Azure credentials.
 
-1. In a web browser, open the [Foundry portal](https://ai.azure.com) and sign in using your Azure credentials
+    > **Important**: Make sure the **New Foundry** toggle is *On* so you use the updated interface for this lab.
+
 1. Select your existing Foundry project **(hakunamatata1)** from the project selector.
-1. On the project home page, verify that the **chat model (`gpt-5.4-mini`)** and **embedding model (`text-embedding-3-small`)** are already deployed and available.
+1. On the project home page, verify that a chat model and an embedding model are already deployed and available.
 1. Keep the Foundry portal open. You'll use the existing chat model when creating the agent and knowledge base, and the existing embedding model when creating the knowledge source.
 
 ## Create an agent
 
-With the Foundry project selected and the deployed model available, create an agent that will search the product knowledge base.
+With the Foundry project selected and the deployed model available, create an agent that will search the credit-risk knowledge base.
 
-1. On the project home page, under the **Build an agent** card, click **Start building**.
-1. Create an agent with a descriptive name, such as `product-expert-agent`, set **Interaction mode** to **Text**, and click **Create**.
-> **Note:** If `product-expert-agent` is already in use, try a different unique name.
+1. On the project home page, select the **Build** tab. On the **Agents** tab, select **Create agent**.
+1. Create an agent with a descriptive name, such as `credit-risk-assessment-agent`.
 1. Select your existing deployed chat model if prompted.
 
-    After the agent is created, the agent playground opens. You'll now configure the agent with product information from Foundry IQ.
+    After the agent is created, the agent playground opens. You'll now configure the agent with credit-risk assessment information from Foundry IQ.
 
 ## Configure data and Foundry IQ (The instructor/moderator has already created AI search and Storage account resources for your use; feel free to skip the creation of created AI search and Storage account resources )
 
-First, add instructions to your agent. Then create a search resource, upload the product documents, and create a knowledge base that connects those documents to the agent.
+First, add instructions to your agent. Then create a search resource, upload the credit-risk assessment documents, and create a knowledge base that connects those documents to the agent.
 
 1. Give your agent the following instructions:
 
     ```
-    You are a helpful AI assistant for Contoso, specializing in outdoor camping and hiking products.
-    You must ALWAYS search the knowledge base to answer questions about our products or product
-    catalog. Provide detailed, accurate information and always cite your sources.
+    You are a helpful AI assistant for credit-risk assessment.
+    You must ALWAYS search the knowledge base to answer questions about the company documents,
+    financial information, credit bureau information, and credit-risk assessment rules.
+    Provide detailed, accurate information and always cite your sources.
     If you don't find relevant information in the knowledge base, say so clearly.
     ```
 
@@ -72,15 +78,19 @@ First, add instructions to your agent. Then create a search resource, upload the
     - **Pricing tier**: Basic
     - **Foundry IQ Knowledge base capabilities**: Pause until next month
 
-The search resource provides the retrieval layer for the knowledge base. Next, upload the source product documents.
+The search resource provides the retrieval layer for the knowledge base. Next, upload the source credit-risk assessment documents.
 
-1. Open a new browser tab and download the sample product information files from:
+1. Open the `data` folder for this lab and locate the prepared credit-risk assessment PDF files.
+
+    The folder contains the following files:
 
     ```
-    https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs/raw/main/labfiles/Day-05/Lab-02-integrate-agent-with-foundry-iq/data/contoso-products.zip
+    company_documents.pdf
+    financial_data.pdf
+    credit_bureau_report.pdf
+    credit_risk_assessment_rules.pdf
     ```
 
-1. Extract the ZIP file. It contains three PDFs describing Contoso products.
 1. Open the [Azure portal](https://portal.azure.com). In the top search bar, search for **Storage accounts** and select **Storage accounts**.
 1. Create a storage account with the following settings:
 
@@ -93,21 +103,21 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
     - **Redundancy**: Locally-redundant storage (LRS)
 
 1. After the storage account is created, open it and select **Upload** from the top bar.
-1. In the **Upload blob** pane, create a new container named `contosoproducts`.
-1. Browse to the extracted product files, select all three PDFs, and select **Upload**.
+1. In the **Upload blob** pane, create a new container named `creditriskdocuments`.
+1. Browse to the prepared credit-risk assessment files, select all four PDFs, and select **Upload**.
 1. After the files are uploaded, navigate to the search service you created.
 1. In the left pane, select **Security + networking** > **Keys**. For **API Access control**, select **Both** and confirm the selection.
 1. Leave the Azure portal tab open. Return to the Foundry portal and refresh the page.
 1. On the **Knowledge** page, select **Create a knowledge base**. Choose **Azure Blob Storage** as the knowledge source, then select **Connect**.
 1. Configure the knowledge source with the following settings:
 
-    - **Name**: `ks-contosoproducts`
-    - **Description**: `Contoso product catalog items`
+    - **Name**: `ks-creditriskdocuments`
+    - **Description**: `Credit risk assessment documents`
     - **Storage account name**: Select your storage account
-    - **Container name**: `contosoproducts`
+    - **Container name**: `creditriskdocuments`
     - **Authentication type**: API Key
     - **Content extraction mode**: minimal
-    - **Embedding model**: Select your available deployed embedding model **(text-embedding-ada-002)**
+    - **Embedding model**: Select your available deployed embedding model **(text-embedding-3-small)**
     - **Chat completions model**: Select your available deployed chat model **(gpt-5.4-mini)**
 
 1. Select **Create**.
@@ -118,25 +128,25 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
 1. Select **Key authentication**, then select **Edit authentication**.
 1. Return to the Azure portal tab, which should still show the search service **Keys** page. Copy one key into the Foundry dialog, then select **Save**.
 
-Your Foundry IQ knowledge base is now connected to the product documents and ready for use by your agent.
+Your Foundry IQ knowledge base is now connected to the credit-risk assessment documents and ready for use by your agent.
 
 ## Test the agent in the playground
 
-Before using code, confirm that the portal agent can retrieve product information from the knowledge base.
+Before using code, confirm that the portal agent can retrieve credit-risk assessment information from the knowledge base.
 
-1. Navigate back to your agent from **Build** > **Agents**, then select `product-expert-agent`.
+1. Navigate back to your agent from **Build** > **Agents**, then select `credit-risk-assessment-agent`.
 1. In the playground, find the knowledge section and add Foundry IQ by selecting the connection and knowledge base you created.
 1. Test the agent with the following queries:
 
-    - `What types of tents does Contoso offer?`
-    - `Tell me about which backpacks are available in XL.`
-    - `What camping accessories are available?`
+    - `What documents are available for Apex Manufacturing Pvt Ltd?`
+    - `What financial information is available for Apex Manufacturing Pvt Ltd for 2025?`
+    - `What is the external credit bureau score and industry for Apex Manufacturing Pvt Ltd?`
 
-1. Review the responses. The agent should provide product-specific information, remain grounded in the available data, and may include citations or document references.
+1. Review the responses. The agent should provide company-specific information, remain grounded in the available data, and may include citations or document references.
 1. You can also use **Preview agent** for a more refined web application experience.
 1. In the agent details page, copy the following information to a notepad. You'll use these values when configuring the client application:
 
-    - **Agent name**: The name you created, such as `product-expert-agent`
+    - **Agent name**: The name you created, such as `credit-risk-assessment-agent`
     - **Project endpoint**: Available from the project home page or project settings
 
 ### Configure approval for tool calls
@@ -159,7 +169,7 @@ By default, the Foundry IQ knowledge tool runs without asking for approval. To l
     > **Note**: If you cannot sign in through Foundry Toolkit, select the Azure extension and sign in there. Then return to Foundry Toolkit to access your resources.
 
 1. Under **Microsoft Foundry Resources**, choose **Set Default Project** and select the project used in this lab.
-1. Expand the project. Under **Prompt Agents**, select `product-expert-agent` to open **Agent Builder**.
+1. Expand the project. Under **Prompt Agents**, select `credit-risk-assessment-agent` to open **Agent Builder**.
 
     ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/abc.png)
    
@@ -214,9 +224,9 @@ Now that the agent and knowledge base work in the portal, use the provided Pytho
 
 The application needs the project endpoint and the name of the agent you created in the portal.
 
-1. In Visual Studio Code, open the **.env** file in the `Lab-02-integrate-agent-with-foundry-iq\python` folder.
+1. In Visual Studio Code, open the **.env** file in the `Lab-02-integrate-agent-with-foundry-iq\\python` folder.
 1. Replace the **your_project_endpoint** placeholder with your project endpoint.
-1. Set the `AGENT_NAME` variable to your agent name, such as `product-expert-agent`.
+1. Set the `AGENT_NAME` variable to your agent name, such as `credit-risk-assessment-agent`.
 1. Save the file with **Ctrl+S**.
 
 ### Complete the agent client code
@@ -225,7 +235,7 @@ The application needs the project endpoint and the name of the agent you created
 
 > **Tip**: As you add code, maintain the correct indentation. Use the comment indentation levels as a guide.
 
-1. In the `Lab-02-integrate-agent-with-foundry-iq\python` folder, open **agent_client.py**.
+1. In the `Lab-02-integrate-agent-with-foundry-iq\\python` folder, open **agent_client.py**.
 1. Review the starter code, including the imports and configuration loading, the `send_message_to_agent()` and `display_conversation_history()` functions, and the main program loop.
 1. Find the first **TODO** comment and add the following code to connect to the project and agent, then create a conversation:
 
@@ -334,7 +344,7 @@ The application needs the project endpoint and the name of the agent you created
 
 You're ready to run the client and confirm that it can retrieve knowledge-base information through the agent.
 
-1. In the `Lab-02-integrate-agent-with-foundry-iq\python` folder, right-click and select **Open in Integrated Terminal**.
+1. In the `Lab-02-integrate-agent-with-foundry-iq\\python` folder, right-click and select **Open in Integrated Terminal**.
 1. Create a virtual environment and install dependencies:
 
     ```
@@ -360,34 +370,34 @@ You're ready to run the client and confirm that it can retrieve knowledge-base i
 
 1. Test the following queries. When prompted, enter **yes** to approve the Foundry IQ lookup.
 
-    **Product categories**
+    **Available company documents**
 
     ```
-    What types of outdoor products does Contoso offer?
+    What documents are available for Apex Manufacturing Pvt Ltd?
     ```
 
-    **Specific product details**
+    **Financial information**
 
     ```
-    Tell me about the weatherproof features of your tents.
+    What financial information is available for Apex Manufacturing Pvt Ltd for 2025?
     ```
 
-    **Product comparison**
+    **Financial ratio analysis**
 
     ```
-    What's the difference between your daypacks and expedition backpacks?
+    What are the current ratio, debt-to-equity ratio, and net profit margin for Apex Manufacturing Pvt Ltd?
     ```
 
-    **Accessories and add-ons**
+    **Credit bureau information**
 
     ```
-    What camping accessories would you recommend for a weekend hiking trip?
+    What is the external credit bureau score and industry for Apex Manufacturing Pvt Ltd?
     ```
 
-    **Follow-up question**
+    **Credit-risk assessment rules**
 
     ```
-    How much do those items typically cost?
+    What credit-risk assessment rules should be used for Apex Manufacturing Pvt Ltd?
     ```
 
 1. Type `history` to view the complete conversation history.
@@ -398,7 +408,7 @@ You're ready to run the client and confirm that it can retrieve knowledge-base i
 Consider the following aspects of the agent's responses:
 
 - **MCP approval flow**: Each knowledge-base lookup requires your approval.
-- **Accuracy**: The agent retrieves information from the indexed product documents.
+- **Accuracy**: The agent retrieves information from the indexed credit-risk assessment documents.
 - **Citations**: The response may include source references or document IDs.
 - **Context awareness**: The agent maintains context for follow-up messages in the same conversation.
 - **Grounding**: The agent should state clearly when no relevant information is found in the knowledge base.
@@ -409,8 +419,8 @@ Consider the following aspects of the agent's responses:
 In this exercise, you:
 
 - Used an existing Foundry project and deployed models.
-- Created a product-expert agent and configured Foundry IQ.
-- Added Contoso product documents to an Azure Blob Storage knowledge source.
+- Created a credit-risk-assessment agent and configured Foundry IQ.
+- Added credit-risk assessment documents to an Azure Blob Storage knowledge source.
 - Created and connected an Azure AI Search-backed knowledge base.
 - Configured the agent to request approval before querying the knowledge base.
 - Connected a Python client application to the agent and tested approval-controlled knowledge retrieval.

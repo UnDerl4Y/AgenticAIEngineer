@@ -31,86 +31,12 @@ Before starting this exercise, ensure you have:
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
 - An active [Azure subscription](https://azure.microsoft.com/free/)
 - [Python 3.13](https://www.python.org/downloads/) or later installed
+* **Foundry Toolkit for VS Code** extension
 
-> \* Python 3.13 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.13.12.
+> **Tip:** If you haven't installed it yet, refer to the [Day 05 Lab 01: Agent Custom Tools](https://github.com/kiran-255666/AgenticAIEngineer/blob/main/Instructions/Exercises/Day05/lab01-agent-custom-tools.md) lab for installation instructions.
 
-## Access your Foundry project with the Foundry Toolkit for VS Code extension
 
-> **Note**: If the Foundry Toolkit extension is already installed and you have a default Foundry project active from a previous lab, skip this section and go straight to [Use the deployed model](#use-the-deployed-model).
-
-Before you can work with agents, you need a way to reach your Foundry project resources from inside VS Code. The Foundry Toolkit extension gives you that connection, but it depends on the Azure CLI being installed first, so let's set both up in order.
-
-1. Install Azure CLI using the following link: [https://aka.ms/installazurecliwindows](https://aka.ms/installazurecliwindows). Click the link to download the installer. The download will start automatically and the installer will be available in your **Downloads** folder. If the download does not start automatically, copy and paste the link into your browser.
-
-    ![Screenshot of the Azure CLI installer downloaded in the Downloads folder.](../../media/azure-cli-download.png)
-
-2. After the download is complete, run the installer and follow the installation steps.
-
-    ![Screenshot of the Azure CLI installation setup wizard.](../../media/azure-cli-install-wizard.png)
-
-With Azure CLI installed, you're ready to connect Visual Studio Code to your Foundry resources. As a developer, you may spend time working in the Microsoft Foundry portal, but most development tasks are typically performed in Visual Studio Code. The Foundry Toolkit extension enables you to work with Foundry project resources directly within Visual Studio Code, allowing you to stay within your development environment.
-
-1. Open Visual Studio Code.
-
-2. Select **Extensions** from the left pane (or press **Ctrl+Shift+X**).
-
-3. Search the Extensions Marketplace for the **Foundry Toolkit** extension from Microsoft and select **Install**.
-
-    > **Note**: The extension is currently listed as **Foundry Toolkit for VS Code**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience. Below is a snippet of the new version, which is the official **Foundry Toolkit for VS Code** extension published by Microsoft.
-
-    ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/foundry-toolkit-extension.png)
-
-4. After installing the extension, select its icon in the sidebar to open the Foundry Toolkit view.
-
-    You'll initially see the default **My Resources** and **Developer Tools** sections in the panel, but they won't be populated with your actual project data. To use the extension's full functionality and complete this lab, you need to sign in to your Azure account.
-
-    ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/foundry-toolkit-sidebar.png)
-
-5. Open the integrated terminal (**Ctrl+Shift+`**) and run the following command to sign in to Azure:
-
-    ```powershell
-    az login
-    ```
-
-    A browser window will open automatically, asking you to sign in. Select the email address provided by your trainer, then select **Continue**.
-
-    Back in the terminal, you'll see a prompt similar to:
-
-    ```
-    Select a subscription and tenant (Type a number or Enter for no changes):
-    ```
-
-    Type **1** and press **Enter** to select the default subscription (or the one provided by your trainer). You'll then see confirmation that the default subscription has been set, along with your account details.
-
-    > **Note**: Sometimes you might additionally be prompted to sign in to Azure below this step too — if so, complete that sign-in the same way, using the same assigned account. You might be prompted to authenticate more than once during the setup process. If prompted, use the same assigned account to complete each authentication request.
-
-    If the sign-in completes without any issues, skip ahead to step 8. If you see an error saying the `az` command isn't recognized, go to step 6. If the sign-in window closes or gets cancelled partway through, go to step 7.
-
-6. If the `az` command isn't recognized (e.g., `'az' is not recognized as a name of a cmdlet, function, script file, or executable program`), Azure CLI likely isn't installed correctly, or the terminal session started before the installation finished updating your PATH.
-
-    > **Troubleshooting**: To fix this:
-    > 1. Close and reopen the integrated terminal (or restart VS Code entirely), then try `az login` again.
-    > 2. If the error persists, uninstall and reinstall Azure CLI using the following commands:
-    >    ```powershell
-    >    winget uninstall Microsoft.AzureCLI
-    >    winget install Microsoft.AzureCLI
-    >    ```
-    > 3. Restart the terminal after installation completes, then run `az login` again.
-
-7. If the sign-in window is closed accidentally or cancelled (you may see `User cancelled the Accounts Control Operation`), run the following commands to reset the session and try again:
-
-    ```powershell
-    az logout
-    az login
-    ```
-
-8. Verify that a default project is already active. The project name will appear under **My Resources**.
-
-    > **Tip**: To switch to a different project, select **Models** in the left panel under **My Resources**. You'll see two options: **Switch Project** and **Create Project**. Select **Switch Project** to change your default Azure Resources project.
-
-    ![Screenshot of the Foundry Toolkit sidebar showing the active default project under My Resources after signing in.](../../media/foundry-toolkit-default-project.png)
-
-With Azure CLI installed, the Foundry Toolkit signed in, and a default project active, VS Code is now connected to your Foundry resources — including the model that's already deployed in that project. The next step is to point your agent code at that deployment.
+> \* Python 3.13 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.12.10.
 
 ## Use the deployed model
 
@@ -118,171 +44,244 @@ Use the deployed model that's already available in your Foundry project. Right-c
 
 ![Screenshot of copying the project endpoint in the Foundry Toolkit VS Code extension.](../../media/vs-code-endpoint.png)
 
-## Download the starter code repository
+# Get the application files from GitHub
 
-For this exercise, you'll use starter code that will help you connect to your Foundry project and create a multi-agent solution that can process customer feedback.
+1. If you have already downloaded and extracted the repository in a previous lab, delete the existing ZIP file and the extracted folder. This will allow us to use the PowerShell commands in the following steps and help avoid long path issues.
 
-> **Note**: If you've already downloaded and extracted the repository in a previous lab, skip ahead to step 5 below.
+2. Open a web browser and go to the [lab files on GitHub](https://github.com/Kiran-255666/AgenticAIEngineer).
 
-1. In a browser like Microsoft Edge, browse to [https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs](https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs) and download the repository as a ZIP file into your VM.
-2. The repository will download to your Downloads folder. Right-click the file and select **Extract All** to unzip the file.
-3. In VS Code, click on the **File** menu, then select **Open Folder**.
-4. Select the folder that you unzipped in the previous step.
-5. Once the repository opens, select **File > Open Folder** and navigate to `agentic-ai-azure-ai-foundry-labs\labfiles\Day-05\Lab-03-agent-frameword-multi-agents\python`, then choose **Select Folder**.
-6. In the Explorer pane, view the code files for this exercise.
-7. Right-click on the **requirements.txt** file and select **Open in Integrated Terminal**.
-8. In the terminal, enter the following command to install the required Python packages in a virtual environment:
+3. On the repository page, select the green **`<> Code`** button, and then select **Download ZIP**.
 
-    ```
-    python -m venv labenv
-    .\labenv\Scripts\Activate.ps1
-    pip install -r requirements.txt
-    ```
+4. Once the download finishes, extract the ZIP file.
 
-9. Open the **.env** file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project deployment resource in the Foundry Toolkit extension) and ensure that the MODEL_DEPLOYMENT_NAME variable is set to your deployed model's name. Use **Ctrl+S** to save the file after making these changes.
+5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
-## Create AI agents (Note: We have the code updated in the mentioned files instructions but verify before you start the execution, so that there are no indentation issues)
+   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/POWERSHELL.png)
 
-Now you're ready to create the agents for your multi-agent solution! Let's get started!
+```powershell
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab03-agent-framework-multi-agents" "$env:USERPROFILE\Desktop\lab03-agent-framework-multi-agents" -Recurse
 
-1. Open the **agents.py** file in the code editor.
+code "$env:USERPROFILE\Desktop\lab03-agent-framework-multi-agents"
+```
 
-1. At the top of the file under the comment **Add references**, and add the following code to reference the namespaces in the libraries you'll need to implement your agent:
+The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
 
-    ```python
-   # Add references
-   from agent_framework import Message
-   from agent_framework.foundry import FoundryChatClient
-   from agent_framework.orchestrations import SequentialBuilder
-   from azure.identity import AzureCliCredential
-    ```
+This folder already contains the application files and the required code for this exercise.
 
-1. In the **main** function, take a moment to review the agent instructions. These instructions define the behavior of each agent in the orchestration.
+6. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
 
-1. Add the following code under the comment **Create the chat client**:
+7. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
 
-    ```python
-   # Create the chat client
-   credential = AzureCliCredential()
-   chat_client = FoundryChatClient(
-       credential=credential,
-       project_endpoint=os.getenv("AZURE_AI_PROJECT_ENDPOINT"),
-       model=os.getenv("AZURE_AI_MODEL_DEPLOYMENT_NAME"),
-   )
-    ```
+   ```
+   python -m venv labenv
+   .\labenv\Scripts\Activate.ps1
+   pip install -r requirements.txt
+   ```
 
-    Note that the **AzureCliCredential** object will allow your code to authenticate to your Azure account. The **FoundryChatClient** object connects to your Foundry project using the endpoint and model deployment name from the .env configuration.
+8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-1. Add the following code under the comment **Create agents**:
+## Review the AI agents
 
-    (Be sure to maintain the indentation level)
+The `agents.py` file already contains the code required to create and run the Credit Risk Assessment multi-agent workflow.
 
-    ```python
-   # Create agents
-   summarizer_agent = chat_client.as_agent(
-       name="summarizer",
-       instructions=summarizer_instructions,
-   )
+> **Note:** The code has already been updated for the current Credit Risk Assessment use case. Before running the application, review the code in `agents.py` and make sure the indentation and configuration are correct.
 
-   classifier_agent = chat_client.as_agent(
-       name="classifier",
-       instructions=classifier_instructions,
-   )
+1. Open the **`agents.py`** file in the code editor.
 
-   action_agent = chat_client.as_agent(
-       name="action",
-       instructions=action_instructions,
-   )
-    ```
+2. At the top of the file, review the references under **Add references**:
 
-## Create a sequential orchestration (Note: We have the code updated in the mentioned files instructions but verify before you start the execution, so that there are no indentation issues)
+```python
+from agent_framework import Message
+from agent_framework.foundry import FoundryChatClient
+from agent_framework.orchestrations import SequentialBuilder
+from azure.identity import AzureCliCredential
+```
 
-1. In the **main** function, find the comment **Initialize the current feedback** and add the following code:
+These libraries are used to create the Foundry chat client, define the agents, build the sequential orchestration, and process the agent messages.
 
-    (Be sure to maintain the indentation level)
+3. In the `main()` function, review the instructions for the three agents:
 
-    ```python
-   # Initialize the current feedback
-   feedback="""
-   I use the dashboard every day to monitor metrics, and it works well overall. 
-   But when I'm working late at night, the bright screen is really harsh on my eyes. 
-   If you added a dark mode option, it would make the experience much more comfortable.
-   """
-    ```
+   * **Document Verification Agent** → reviews the required company documents and checks whether the company names match.
+   * **Financial Analysis Agent** → calculates the Current Ratio, Debt-to-Equity Ratio, and Net Profit Margin.
+   * **Credit Risk Assessment Agent** → reviews the results from the previous agents and prepares a credit-risk assessment.
 
-1. Under the comment **Build a sequential orchestration**, add the following code to define a sequential orchestration with the agents you defined:
+4. Review the **Create the chat client** section:
 
-    ```python
-   # Build sequential orchestration
-   workflow = SequentialBuilder(
-       participants=[summarizer_agent, classifier_agent, action_agent],
-       output_from="all",
-   ).build()
-    ```
+```python
+credential = AzureCliCredential()
 
-    The agents will process the feedback in the order they are added to the orchestration. The `output_from="all"` parameter ensures that outputs from all agents are collected.
+chat_client = FoundryChatClient(
+    credential=credential,
+    project_endpoint=os.getenv("AZURE_AI_PROJECT_ENDPOINT"),
+    model=os.getenv("AZURE_AI_MODEL_DEPLOYMENT_NAME"),
+)
+```
 
-1. Add the following code under the comment **Run and collect outputs**:
+The `AzureCliCredential` object authenticates the application using your Azure account. The `FoundryChatClient` connects to the Azure AI Foundry project using the project endpoint and model deployment configured in the `.env` file.
 
-    ```python
-   # Run and collect outputs
-   result = await workflow.run(f"Customer feedback: {feedback}")
-   outputs = result.get_outputs()
-    ```
+5. Review the **Create agents** section. The three agents are created from the same Foundry chat client, with each agent receiving its own instructions.
 
-    This code runs the orchestration and collects the output from each of the participating agents.
+6. Review the **credit-risk data** provided to the workflow. The sample data contains information such as:
 
-1. Add the following code under the comment **Display outputs**:
+```text
+Company: Apex Manufacturing Pvt Ltd
+Financial Year: 2025
+Current Assets: 7,800,000
+Current Liabilities: 5,000,000
+Total Debt: 9,300,000
+Shareholders' Equity: 5,000,000
+Revenue: 9,000,000
+Net Profit: 500,000
+External Credit Bureau Score: 720
+Industry: Manufacturing
+```
 
-    ```python
-   # Display outputs
-   i = 1
-   for response in outputs:
-       for msg in cast(list[Message], response.messages):
-           name = msg.author_name or ("assistant" if msg.role == "assistant" else "user")
-           print(f"{'-' * 60}\n{i:02d} [{name}]\n{msg.text}")
-           i += 1
-    ```
+7. Review the **Build a sequential orchestration** section:
 
-    This code formats and displays the messages from the workflow outputs you collected from the orchestration.
+```python
+workflow = SequentialBuilder(
+    participants=[
+        document_verification_agent,
+        financial_analysis_agent,
+        credit_risk_agent,
+    ],
+    output_from="all",
+).build()
+```
 
-1. Use the **CTRL+S** command to save your changes to the code file.
+The agents process the credit-risk information in the order they are added to the orchestration. The `output_from="all"` setting collects the output from each agent so you can review the individual stages of the workflow.
+
+The overall flow is:
+
+```mermaid
+flowchart LR
+    A[Credit Risk Data] --> B[Document Verification Agent]
+    B --> C[Financial Analysis Agent]
+    C --> D[Credit Risk Assessment Agent]
+    D --> E[Final Assessment]
+```
+
+8. Review the **Run and collect outputs** section:
+
+```python
+result = await workflow.run(
+    f"Perform a credit-risk assessment using the following information:\n\n"
+    f"{credit_risk_data}"
+)
+
+outputs = result.get_outputs()
+```
+
+This runs the sequential workflow and collects the outputs produced by the participating agents.
+
+9. Review the **Display outputs** section:
+
+```python
+i = 1
+
+for response in outputs:
+    for msg in cast(list[Message], response.messages):
+        name = msg.author_name or (
+            "assistant" if msg.role == "assistant" else "user"
+        )
+
+        print(
+            f"{'-' * 60}\n"
+            f"{i:02d} [{name}]\n"
+            f"{msg.text}"
+        )
+
+        i += 1
+```
+
+This formats and displays the messages returned by each agent so that you can see how the credit-risk assessment progresses through the workflow.
+
+10. Press **Ctrl+S** to save the file.
 
 ## Test the application
 
-Now you're ready to run your code and watch your AI agents collaborate.
+The application is now ready to run.
 
-1. In the integrated terminal, enter the following commands to run the application:
+1. In the integrated terminal, make sure you are logged in to Azure:
 
-    ```
-    az login
-    ```
+```powershell
+az login
+```
 
-    ```
-   python agents.py
-    ```
+2. If your virtual environment is not already active, activate it:
 
-1. You should see some output similar to the following:
+```powershell
+.\labenv\Scripts\Activate.ps1
+```
 
-    ```output
-    User requests a dark mode option for more comfortable nighttime use.
-    Feature request
-    Log as enhancement request to add dark mode for improved user comfort during nighttime use.
-    ------------------------------------------------------------
-    01 [summarizer]
-    User requests a dark mode option for more comfortable nighttime use.
-    ------------------------------------------------------------
-    02 [classifier]
-    Feature request
-    ------------------------------------------------------------
-    03 [action]
-    Log as enhancement request to add dark mode for improved user comfort during nighttime use.
-    ```
+3. Run the application:
 
-1. Optionally, you can try running the code using different feedback inputs, such as:
+```powershell
+python agents.py
+```
 
-    ```output
-    I reached out to your customer support yesterday because I couldn't access my account. The representative responded almost immediately, was polite and professional, and fixed the issue within minutes. Honestly, it was one of the best support experiences I've ever had.
-    ```
+### Expected output
 
-1. When you're finished, enter `deactivate` in the terminal to exit the Python virtual environment.
+The exact wording can vary because the responses are generated by the AI agents. You should see output from the three agents in sequence.
+
+The first agent should provide a document verification result similar to:
+
+```text
+------------------------------------------------------------
+01 [document_verification]
+
+Documents available and company names match.
+```
+
+The financial analysis agent should calculate values similar to:
+
+```text
+------------------------------------------------------------
+02 [financial_analysis]
+
+Current Ratio: 1.56
+Debt-to-Equity Ratio: 1.86
+Net Profit Margin: 5.56%
+```
+
+The credit-risk assessment agent should then summarize the information, for example:
+
+```text
+------------------------------------------------------------
+03 [credit_risk_assessment]
+
+Credit-risk assessment for Apex Manufacturing Pvt Ltd:
+
+- Document verification: Documents available and company names match.
+- Current Ratio: 1.56
+- Debt-to-Equity Ratio: 1.86
+- Net Profit Margin: 5.56%
+- External Credit Bureau Score: 720
+- Industry: Manufacturing
+
+The assessment is based on the information provided in the workflow.
+```
+
+> **Note:** The exact responses may differ from these examples because the agents generate their responses dynamically. Focus on verifying that all three agents run successfully and that the output from each stage is passed through the sequential workflow.
+
+4. You can modify the sample company or financial values in `credit_risk_data` and run the application again to observe how the agents respond to different inputs.
+
+5. When you are finished, deactivate the virtual environment:
+
+```powershell
+deactivate
+```
+
+## Summary
+
+In this exercise, you used **Agent Framework** to create a sequential multi-agent workflow for Credit Risk Assessment.
+
+You reviewed how:
+
+* The **Document Verification Agent** reviews required company documents.
+* The **Financial Analysis Agent** calculates key financial ratios.
+* The **Credit Risk Assessment Agent** uses the preceding outputs to prepare an assessment.
+* **`SequentialBuilder`** passes the workflow through the agents in sequence.
+* The outputs from all agents are collected and displayed for review.
+
+The key takeaway is that a multi-agent workflow can divide a larger Credit Risk Assessment task into separate stages, with each specialized agent handling a specific part of the process.
