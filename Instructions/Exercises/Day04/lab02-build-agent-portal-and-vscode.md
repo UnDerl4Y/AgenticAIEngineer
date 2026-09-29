@@ -140,7 +140,7 @@ Return to the agent playground.
 2. The `textfiles` folder, which you downloaded earlier as part of the lab, already contains the following file:
 
    ```text
-   Credit_Risk_Calculation_Rules.txt
+   Forumlas.txt
    ```
 
    This file contains the calculation rules for:
