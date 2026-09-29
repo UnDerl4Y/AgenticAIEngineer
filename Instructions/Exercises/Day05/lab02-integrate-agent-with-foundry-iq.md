@@ -9,15 +9,12 @@ lab:
 ---
 
 # Integrate an AI agent with Foundry IQ
-**Note: We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it**
+
+> Note: We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it
 
 In this exercise, you'll configure an AI agent that uses Foundry IQ to search and retrieve information from a knowledge base. You'll use your existing Foundry project and deployed models, create a search resource and knowledge base with sample data, configure an agent, and then connect to it from Visual Studio Code.
 
-> **Tip**: The code used in this exercise is based on the Microsoft Foundry SDK for Python. You can develop similar solutions using the SDKs for Microsoft .NET, JavaScript, and Java. Refer to [Microsoft Foundry SDK client libraries](https://learn.microsoft.com/azure/ai-foundry/how-to/develop/sdk-overview) for details.
-
 This exercise should take approximately **45** minutes to complete.
-
-> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
 
 ## Prerequisites
 
@@ -25,7 +22,7 @@ Before starting this exercise, ensure you have:
 
 - An [Azure subscription](https://azure.microsoft.com/free/)
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
-- [Python 3.13](https://www.python.org/downloads/) or later installed
+- [Python 3.12 or above](https://www.python.org/downloads/) or later installed
 - An existing Foundry project with deployed chat and embedding models
 - Basic familiarity with the Microsoft Foundry portal and Python programming
 
@@ -33,20 +30,19 @@ Before starting this exercise, ensure you have:
 
 This lab uses the Foundry project and deployed models that are already available to you. You don't need to create a new Foundry project or deploy a new model for this exercise.
 
-1. In a web browser, open the [Foundry portal](https://ai.azure.com) and sign in using your Azure credentials.
 
-    > **Important**: Make sure the **New Foundry** toggle is *On* so you use the updated interface for this lab.
-
+1. In a web browser, open the [Foundry portal](https://ai.azure.com) and sign in using your Azure credentials
 1. Select your existing Foundry project **(hakunamatata1)** from the project selector.
-1. On the project home page, verify that a chat model and an embedding model are already deployed and available.
+1. On the project home page, verify that the **chat model (`gpt-5.4-mini`)** and **embedding model (`text-embedding-3-small`)** are already deployed and available.
 1. Keep the Foundry portal open. You'll use the existing chat model when creating the agent and knowledge base, and the existing embedding model when creating the knowledge source.
 
 ## Create an agent
 
 With the Foundry project selected and the deployed model available, create an agent that will search the product knowledge base.
 
-1. On the project home page, select the **Build** tab. On the **Agents** tab, select **Create agent**.
-1. Create an agent with a descriptive name, such as `product-expert-agent`.
+1. On the project home page, under the **Build an agent** card, click **Start building**.
+1. Create an agent with a descriptive name, such as `product-expert-agent`, set **Interaction mode** to **Text**, and click **Create**.
+> **Note:** If `product-expert-agent` is already in use, try a different unique name.
 1. Select your existing deployed chat model if prompted.
 
     After the agent is created, the agent playground opens. You'll now configure the agent with product information from Foundry IQ.
