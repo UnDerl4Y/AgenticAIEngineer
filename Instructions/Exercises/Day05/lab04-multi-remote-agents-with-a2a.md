@@ -14,11 +14,7 @@ lab:
 
 In this exercise, you'll use Azure AI Agent Service with the A2A protocol to create simple remote agents that interact with one another. These agents will assist technical writers with preparing their developer blog posts. A title agent will generate a headline, and an outline agent will use the title to develop a concise outline for the article. Let's get started.
 
-> **Tip**: The code used in this exercise is based on the Microsoft Foundry SDK for Python. You can develop similar solutions using the SDKs for Microsoft .NET, JavaScript, and Java. Refer to [Microsoft Foundry SDK client libraries](https://learn.microsoft.com/azure/ai-foundry/how-to/develop/sdk-overview) for details.
-
 This exercise should take approximately **30** minutes to complete.
-
-> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
 
 ## Prerequisites
 
@@ -27,95 +23,46 @@ Before starting this exercise, ensure you have:
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
 - An active [Azure subscription](https://azure.microsoft.com/free/)
 - [Python 3.13](https://www.python.org/downloads/) or later installed
+- Foundry Toolkit for VS Code extension 
 
 
-> \* Python 3.13 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.13.12.
+> \* Python 3.13 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.12.10
 
-## Access your Foundry project with the Foundry Toolkit for VS Code extension 
-1. Before we start with this exercise, let's download Azure CLI using the link- https://aka.ms/installazurecliwindows (browser the URL in any browser to download it) and after downloading it, please install it.
-As a developer, you may spend some time working in the Foundry portal; but you’re also likely to spend a lot of time in Visual Studio Code. The Foundry Toolkit for VS Code extension provides a convenient way to work with Foundry project resources without leaving the development environment.
+# Get the application files from GitHub
 
-1. Open Visual Studio Code.
+1. If you have already downloaded and extracted the repository in a previous lab, delete the existing ZIP file and the extracted folder. This will allow us to use the PowerShell commands in the following steps and help avoid long path issues.
 
-2. Select **Extensions** from the left pane (or press **Ctrl+Shift+X**).
+2. Open a web browser and go to the [lab files on GitHub](https://github.com/Kiran-255666/AgenticAIEngineer).
 
-3. Search the Extensions Marketplace for the **Foundry Toolkit** extension from Microsoft and select **Install**.
+3. On the repository page, select the green **`<> Code`** button, and then select **Download ZIP**.
 
-    > **Note**: The extension is currently listed as **Foundry Toolkit for VS Code**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience. Below is a snippet of the new version, which is the official **Foundry Toolkit for VS Code** extension published by Microsoft.
+4. Once the download finishes, extract the ZIP file.
 
-    ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/foundry-toolkit-extension.png)
+5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
-4. After installing the extension, select its icon in the sidebar to open the Foundry Toolkit view.
+   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/POWERSHELL.png)
 
-    You'll initially see the default **My Resources** and **Developer Tools** sections in the panel, but they won't be populated with your actual project data. To use the extension's full functionality and complete this lab, you need to sign in to your Azure account.
+```powershell
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab04-multi-remote-agents-with-a2a" "$env:USERPROFILE\Desktop\lab04-multi-remote-agents-with-a2a" -Recurse
 
-    ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/foundry-toolkit-sidebar.png)
+code "$env:USERPROFILE\Desktop\lab04-multi-remote-agents-with-a2a"
+```
 
-5. Open the integrated terminal (**Ctrl+Shift+`**) and run the following command to sign in to Azure:
+The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
 
-    ```powershell
-    az login
-    ```
+This folder already contains the application files and the required code for this exercise.
 
-    A browser window will open automatically, asking you to sign in. Select the email address provided by your trainer, then select **Continue**.
+6. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
 
-    Back in the terminal, you'll see a prompt similar to:
+7. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
 
-    ```
-    Select a subscription and tenant (Type a number or Enter for no changes):
-    ```
-
-    Type **1** and press **Enter** to select the default subscription (or the one provided by your trainer). You'll then see confirmation that the default subscription has been set, along with your account details.
-
-    > **Note**: Sometimes you might additionally be prompted to sign in to Azure below this step too — if so, complete that sign-in the same way, using the same assigned account. You might be prompted to authenticate more than once during the setup process. If prompted, use the same assigned account to complete each authentication request.
-
-    If the sign-in completes without any issues, skip ahead to step 8. If you see an error saying the `az` command isn't recognized, go to step 6. If the sign-in window closes or gets cancelled partway through, go to step 7.
-
-6. If the `az` command isn't recognized (e.g., `'az' is not recognized as a name of a cmdlet, function, script file, or executable program`), Azure CLI likely isn't installed correctly, or the terminal session started before the installation finished updating your PATH.
-
-    > **Troubleshooting**: To fix this:
-    > 1. Close and reopen the integrated terminal (or restart VS Code entirely), then try `az login` again.
-    > 2. If the error persists, uninstall and reinstall Azure CLI using the following commands:
-    >    ```powershell
-    >    winget uninstall Microsoft.AzureCLI
-    >    winget install Microsoft.AzureCLI
-    >    ```
-    > 3. Restart the terminal after installation completes, then run `az login` again.
-
-7. If the sign-in window is closed accidentally or cancelled (you may see `User cancelled the Accounts Control Operation`), run the following commands to reset the session and try again:
-
-    ```powershell
-    az logout
-    az login
-    ```
-
-8. Verify that a default project is already active. The project name will appear under **My Resources**.
-
-    > **Tip**: To switch to a different project, select **Models** in the left panel under **My Resources**. You'll see two options: **Switch Project** and **Create Project**. Select **Switch Project** to change your default Azure Resources project.
-
-    ![Screenshot of the Foundry Toolkit sidebar showing the active default project under My Resources after signing in.](../../media/foundry-toolkit-default-project.png)
-
-## Download the starter code repository
-
-For this exercise, you'll use starter code that will help you connect to your Foundry project and create an agent that uses MCP server tools.
-
-1. In a browser like Microsoft Edge, browse the URL: https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs and download the repository into your VM.
-2. The Repository will get download in Downloads folder, right click the file and select Extract all to unzip the zip file.
-3. In VS Code, click on File menu, then select open Folder.
-4. Select the folder that you have unzipped in the previous step.
-1. Once the repository opens, Open Visual Studio code, select **File > Open Folder** and navigate to `agentic-ai-azure-ai-foundry-labs\labfiles\Day-05\Lab-04-multi-remote-agents-with-a2a\python`
-
-1. Right-click on the **requirements.txt** file and select **Open in Integrated Terminal**.
-
-1. In the terminal, enter the following command to install the required Python packages in a virtual environment:
-
-    ```
+   ```
    python -m venv labenv
    .\labenv\Scripts\Activate.ps1
    pip install -r requirements.txt
-    ```
+   ```
 
-1. Open the **.env** file, replace the **your_project_endpoint** placeholder with the endpoint for your project copied from the project deployment resource in the Foundry Toolkit extension. If the endpoint does not work, copy the **Project endpoint** from your project in the Azure AI Foundry portal (**https://ai.azure.com/**). Ensure that the **MODEL_DEPLOYMENT_NAME** variable is set to your model deployment name, then use **Ctrl+S** to save the file.
+8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
 ## Create a discoverable agent (We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it)
 
