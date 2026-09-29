@@ -24,539 +24,334 @@ Before starting this exercise, ensure you have:
 
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
 - An active [Azure subscription](https://azure.microsoft.com/free/)
-- [Python 3.13](https://www.python.org/downloads/) or later installed
+- [Python 3.12 or above](https://www.python.org/downloads/) or later installed
 - Install Azure CLI using the link- https://aka.ms/installazurecliwindows
+- Foundry Toolkit for VS Code
+
+> **Note:** If you have already installed and configured the **Foundry Toolkit for VS Code** extension, skip this section and proceed to the next step. If not, follow the installation steps in the [AgenticAIEngineer Day 05 Lab 01 documentation](https://github.com/uday-meteoros/AgenticAIEngineer/blob/main/Instructions/Exercises/Day05/lab01-agent-custom-tools.md).
+
 
 
 > \* Python 3.13 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.12.
 
-## Access your Foundry project with the Foundry Toolkit for VS Code extension 
-
-1. Before starting the lab, install Azure CLI using the following link: [https://aka.ms/installazurecliwindows](https://aka.ms/installazurecliwindows). Click the link to download the installer. The download will start automatically and the installer will be available in your **Downloads** folder. If the download does not start automatically, copy and paste the link into your browser.
-
-    ![Screenshot of the Azure CLI installer downloaded in the Downloads folder.](../../media/azure-cli-download.png)
-
-2. After the download is complete, run the installer and follow the installation steps.
-
-    ![Screenshot of the Azure CLI installation setup wizard.](../../media/azure-cli-install-wizard.png)
-
-As a developer, you may spend time working in the Microsoft Foundry portal, but most development tasks are typically performed in Visual Studio Code. The Foundry Toolkit extension enables you to work with Foundry project resources directly within Visual Studio Code, allowing you to stay within your development environment.
-
-1. Open Visual Studio Code.
-
-2. Select **Extensions** from the left pane (or press **Ctrl+Shift+X**).
-
-3. Search the Extensions Marketplace for the **Foundry Toolkit** extension from Microsoft and select **Install**.
-
-    > **Note**: The extension is currently listed as **Foundry Toolkit for VS Code**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience. Below is a snippet of the new version, which is the official **Foundry Toolkit for VS Code** extension published by Microsoft.
-
-    ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/foundry-toolkit-extension.png)
-
-4. After installing the extension, select its icon in the sidebar to open the Foundry Toolkit view.
-
-    You'll initially see the default **My Resources** and **Developer Tools** sections in the panel, but they won't be populated with your actual project data. To use the extension's full functionality and complete this lab, you need to sign in to your Azure account.
-
-    ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/foundry-toolkit-sidebar.png)
-
-5. Open the integrated terminal (**Ctrl+Shift+`**) and run the following command to sign in to Azure:
-
-    ```powershell
-    az login
-    ```
-
-    A browser window will open automatically, asking you to sign in. Select the email address provided by your trainer, then select **Continue**.
-
-    Back in the terminal, you'll see a prompt similar to:
-
-    ```
-    Select a subscription and tenant (Type a number or Enter for no changes):
-    ```
-
-    Type **1** and press **Enter** to select the default subscription (or the one provided by your trainer). You'll then see confirmation that the default subscription has been set, along with your account details.
-
-    > **Note**: Sometimes you might additionally be prompted to sign in to Azure below this step too — if so, complete that sign-in the same way, using the same assigned account. You might be prompted to authenticate more than once during the setup process. If prompted, use the same assigned account to complete each authentication request.
-
-    If the sign-in completes without any issues, skip ahead to step 8. If you see an error saying the `az` command isn't recognized, go to step 6. If the sign-in window closes or gets cancelled partway through, go to step 7.
-
-6. If the `az` command isn't recognized (e.g., `'az' is not recognized as a name of a cmdlet, function, script file, or executable program`), Azure CLI likely isn't installed correctly, or the terminal session started before the installation finished updating your PATH.
-
-    > **Troubleshooting**: To fix this:
-    > 1. Close and reopen the integrated terminal (or restart VS Code entirely), then try `az login` again.
-    > 2. If the error persists, uninstall and reinstall Azure CLI using the following commands:
-    >    ```powershell
-    >    winget uninstall Microsoft.AzureCLI
-    >    winget install Microsoft.AzureCLI
-    >    ```
-    > 3. Restart the terminal after installation completes, then run `az login` again.
-
-7. If the sign-in window is closed accidentally or cancelled (you may see `User cancelled the Accounts Control Operation`), run the following commands to reset the session and try again:
-
-    ```powershell
-    az logout
-    az login
-    ```
-
-8. Verify that a default project is already active. The project name will appear under **My Resources**.
-
-    > **Tip**: To switch to a different project, select **Models** in the left panel under **My Resources**. You'll see two options: **Switch Project** and **Create Project**. Select **Switch Project** to change your default Azure Resources project.
-
-    ![Screenshot of the Foundry Toolkit sidebar showing the active default project under My Resources after signing in.](../../media/foundry-toolkit-default-project.png)
-
 ## Download the starter code repository
 
-For this exercise, you'll use starter code that will help you connect to your Foundry project and create an agent that uses MCP server tools.
+# Get the application files from GitHub
 
-1. In a browser like Microsoft Edge, browse the URL: https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs and download the repository into your VM. **If already downloaded earlier Move to Step-5**.
-2. The Repository will get download in Downloads folder, right click the file and select Extract all to unzip the zip file.
-3. In VS Code, click on File menu, then select open Folder.
-4. Select the folder that you have unzipped in the previous step.
-5. Once the repository opens, from Visual Studio Code, select **File > Open Folder** and navigate to `agentic-ai-azure-ai-foundry-labs\labfiles\Day-05\lab-05-mcp-integration\Python`, then choose **Select Folder**.
-7. Right-click the **requirements.txt** file and select **Open in Integrated Terminal**. Alternatively, press **Ctrl+Shift+`** to open the integrated terminal and navigate to the file location.
-8. In the terminal, enter the following command to install the required Python packages in a virtual environment:
+1. If you have already downloaded and extracted the repository in a previous lab, delete the existing ZIP file and the extracted folder. This will allow us to use the PowerShell commands in the following steps and help avoid long path issues.
 
-    ```
+2. Open a web browser and go to the [lab files on GitHub](https://github.com/Kiran-255666/AgenticAIEngineer).
+
+3. On the repository page, select the green **`<> Code`** button, and then select **Download ZIP**.
+
+4. Once the download finishes, extract the ZIP file.
+
+5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
+
+   ![Screenshot of the Foundry Toolkit sidebar showing My Resources and Developer Tools sections before sign-in.](../../media/POWERSHELL.png)
+
+```powershell
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab05-mcp-integration" "$env:USERPROFILE\Desktop\lab05-mcp-integration" -Recurse
+
+code "$env:USERPROFILE\Desktop\lab05-mcp-integration"
+```
+
+The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
+
+This folder already contains the application files and the required code for this exercise.
+
+> ****Note:**** The files have already been updated with the implementation required for this exercise. You do not need to enter the code manually again. However, we recommend reviewing the code to understand each section before running the application.
+
+6. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
+
+7. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
+
+   ```
    python -m venv labenv
    .\labenv\Scripts\Activate.ps1
    pip install -r requirements.txt
-    ```
-
-1. Open the **.env** file, replace the **your_project_endpoint** placeholder with the endpoint for your project, and ensure that the `MODEL_DEPLOYMENT_NAME` variable is set to your model deployment name. Use **Ctrl+S** to save the file after making these changes.
-
-    > **Tip**: You can find these values in the [Microsoft Foundry portal](https://ai.azure.com). Open your project's **Home** page, and you'll see the **Project endpoint** and **Azure OpenAI endpoint** fields listed alongside your API key. Select the copy icon next to **Project endpoint** to copy it directly into your `.env` file.
-
-    ![Screenshot of the Microsoft Foundry project Home page showing the API key, Project endpoint, and Azure OpenAI endpoint fields.](../../media/foundry-project-home-endpoints.png)
-
-    > **Security Note**: Never share your API key, endpoints, or `.env` file with anyone, or commit them to a public repository. Treat these values as sensitive credentials at all times.
-
-Now you're ready to create an AI agent that uses MCP server tools to access external data sources and APIs.
-
-## Connect an Azure AI Agent to a remote MCP server (Note: We have the code updated in the mentioned files instructions but verify before you start the execution, so that there are no indentation issues)
-
-In this task, you'll connect to a remote MCP server, prepare the AI agent, and run a user prompt.
-
-1. Open the **agent.py** file in the code editor.
-
-   > **Tip**: As you add code, be sure to maintain the correct indentation. Use the comment indentation levels as a guide.
-
-1. Find the comment **Add references** and add the following code to import the classes:
-
-    ```python
-   # Add references
-   from azure.identity import AzureCliCredential
-   from azure.ai.projects import AIProjectClient
-   from azure.ai.projects.models import PromptAgentDefinition, MCPTool
-   from openai.types.responses.response_input_param import McpApprovalResponse, ResponseInputParam
-    ```
-
-1. Find the comment **Connect to the agents client** and add the following code to connect to the Azure AI project using the current Azure credentials.
-
-    ```python
-   # Connect to the agents client
-   with (
-       AzureCliCredential() as credential,
-       AIProjectClient(endpoint=project_endpoint, credential=credential) as project_client,
-       project_client.get_openai_client() as openai_client,
-   ):
-    ```
-
-1. Under the comment **Initialize agent MCP tool**, add the following code:
-
-    ```python
-   # Initialize agent MCP tool
-   mcp_tool = MCPTool(
-       server_label="api-specs",
-       server_url="https://learn.microsoft.com/api/mcp",
-       require_approval="always",
-   )
-    ```
+   ```
 
-    This code will connect to the Microsoft Learn Docs remote MCP server. This is a cloud-hosted service that enables clients to access trusted and up-to-date information directly from Microsoft's official documentation.
+8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-1. Under the comment **Create a new agent with the MCP tool** and add the following code:
+> ****Tip:**** In general, if the ****.env**** file is not configured, you can use the previously installed ****Azure AI Foundry**** extension to get the required values. The **project endpoint** can be copied from the project deployment resource in the ****Foundry Toolkit**** extension in Visual Studio Code. You may need to do this in upcoming labs or when setting up your own projects in the future.
 
-    ```python
-   # Create a new agent with the MCP tool
-   agent = project_client.agents.create_version(
-       agent_name="MyAgent",
-       definition=PromptAgentDefinition(
-           model=model_deployment,
-           instructions="You are a helpful agent that can use MCP tools to assist users. Use the available MCP tools to answer questions and perform tasks.",
-           tools=[mcp_tool],
-       ),
-   )
-   print(f"Agent created (id: {agent.id}, name: {agent.name}, version: {agent.version})")
-    ```
+You are now ready to review creation an AI agent that uses MCP server tools to access external data sources and APIs.
 
-    In this code, you provide instructions for the agent and provide it with the MCP tool definitions.
+# MCP Integration
 
-1. Find the comment **Create a conversation thread** and add the following code:
+In this exercise, you'll review and test a custom MCP server built for the Credit Risk Assessment workflow.
 
-    ```python
-   # Create a conversation thread
-   conversation = openai_client.conversations.create()
-   print(f"Created conversation (id: {conversation.id})")
-    ```
+The required code is already available in the project. You will review how the MCP server exposes Credit Risk tools, how the MCP client connects to the server, and how the Azure AI Agent uses those tools.
 
-1. Find the comment **Send initial request that will trigger the MCP tool** and add the following code:
+## Review the Credit Risk MCP Server
 
-    ```python
-   # Send initial request that will trigger the MCP tool
-   response = openai_client.responses.create(
-       conversation=conversation.id,
-       input="Give me the Azure CLI commands to create an Azure Container App with a managed identity.",
-      extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
-   )
-    ```
+Open `server.py`.
 
-1. Find the comment **Process any MCP approval requests that were generated** and add the following code:
+The file defines a custom MCP server named `CreditRisk` and exposes three tools:
 
-    ```python
-   # Process any MCP approval requests that were generated
-   # The agent may issue several tool calls, each needing its own approval,
-   # so we loop until there are none left.
-   while True:
-       # Collect any MCP approval requests from the latest response
-       input_list: ResponseInputParam = []
-       for item in response.output:
-           if item.type == "mcp_approval_request":
-               if item.server_label == "api-specs" and item.id:
-                   # Automatically approve the MCP request to allow the agent to proceed
-                   input_list.append(
-                       McpApprovalResponse(
-                           type="mcp_approval_response",
-                           approve=True,
-                           approval_request_id=item.id,
-                       )
-                   )
+- `verify_documents()` - checks the availability of the required company documents and verifies the company name.
+- `calculate_financial_ratios()` - calculates the Current Ratio, Debt-to-Equity Ratio, and Net Profit Margin.
+- `generate_risk_summary()` - generates a credit-risk summary using the provided financial ratios.
 
-       # No more approvals needed -> the agent has produced its final response
-       if not input_list:
-           break
+Review the `@mcp.tool()` decorator used above each function. This registers the Python function as an MCP tool.
 
-       # Send the approval response back and retrieve the next response
-       response = openai_client.responses.create(
-           input=input_list,
-           previous_response_id=response.id,
-           extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
-       )
+Also review:
 
-   print(f"\nAgent response: {response.output_text}")
-    ```
+```python
+mcp = FastMCP(name="CreditRisk")
+````
 
-    This code listens for any MCP approval requests in the agent's response and automatically approves them.
+This creates the MCP server.
 
-1. Find the comment **Clean up resources by deleting the agent version** and add the following code:
+At the bottom of the file:
 
-    ```python
-   # Clean up resources by deleting the agent version
-   project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
-   print("Agent deleted")
-    ```
+```python
+mcp.run(show_banner=False)
+```
 
-1. Save the code file (*CTRL+S*) when you're finished.
+starts the MCP server and makes the registered tools available to the MCP client.
 
-## Test the connection to the remote MCP server
+> **Note:** The code has already been updated for the Credit Risk Assessment use case. You do not need to recreate the previous Inventory example. Review the existing functions and understand what each one does.
 
-Now you're ready to run the application and see how the agent uses the MCP tool to retrieve information from the Microsoft Learn Docs remote MCP server.
+## Review the MCP Client
 
-1. Before running the application, verify that you're signed in to Azure by running:
+Open `client.py`.
 
-    ```powershell
-    az account show
-    ```
+This file connects the Azure AI Agent to the local MCP server.
 
-    If your account details are displayed successfully, proceed to the next step. If you aren't signed in or an error is returned, sign in using:
+The overall flow is:
 
-    ```powershell
-    az login
-    ```
+```mermaid
+flowchart TB
+    A[User] --> B[Azure AI Agent]
+    B --> C[MCP Client]
+    C --> D[MCP Server]
+    D --> E[Credit Risk Tool]
+    E --> C --> B --> A
+```
 
-2. Run the application:
+### Connect to the MCP Server
 
-    ```powershell
-    python agent.py
-    ```
+Review the `connect_to_server()` function.
 
-1. Wait for the agent to process the prompt, using the MCP server to find a suitable tool to retrieve the requested information. You should see some output similar to the following:
+The MCP server is started locally using:
 
-    ```
-   Agent created (id: MyAgent:2, name: MyAgent, version: 2)
-   Created conversation (id: conv_086911ecabcbc05700BBHIeNRoPSO5tKPHiXRkgHuStYzy27BS)
+```python
+server_params = StdioServerParameters(
+    command="python",
+    args=["server.py"],
+    env=None,
+)
+```
 
-   Agent response: Here are Azure CLI commands to create an Azure Container App with a managed identity:
+The client then establishes a stdio connection using `stdio_client()`.
 
-   **1. For a System-assigned Managed Identity**
-    ```sh
-    az containerapp create \
-    --name <CONTAINERAPP_NAME> \
-    --resource-group <RESOURCE_GROUP> \
-    --environment <CONTAINERAPPS_ENVIRONMENT> \
-    --image <CONTAINER_IMAGE> \
-    --identity 'system'
-    ```
+### Initialize the MCP Session
 
-   [continued...]
+Review:
 
-   Agent deleted
+```python
+session = await exit_stack.enter_async_context(
+    ClientSession(stdio, write)
+)
 
-    ```
+await session.initialize()
+```
 
-    Notice that the agent was able to invoke the MCP tool to automatically fulfill the request.
+This creates and initializes the MCP client session.
 
-1. You can update the input in the request to ask for different information. In each case, the agent will attempt to find technical documentation by using the MCP tool.
+### Discover the MCP Tools
 
-## Create an MCP server with custom tools
+Review:
 
-In addition to connecting to remote MCP servers, you can also create your own custom MCP server tools and connect them to your agent. A Model Context Protocol (MCP) Server is a component that hosts callable tools. These tools are Python functions that can be exposed to AI agents. When tools are annotated with `@mcp.tool()`, they become discoverable to the client, allowing an AI agent to call them autonomously during a conversation or task. In this task, you'll add tools that will allow an agent to perform inventory inquiries and recommendations.
+```python
+response = await session.list_tools()
+tools = response.tools
+```
 
-1. Open the **server.py** file in the code editor.
+This retrieves the tools exposed by the MCP server.
 
-    In this code file, you'll define the tools the agent can use to simulate a backend service for the retail store. Notice the server setup code at the top of the file. It uses `FastMCP` to quickly spin up an MCP server instance named "Inventory". This server will host the tools you define and make them accessible to the agent during the lab.
+The client should discover:
 
-1. Under the comment **Add references**, add the following code:
+```text
+verify_documents
+calculate_financial_ratios
+generate_risk_summary
+```
 
-    ```python
-   # Add references
-   from fastmcp import FastMCP
-    ```
+### Connect the Tools to the Agent
 
-1. Under the comment **Create an MCP server**, add the following code to create a new MCP server instance:
+The client creates wrapper functions for the discovered MCP tools using `make_tool_func()`.
 
-    ```python
-   # Create an MCP server
-   mcp = FastMCP(name="Inventory")
-    ```
+These functions call the MCP server through:
 
-    This code initializes a new MCP server with the label "Inventory".
+```python
+await session.call_tool(tool_name, kwargs)
+```
 
-1. Find the comment **Add an inventory check mcp tool** and add the following decorator above the function definition, which should now look like this:
+The discovered tool schemas are then passed to the Azure AI Agent using `FunctionTool`.
 
-    ```python
-   # Add an inventory check mcp tool
-   @mcp.tool()
-   def get_inventory_levels() -> dict:
-      # continued...
-    ```
+This allows the agent to understand which tools are available and what parameters each tool requires.
 
-    This dictionary represents a sample inventory. The `@mcp.tool()` decorator registers the function as a tool on the MCP server, allowing the LLM to discover your function.
+### Process Tool Calls
 
-1. Find the comment **Add a weekly sales mcp tool** and add the following decorator above the function definition, which should now look like this:
+When the agent decides that a tool is required, the response contains a function call.
 
-    ```python
-   # Add a weekly sales mcp tool
-   @mcp.tool()
-   def get_weekly_sales() -> dict:
-      # continued...
-    ```
+The client identifies the requested tool:
 
-1. Find the comment **Run the MCP server** and add the following code to start the server:
+```python
+function_name = item.name
+```
 
-    ```python
-   # Run the MCP server
-   mcp.run(show_banner=False)
-    ```
+and reads the arguments:
 
-    This code starts the MCP server, making your tools available for discovery and use by the agent. Setting `show_banner=False` prevents the startup banner from being printed to stdout, which would corrupt the MCP stdio protocol.
+```python
+kwargs = json.loads(item.arguments)
+```
 
-1. Save the file (*CTRL+S*).
+The corresponding MCP tool is then called and its result is returned to the agent using `FunctionCallOutput`.
 
-## Implement an MCP client to connect to the custom MCP server (We have already updated the mentioned files with the code mentioned in the instruction, but we would highly suggest going through it before executing it)
+The agent can then use the tool result to generate the final response.
 
-An MCP client is the component that connects to the MCP server to discover and call tools. You can think of it as the bridge between the agent and the server-hosted functions, enabling dynamic tool use in response to user prompts.
+## Review the Azure AI Agent
 
-1. Navigate to the **client.py** file.
+The Azure AI Agent is created in `client.py` using `PromptAgentDefinition`.
 
-1. Find the comment **Add references** and add the following code to import the classes:
+Review the agent instructions.
 
-    ```python
-   # Add references
-   from mcp import ClientSession, StdioServerParameters
-   from mcp.client.stdio import stdio_client
-    ```
+The agent is configured to use the MCP tools for:
 
-1. In the **connect_to_server** method, find the comment **Start the MCP server** and add the following code:
+* Company document verification
+* Financial ratio calculation
+* Credit-risk summaries
 
-    ```python
-   # Start the MCP server
-   stdio_transport = await exit_stack.enter_async_context(stdio_client(server_params))
-   stdio, write = stdio_transport
-    ```
+The instructions also tell the agent not to invent missing financial, compliance, document, or credit information.
 
-    In a standard production setup, the server would run separately from the client. But for the sake of this lab, the client is responsible for starting the server using standard input/output transport. This creates a lightweight communication channel between the two components and simplifies the local development setup.
+## Run the Credit Risk MCP Application
 
-1. Find the comment **Create an MCP client session** and add the following code:
+Before running the application, make sure you are signed in to Azure.
 
-    ```python
-   # Create an MCP client session
-   session = await exit_stack.enter_async_context(ClientSession(stdio, write))
-   await session.initialize()
-    ```
+1. Check your Azure account:
 
-    This creates a new client session using the input and output streams from the previous step. Calling `session.initialize` prepares the session to discover and call tools that are registered on the MCP server.
+```powershell
+az account show
+```
 
-1. Under the comment **List available tools**, add the following code to verify that the client has connected to the server:
+> If the command returns an error or does not show your Azure account details, run the following commands and then check again:
+>
+> ```powershell
+> az logout
+> az login # Use the provided credentials
+> az account show
+> ```
 
-    ```python
-   # List available tools
-   response = await session.list_tools()
-   tools = response.tools
-   print("\nConnected to server with tools:", [tool.name for tool in tools]) 
-    ```
+2. Ensure you have activated the virtual environment by **.\labenv\Scripts\Activate.ps1**
 
-    Now your client session is ready for use with your Azure AI Agent.
+3. Run the MCP client:
 
-## Connect the MCP tools to your agent (We have already updated the mentioned files with the code mentioned in the instruction, but we would highly suggest going through it before executing it)
+```powershell
+python client.py
+```
 
-In this task, you'll connect the MCP server tools to your agent so that it can call them in response to user prompts.
+The application will:
 
-> **Tip**: As you add code, be sure to maintain the correct indentation. Use the comment indentation levels as a guide.
+1. Start the local MCP server.
+2. Connect the MCP client to the server.
+3. Discover the available MCP tools.
+4. Create the Azure AI Agent.
+5. Wait for user input.
 
-1. In the **chat_loop** method, find the comment **Build a function for each tool** and add the following code:
+You should see output similar to:
 
-    ```python
-   # Build a function for each tool
-   def make_tool_func(tool_name):
-       async def tool_func(**kwargs):
-           result = await session.call_tool(tool_name, kwargs)
-           return result
+```text
+Connected to server with tools: ['verify_documents', 'calculate_financial_ratios', 'generate_risk_summary']
+Agent created (id: ..., name: credit-risk-agent, version: ...)
+```
 
-       tool_func.__name__ = tool_name
-       return tool_func
+## Test Document Verification
 
-   # Store the functions in a dictionary for easy access when processing function calls
-   functions_dict = {tool.name: make_tool_func(tool.name) for tool in tools}
-    ```
+Enter:
 
-    This code dynamically wraps tools available in the MCP server so that they can be called by the AI agent. Each tool is turned into an async function that the agent can invoke.
+```text
+Verify whether the company registration certificate and GST certificate are available for Apex Manufacturing Pvt Ltd.
+```
 
-1. Find the comment **Create FunctionTool definitions for the agent** and add the following code:
+The agent should call:
 
-    ```python
-   # Create FunctionTool definitions for the agent
-   mcp_function_tools: FunctionTool = []
-   for tool in tools:
-       function_tool = FunctionTool(
-           name=tool.name,
-           description=tool.description,
-           parameters={
-               "type": "object",
-               "properties": {},
-               "additionalProperties": False,
-           },
-           strict=True
-       )
-       mcp_function_tools.append(function_tool)
-    ```
+```text
+Calling tool: verify_documents
+```
 
-1. Find the comment **Create the agent** and add the following code:
+Review the response returned by the agent.
 
-    ```python
-   # Create the agent
-   agent = project_client.agents.create_version(
-       agent_name="inventory-agent",
-       definition=PromptAgentDefinition(
-           model=model_deployment,
-           instructions="""
-           You are an inventory assistant. Here are some general guidelines:
-           - Recommend restock if item inventory < 10  and weekly sales > 15
-           - Recommend clearance if item inventory > 20 and weekly sales < 5
-           """,
-           tools=mcp_function_tools
-       ),
-   )
-    ```
+## Test Financial Ratio Calculation
 
-   With these instructions and tools, the agent is able to invoke the tools to retrieve inventory and sales data, and then use that information to provide helpful responses to the user.
+Enter:
 
-1. Locate the comment **Process function calls** and add the following code:
+```text
+Calculate the financial ratios for Apex Manufacturing Pvt Ltd using current assets of 500000, current liabilities of 250000, total debt of 300000, equity of 600000, net profit of 80000, and revenue of 1000000.
+```
 
-    ```python
-   # Process function calls
-   for item in response.output:
-       if item.type == "function_call":
-           # Retrieve the matching function tool
-           function_name = item.name
-           kwargs = json.loads(item.arguments)
-           required_function = functions_dict.get(function_name)
+The agent should call:
 
-           # Invoke the function
-           output = await required_function(**kwargs)
+```text
+Calling tool: calculate_financial_ratios
+```
 
-           # Append the output text
-           input_list.append(
-              FunctionCallOutput(
-                 type="function_call_output",
-                 call_id=item.call_id,
-                 output=output.content[0].text,
-              )
-           )
-    ```
+The expected calculations are:
 
-    This code listens for any function calls in the agent's response, invokes the corresponding tool function, and prepares the output to be sent back to the agent.
+* Current Ratio: **2.00**
+* Debt-to-Equity Ratio: **0.50**
+* Net Profit Margin: **8.00%**
 
-1. Find the comment **Send function call outputs back to the model and retrieve a response** and add the following code:
+## Test the Credit Risk Summary
 
-    ```python
-   # Send function call outputs back to the model and retrieve a response
-   if input_list:
-      response = openai_client.responses.create(
-            input=input_list,
-            previous_response_id=response.id,
-            extra_body={"agent_reference": {"name": agent.name, "type": "agent_reference"}},
-      )
-   print(f"Agent response: {response.output_text}")
-    ```
+Enter:
 
-1. Save the code file (*CTRL+S*) when you have finished.
+```text
+Generate a credit-risk summary for Apex Manufacturing Pvt Ltd using a current ratio of 2.0, debt-to-equity ratio of 0.5, and net profit margin of 8.0.
+```
 
-## Test the custom MCP tools with your agent
+The agent should call:
 
-1. In the integrated terminal, enter the following command to run the application:
+```text
+Calling tool: generate_risk_summary
+```
 
-    ```
-   python client.py
-    ```
+Review the credit-risk summary returned by the agent.
 
-1. When prompted, enter a prompt such as:
+## Continue Testing
 
-    ```
-   Show me the current inventory levels for all products.
-    ```
+You can continue testing the agent with different Credit Risk Assessment prompts.
 
-    > **Tip**: If the app fails because the rate limit is exceeded. Wait a few seconds and try again. If there is insufficient quota available in your subscription, the model may not be able to respond.
+Try changing the financial values and observe how the tool output changes.
 
-    You should see some output similar to the following:
+When you are finished, enter:
 
-    ```
-    MessageRole.AGENT:
-    Agent response: Here are the current inventory levels for all items:
+```text
+quit
+```
 
-   - Moisturizer: 6
-   - Shampoo: 8
-   - Body Spray: 28
-   [continued ...]
+The application will exit and delete the agent version created during the current run.
 
-   Would you like recommendations for restocking or clearance? If so, I can check the weekly sales to advise accordingly.
-    ```
+> **Note:** The agent is created by the application each time you run `client.py`. The deletion step cleans up the agent created during that run. If you want to keep the agent after the application exits, remove or comment out the `delete_version()` code in `client.py`.
 
-    Notice that the agent was able to call the MCP tools to retrieve inventory and sales data, and then use that information to provide a helpful response to the user.
+Finally, deactivate the virtual environment:
 
-1. You can continue the conversation if you like. The thread is *stateful*, so it retains the conversation history - meaning that the agent has the full context for each response.
+```powershell
+deactivate
+```
 
-    Try entering prompts such as:
+## Key Takeaway
 
-    ```
-   Are there any products that should be restocked?
-    ```
+In this exercise, you reviewed how MCP connects an Azure AI Agent with custom tools.
 
-    ```
-   Which products would you recommend for clearance?
-    ```
+The main components are:
 
-    ```
-   What are the best sellers this week?
-    ```
+* **`server.py`** → defines and exposes the Credit Risk MCP tools.
+* **`client.py`** → connects to the MCP server, discovers its tools, and passes them to the Azure AI Agent.
+* **Azure AI Agent** → decides when to use the available tools and uses their results to respond to the user.
 
-1. Enter `quit` to exit the application.
+The important concept is that the agent does not directly implement the Credit Risk functions. The functions are exposed through MCP, discovered by the client, and made available to the agent as callable tools.
 
-    You can also use `deactivate` to exit the Python virtual environment in the terminal.
