@@ -43,7 +43,7 @@ Before starting this exercise, ensure you have:
 5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
 ```powershell
-Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day06\lab01-agent-framework" "$env:USERPROFILE\Desktop\lab01-agent-framework" -Recurse  Day06\lab01-agent-framework.md
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day06\lab01-agent-framework" "$env:USERPROFILE\Desktop\lab01-agent-framework" -Recurse
 
 code "$env:USERPROFILE\Desktop\lab01-agent-framework"
 ```
