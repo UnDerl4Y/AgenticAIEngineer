@@ -50,7 +50,10 @@ Create an agent that will search the credit-risk knowledge base.
 
 ## Configure data and Foundry IQ
 
-> ****Important:**** The following resource creation steps are ****optional****. We have already provisioned the required Azure AI Search and Storage Account resources for this lab, so you can skip these steps and use the provided resources. You can still go through these steps separately to explore and learn how these resources are created and configured.
+> **Important:** The following resource creation steps are **optional**. We have already provisioned the required Azure AI Search and Storage Account resources for this lab, so you can skip these steps and use the provided resources. You can still go through these steps separately to explore and learn how these resources are created and configured.
+
+<details>
+<summary>Click here to view the resource creation and Foundry IQ configuration steps</summary>
 
 First, add instructions to your agent. Then create a search resource, upload the credit-risk assessment documents, and create a knowledge base that connects those documents to the agent.
 
@@ -71,10 +74,10 @@ First, add instructions to your agent. Then create a search resource, upload the
 
     - **Resource name**: A globally unique name
     - **Subscription**: Your Azure subscription
-    - **Resource group**: Use the same resource group as your Foundry project  - **Agentic_AI_Engineer_AI_Resources**
-    - **Region**: The same location as your Foundry project (If Quota is max change to Central US)
+    - **Resource group**: Use the same resource group as your Foundry project - **Agentic_AI_Engineer_AI_Resources**
+    - **Region**: The same location as your Foundry project (If quota is maxed, change to Central US)
     - **Pricing tier**: Basic
-    - Click tick check box I acknowledge that agentic retrieval usage beyond the free monthly allowance will incur additional costs , billed through Azure AI Search.
+    - Select the checkbox acknowledging that agentic retrieval usage beyond the free monthly allowance will incur additional costs, billed through Azure AI Search.
     - If asked about **Foundry IQ Knowledge base capabilities**: Pause until next month
 
 The search resource provides the retrieval layer for the knowledge base. Next, upload the source credit-risk assessment documents.
@@ -91,31 +94,30 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
     ```
 
 1. Open the [Azure portal](https://portal.azure.com). In the top search bar, search for **Storage accounts** and select **Storage accounts**.
-1. Click + Create for Creating a storage account with the following settings:
+1. Click **+ Create** to create a storage account with the following settings:
 
     - **Subscription**: Your Azure subscription - **Labs**
     - **Resource group**: Use the same resource group as your Foundry project - **Agentic_Al_Engineer_Al_Resources**
     - **Storage account name**: A unique storage account name
-    - **Region**: The same location as your Foundry project - If at capacity Select Cental US
+    - **Region**: The same location as your Foundry project - If at capacity, select Central US
     - **Primary service**: Azure Blob Storage or Azure Data Lake Storage
     - **Performance**: Standard
     - **Redundancy**: Locally-redundant storage (LRS)
 
-1. Click Review + Create then Create again.
-1. After the storage account is created, **Click Go to Resource** to Open it.
-1. Select **Upload** you can see at the top bar.
-1. You see **Upload blob** pane, there click **create new**
+1. Click **Review + Create**, then **Create** again.
+1. After the storage account is created, click **Go to Resource** to open it.
+1. Select **Upload** from the top bar.
+1. In the **Upload blob** pane, select **Create new**.
 1. Name it `creditriskdocuments`.
-1. Anonymous access level be default **Private**
-1. Click Ok.
+1. Leave the **Anonymous access level** as **Private**.
+1. Click **OK**.
 1. Browse to the prepared credit-risk assessment files, select all four PDFs, and select **Upload**.
-1. After the files are uploaded, navigate to the search service you created you can do it by clicking Resource Group name there you can see your search service
+1. After the files are uploaded, navigate to the search service you created. You can do this by selecting the **Resource Group** name, where you can find your search service.
 1. In the left pane, select **Security + networking** > **Keys**. For **API Access control**, select **Both** and confirm the selection.
-1. Leave the Azure portal keep the tab open. Return to the Foundry portal and refresh the page.
-1. On the **Knowledge (Foundry IQ)** page, select **Create a knowledge base**. 
-1. You will be redirected to **Create a new knowledge base** there you can find **Knowledge sources (Foundry IQ)** Click it
-1. Click **Add Source** Choose **Azure Blob Storage** as the knowledge source, then fill the following 
-1. Configure the knowledge source with the following settings:
+1. Leave the Azure portal tab open. Return to the Foundry portal and refresh the page.
+1. On the **Knowledge (Foundry IQ)** page, select **Create a knowledge base**.
+1. You will be redirected to **Create a new knowledge base**. Under **Knowledge sources (Foundry IQ)**, select it.
+1. Click **Add Source**, choose **Azure Blob Storage** as the knowledge source, and configure the following settings:
 
    * **Name**: `ks-creditriskdocuments`
    * **Description**: `Credit risk assessment documents`
@@ -123,24 +125,31 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
    * **Container name**: `creditriskdocuments`
    * **Authentication type**: API Key
    * **Content extraction mode**: minimal
-   * **Embedding model**: Select your available deployed embedding model (text-embedding-3-small)
-   * **Chat completions model**: Select your available deployed chat model (gpt-5.2)
+   * **Embedding model**: Select your available deployed embedding model (`text-embedding-3-small`)
+   * **Chat completions model**: Select your available deployed chat model (`gpt-5.2`)
+
    > **Note:** `gpt-5.4-mini` isn't available, so select `gpt-5.2` as the chat completions model.
 
 1. Select **Create**.
-1. It will take 1-2 Mintues Complete Saving Knowledge base
-1. On the knowledge base creation page, for **Chat completions model** dropdown select **gpt-5.2** and leave the remaining settings unchanged.
-1. Select **Save knowledge base**. Refresh the browser until the knowledge source status is **active**.
+1. It will take 1-2 minutes to complete saving the knowledge base.
+1. On the knowledge base creation page, for **Chat completions model**, select **gpt-5.2** from the dropdown and leave the remaining settings unchanged.
+1. Select **Save knowledge base**. Refresh the browser until the knowledge source status is **Active**.
 1. Select the back button to return to the **Knowledge** page, then select **Manage** next to the **Connection** dropdown.
+
     ![Screenshot](../../media/Manage.png)
+
 1. Scroll to **Connected resources**, select your search service, and find the **Authentication** section.
 1. Select **Key authentication**, then select **Edit authentication**.
+
     ![Screenshot](../../media/Edit_authentication.png)
-1. You will be redirected to Edit authentication Change Auth Type to API via drop down and you will be needed to add API KEY 
-1. Return reopen the azure portal there under keys > Manage admin keys > Primary admin key Copy key of it and paste it in **API Key**
-1. Click Save
+
+1. You will be redirected to **Edit authentication**. Change **Auth Type** to **API** from the dropdown and enter the **API Key**.
+1. Return to the Azure portal. Under **Keys** > **Manage admin keys** > **Primary admin key**, copy the key and paste it into **API Key**.
+1. Click **Save**.
 
 Your Foundry IQ knowledge base is now connected to the credit-risk assessment documents and ready for use by your agent.
+
+</details>
 
 ## Configure the playground
 
