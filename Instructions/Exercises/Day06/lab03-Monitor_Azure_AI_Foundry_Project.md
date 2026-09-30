@@ -48,21 +48,24 @@ The main objective of this lab is to help learners understand how to monitor an 
 
 ### Step 1: Sign in to the Azure Portal
 
-1. Open Microsoft Edge or any supported browser.
-2. Go to the Azure portal.
-3. Sign in using the credentials provided for the lab.
+1. Open Microsoft Edge.
+2. Go to the Azure portal at https://portal.azure.com/.
+3. If you haven't signed in, sign in using the credentials provided for the lab.
 4. Wait until the Azure portal home page loads.
 
-### Step 2: Open the Foundry Project
+
+### Step 2: Open Microsoft Foundry
 
 1. In the Azure portal search bar, type **Foundry**.
-2. From the search results, open the Foundry resource or service.
-3. Select the project named **AgenticAIEngineer**.
-4. Confirm that the **AgenticAIEngineer** project overview page is displayed.
+2. From the search results, select **Microsoft Foundry**.
+3. In the side panel, select **All Resources**.
+4. From the resource list, locate the Foundry resource named **`hakunamatata11`**.
+5. Select **`hakunamatata11`** to open the resource.
+6. Confirm that the **`hakunamatata11`** project overview page is displayed.
 
 ### Step 3: Expand the Monitoring Section
 
-1. From the left menu, scroll down until the **Monitoring** section is visible.
+1. From the left menu, find **Monitoring** section.
 2. Expand Monitoring to view the available monitoring options.
 3. Review the available options before opening Metrics.
 
@@ -80,7 +83,7 @@ The Monitoring section contains several options. Explain the purpose of each opt
 <tr>
 <th>Monitoring Option</th>
 <th>Purpose</th>
-<th>How It Helps in This Lab</th>
+<th>How It Helps</th>
 </tr>
 <tr>
 <td><b>Alerts</b></td>
@@ -109,7 +112,7 @@ The Monitoring section contains several options. Explain the purpose of each opt
 ### Step 5: Open Metrics
 
 1. Under Monitoring, select **Metrics**.
-2. Confirm that the scope is set to **AgenticAIEngineer**.
+2. Confirm that the scope is set to **`hakunamatata11`**.
 3. Set the time range to an appropriate value, such as **Local Time: Last 24 hours**.
 4. Use **Add metric** to start adding metrics to the chart.
 
