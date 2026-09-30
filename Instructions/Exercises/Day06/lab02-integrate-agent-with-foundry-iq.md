@@ -135,7 +135,7 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
     ![Screenshot](../../media/Manage.png)
 1. Scroll to **Connected resources**, select your search service, and find the **Authentication** section.
 1. Select **Key authentication**, then select **Edit authentication**.
-    ![Screenshot](../../media/Edit authentication.png)
+    ![Screenshot](../../media/Edit_authentication.png)
 1. You will be redirected to Edit authentication Change Auth Type to API via drop down and you will be needed to add API KEY 
 1. Return reopen the azure portal there under keys > Manage admin keys > Primary admin key Copy key of it and paste it in **API Key**
 1. Click Save
