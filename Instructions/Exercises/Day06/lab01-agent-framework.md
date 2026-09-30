@@ -201,45 +201,21 @@ The application is now ready to run.
 az account show
 ```
 
-2. If your Azure account details are displayed, continue to the next step.
+If your Azure account details are displayed, continue to the next step.
 
-   If you are not signed in, run:
-
-```powershell
-az login
-```
-
-Then run:
-
-```powershell
-az account show
-```
-
-3. If you need to switch to a different Azure account, sign out first:
-
-```powershell
-az logout
-```
-
-Then sign in again:
+If you are not signed in, run:
 
 ```powershell
 az login
 ```
 
-Verify the active account:
-
-```powershell
-az account show
-```
-
-4. Run the application:
+2. Run the application:
 
 ```powershell
 python agent-framework.py
 ```
 
-5. When prompted, enter:
+3. When prompted, enter:
 
 ```text
 Assess ABC Utilities Pvt Ltd for credit approval.
