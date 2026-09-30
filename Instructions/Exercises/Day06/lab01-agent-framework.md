@@ -64,10 +64,6 @@ This folder already contains the application files and the required code for thi
 
 8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-Yes man. Keep it cleaner. Remove all the Mermaid flows and the Delete vs Disable explanation. Just explain why we're deleting the temporary agent and give the deletion code.
-
-Here’s the cleaned-up full version:
-
 ## Review the Credit Risk Assessment Agent
 
 The `agent-framework.py` file already contains the code required to create and run the Credit Risk Assessment agent.
@@ -214,8 +210,6 @@ az login
 ```
 
 Then run `az account show` again.
-
-Yep man. Here’s the **full corrected section**, matching the new unlimited assessment flow and ending with the summary.
 
 ## Test the application
 

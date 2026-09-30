@@ -145,14 +145,14 @@ Your Foundry IQ knowledge base is now connected to the credit-risk assessment do
 
 ## Configure the playground
 
-1. Navigate back to your agent from the project home page. Select **View Deployments**, then select **Agents** from the side panel. Click the agent you created earlier, such as `credit-risk-assessment-agent_<unique_prefix>`.
+1. Navigate back to your agent from the project home page. Select **View Deployments**, then select **Agents** from the side panel. Click the agent you created earlier, such as `credit-risk-assessment-agent-<unique_suffix>`.
 
 2. Under **Tools**, select **Knowledge**, click **Add**, and then select **Connect to Foundry IQ**.
 
 3. In the **Connect to Foundry IQ** pop-up, configure the following:
 
-   * **Connection**: `displayed_connection`
-   * **Knowledge base**: `displayed_knowledge_base`
+   * **Connection**: Selected displayed Connection
+   * **Knowledge base**: Select Knowledge base
 
    Then select **Connect**.
 
@@ -167,7 +167,7 @@ Use the following expected responses to verify that the agent is successfully re
 **Prompt**
 
 ```text
-Using Foundry IQ, retrieve information from the connected knowledge source and tell me what documents are available for Apex Manufacturing Pvt Ltd. List each available document and include the company name and registration status mentioned in the documents.
+Retrieve information from the connected knowledge source and tell me what documents are available for Apex Manufacturing Pvt Ltd. List each available document and include the company name and registration status mentioned in the documents.
 ```
 
 **Expected AI Response**
@@ -190,7 +190,7 @@ Using Foundry IQ, retrieve information from the connected knowledge source and t
 **Prompt**
 
 ```text
-Using Foundry IQ, retrieve the financial information for Apex Manufacturing Pvt Ltd for the financial year 2025 from the connected knowledge source. Include current assets, current liabilities, total debt, shareholders' equity, revenue, and net profit.
+Retrieve the financial information for Apex Manufacturing Pvt Ltd for the financial year 2025 from the connected knowledge source. Include current assets, current liabilities, total debt, shareholders' equity, revenue, and net profit.
 ```
 
 **Expected AI Response**
@@ -213,7 +213,7 @@ The agent should successfully retrieve the required financial information from t
 **Prompt**
 
 ```text
-Using Foundry IQ, retrieve the external credit bureau information for Apex Manufacturing Pvt Ltd from the connected knowledge source. Tell me the external credit bureau score, industry, and credit bureau status, and mention whether any adverse records are reported.
+Retrieve the external credit bureau information for Apex Manufacturing Pvt Ltd from the connected knowledge source. Tell me the external credit bureau score, industry, and credit bureau status, and mention whether any adverse records are reported.
 ```
 
 **Expected AI Response**
@@ -229,41 +229,6 @@ The agent should successfully retrieve the credit bureau information from the co
 
     - **Agent name**: The name you created, such as `credit-risk-assessment-agent-<unique_suffix>`
     - **Project endpoint**: Available from the project home page such as `https://hakunamatata11.services.ai.azure.com/api/projects/hakunamatata`
-
-### Configure approval for tool calls
-
-**Note: We have already updated the mentioned files with the code mentioned in the instructions, but we would highly suggest going through it before executing it**
-
-By default, the Foundry IQ knowledge tool runs without asking for approval. To let your application review and control each knowledge-base lookup, configure the agent to require approval before it uses the tool.
-
-> **Note**: The Foundry portal doesn't currently expose this approval setting. Configure it with the Foundry Toolkit for VS Code extension.
-
-> **Note**: If the Foundry Toolkit extension is already installed and signed in from a previous lab, skip to step 3.
-
-1. In Visual Studio Code, select **Extensions** from the left pane, or press **Ctrl+Shift+X**. Search for `Foundry Toolkit for VS Code` from Microsoft and select **Install** if it isn't already installed.
-
-    > **Note**: The extension is currently listed as **Foundry Toolkit**, but some labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat these names as the same extension experience.
-
-    ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/foundry-toolkit-extension.png)
-   
-1. Select the **Foundry Toolkit** icon in the sidebar and sign in to Azure if prompted.
-
-    > **Note**: If you cannot sign in through Foundry Toolkit, select the Azure extension and sign in there. Then return to Foundry Toolkit to access your resources.
-
-1. Under **Microsoft Foundry Resources**, choose **Set Default Project** and select the project used in this lab.
-1. Expand the project. Under **Prompt Agents**, select `credit-risk-assessment-agent` to open **Agent Builder**.
-
-    ![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/abc.png)
-   
-1. In the **Tools** section, add the **Azure AI Search** tool. Select the connection and knowledge base that you created earlier.
-
-    > **Note**: The portal may add a **Web search** tool to new agents by default. Use the three dots on the **Azure AI Search** tool associated with your knowledge base, not another tool.
-
-![Screenshot of the Foundry Toolkit for VS Code extension in the Extensions Marketplace.](../../media/zzz.png)
-
-1. In **Require approval before using tools**, select **Ask for approval for all tools**. Save your changes if prompted.
-
-Your agent now requests approval whenever it uses Foundry IQ. The Python client you complete next will prompt you to approve or deny each request.
 
 # Connect to your agent from an app
 
@@ -303,328 +268,305 @@ This folder already contains the application files and the required code for thi
 
 8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-### Review the agent client code
+## Review the agent client code
 
 The required client code has already been added to **`agent_client.py`**. Review the file before running the application.
 
-The client connects to the existing Foundry agent, creates a conversation, sends user messages, handles MCP approval requests for Foundry IQ lookups, and maintains conversation history.
+The client connects to the existing Microsoft Foundry agent, creates a conversation, sends user questions to the agent, and displays the responses returned from the connected Foundry IQ knowledge source.
+
+### Load the configuration
+
+The application loads the project endpoint and agent name from the `.env` file:
+
+```python
+load_dotenv()
+
+project_endpoint = os.getenv("PROJECT_ENDPOINT")
+agent_name = os.getenv("AGENT_NAME")
+```
+
+The client checks that both values are available before connecting to the Foundry project.
+
+### Connect to the Foundry project
+
+The client uses `DefaultAzureCredential` to authenticate and `AIProjectClient` to connect to the existing Foundry project:
+
+```python
+credential = DefaultAzureCredential(
+    exclude_environment_credential=True,
+    exclude_managed_identity_credential=True
+)
+
+project_client = AIProjectClient(
+    credential=credential,
+    endpoint=project_endpoint
+)
+```
+
+### Connect to the agent
+
+The client retrieves the existing agent using the agent name configured in `.env`:
+
+```python
+agent = project_client.agents.get(
+    agent_name=agent_name
+)
+
+print(f"Connected to: {agent.name}")
+```
+
+This allows the Python application to send questions to the agent that was configured with Foundry IQ.
+
+### Create a conversation
+
+The client creates a conversation for the current session:
+
+```python
+conversation = openai_client.conversations.create()
+```
+
+The same conversation is used for the questions entered during the session.
 
 ### `send_message_to_agent`
 
-The implementation is:
+The `send_message_to_agent()` function sends the user's question to the connected Foundry agent:
 
 ```python
 def send_message_to_agent(user_message):
-    """
-    Send a message to the credit-risk agent and handle the response
-    using the conversations API.
-    """
-    try:
-        print("\nAgent: ", end="", flush=True)
+    response = openai_client.responses.create(
+        conversation=conversation.id,
+        extra_body={
+            "agent_reference": {
+                "name": agent.name,
+                "type": "agent_reference"
+            }
+        },
+        input=user_message
+    )
 
-        openai_client.conversations.items.create(
-            conversation_id=conversation.id,
-            items=[
-                {
-                    "type": "message",
-                    "role": "user",
-                    "content": user_message
-                }
-            ],
-        )
-
-        conversation_history.append({
-            "role": "user",
-            "content": user_message
-        })
-
-        response = openai_client.responses.create(
-            conversation=conversation.id,
-            extra_body={
-                "agent_reference": {
-                    "name": agent.name,
-                    "type": "agent_reference"
-                }
-            },
-            input=""
-        )
-
-        approval_request = None
-
-        if hasattr(response, "output") and response.output:
-            for item in response.output:
-                if (
-                    hasattr(item, "type")
-                    and item.type == "mcp_approval_request"
-                ):
-                    approval_request = item
-                    break
-
-        if approval_request:
-            print(
-                f"[Approval required for: {approval_request.name}]\n"
-            )
-            print(f"Server: {approval_request.server_label}")
-
-            approval_input = input(
-                "Approve this action? (yes/no): "
-            ).strip().lower()
-
-            if approval_input in ["yes", "y"]:
-                approval_response = {
-                    "type": "mcp_approval_response",
-                    "approval_request_id": approval_request.id,
-                    "approve": True
-                }
-            else:
-                approval_response = {
-                    "type": "mcp_approval_response",
-                    "approval_request_id": approval_request.id,
-                    "approve": False
-                }
-
-            openai_client.conversations.items.create(
-                conversation_id=conversation.id,
-                items=[approval_response]
-            )
-
-            response = openai_client.responses.create(
-                conversation=conversation.id,
-                extra_body={
-                    "agent_reference": {
-                        "name": agent.name,
-                        "type": "agent_reference"
-                    }
-                },
-                input=""
-            )
-
-        if response and response.output_text:
-            response_text = response.output_text
-            print(f"{response_text}\n")
-
-            conversation_history.append({
-                "role": "assistant",
-                "content": response_text
-            })
-
-            return response_text
-
-        return None
-
-    except Exception as e:
-        print(f"\n\nError: {str(e)}\n")
-        return None
-````
-
-This function sends the user's message to the Foundry agent and creates a response. If the agent needs to access the Foundry IQ knowledge source, it checks for an `mcp_approval_request` and asks the user to approve or deny the lookup. After the approval decision, it retrieves the agent's response and stores it in the conversation history.
-
-### `display_conversation_history`
-
-The implementation is:
-
-```python
-def display_conversation_history():
-    """
-    Display the full conversation history.
-    """
-    print("\n" + "=" * 60)
-    print("CONVERSATION HISTORY")
-    print("=" * 60 + "\n")
-
-    for turn in conversation_history:
-        role = turn["role"].upper()
-        content = turn["content"]
-
-        print(f"{role}: {content}\n")
-
-    print("=" * 60 + "\n")
+    print("\nAgent:")
+    print(response.output_text)
 ```
 
-This function displays all user and agent messages stored in the current conversation history.
+The user's question is sent to the agent using the Responses API. The agent can use the connected Foundry IQ knowledge source to retrieve relevant information before generating its response.
+
+The returned response is then displayed in the terminal.
 
 ### `main`
 
-The implementation is:
+The `main()` function provides the command-line interface:
 
 ```python
 def main():
-    """
-    Main interaction loop.
-    """
-    print("Credit Risk Assessment Agent")
-    print("Ask questions about the credit-risk assessment.")
-    print(
-        "Type 'history' to see conversation history, "
-        "or 'quit' to exit.\n"
-    )
-
     while True:
         try:
-            user_input = input("You: ").strip()
+            user_input = input("\nYou: ").strip()
 
             if not user_input:
                 continue
 
-            if user_input.lower() == "quit":
-                print("\nEnding conversation...")
+            if user_input.lower() in {"quit", "exit"}:
+                print("\nConversation ended.")
                 break
-
-            if user_input.lower() == "history":
-                display_conversation_history()
-                continue
 
             send_message_to_agent(user_input)
 
         except KeyboardInterrupt:
-            print("\n\nInterrupted by user.")
+            print("\n\nConversation ended.")
             break
 
         except Exception as e:
-            print(f"\nUnexpected error: {str(e)}\n")
-
-    print("\nConversation ended.")
+            print(f"\nError: {str(e)}")
 ```
 
-The `main()` function provides the command-line interaction. It sends user questions to the agent, supports `history` for viewing the conversation, and uses `quit` to exit the application.
+You can continue asking questions during the same conversation.
+
+To stop the application, enter **`quit`**, enter **`exit`**, or press **Ctrl+C**.
 
 ## Test the integration
 
-1. In the integrated terminal, verify your Azure account:
+1. In the integrated terminal, verify that you are signed in to Azure:
 
-   ```powershell
-   az account show
-   ```
+```powershell
+az account show
+```
 
-   > **Note:** If you encounter an authentication issue, run `az logout`, then `az login`, and run `az account show` again.
+> **Note:** If you encounter an authentication issue, run `az logout`, then `az login`, and run `az account show` again.
 
 2. Run the client:
 
-   ```powershell
-   python agent_client.py
-   ```
+```powershell
+python agent_client.py
+```
 
-3. Test the following queries. When prompted for approval, enter **`yes`** to allow the Foundry IQ knowledge-base lookup.
-
-   **Available company documents**
-
-   ```text
-   What documents are available for Apex Manufacturing Pvt Ltd?
-   ```
-
-   **Financial information**
-
-   ```text
-   What financial information is available for Apex Manufacturing Pvt Ltd for 2025?
-   ```
-
-   **Financial ratio analysis**
-
-   ```text
-   What are the current ratio, debt-to-equity ratio, and net profit margin for Apex Manufacturing Pvt Ltd?
-   ```
-
-   **Credit bureau information**
-
-   ```text
-   What is the external credit bureau score and industry for Apex Manufacturing Pvt Ltd?
-   ```
-
-   **Credit-risk assessment rules**
-
-   ```text
-   What credit-risk assessment rules should be used for Apex Manufacturing Pvt Ltd?
-   ```
-
-4. Type `history` to view the complete conversation history.
-
-5. Type `quit` when you are done testing.
-
-### Expected output
-
-The exact wording can vary because the responses are generated by the AI agent. After approving the Foundry IQ lookup, you should see responses similar to the following.
-
-**Available company documents**
+3. You should see output similar to:
 
 ```text
-The following documents are available for Apex Manufacturing Pvt Ltd:
+Credit Risk Assessment Agent
+----------------------------
+Connected to: credit-risk-assessment-agent-uday
+Ask questions about the credit-risk assessment.
+Type 'quit' or 'exit' to stop.
+```
 
-- Company Registration Certificate
-- GST Certificate
+4. Test the following queries.
 
+### Test Case 1: Company documents
+
+Enter:
+
+```text
+What documents are available for Apex Manufacturing Pvt Ltd?
+```
+
+The agent should retrieve information similar to:
+
+```text
+For Apex Manufacturing Pvt Ltd, the available documents are:
+
+1. Company Registration Certificate
+   Registration Number: U29299KA2018PTC112345
+   Status: Active
+
+2. GST Registration Certificate
+   GSTIN: 29AABCA1234F1Z5
+   Status: Active
+
+3. Financial Information for Financial Year 2025
+
+4. Credit Bureau Report
+   External Credit Bureau Score: 720
+   No adverse records reported
+
+5. Credit Risk Assessment Rules
+```
+
+The response should include source citations when they are available.
+
+### Test Case 2: Financial information
+
+Enter:
+
+```text
+What financial information is available for Apex Manufacturing Pvt Ltd for 2025?
+```
+
+The agent should retrieve:
+
+```text
 Company Name: Apex Manufacturing Pvt Ltd
-Registration Status: Active
+Financial Year: 2025
 
-Both required documents are available and the company names match.
+Current Assets: 7,800,000
+Current Liabilities: 5,000,000
+Total Debt: 9,300,000
+Shareholders' Equity: 5,000,000
+Revenue: 9,000,000
+Net Profit: 500,000
 ```
 
-**Financial information**
+### Test Case 3: Financial ratios
+
+Enter:
 
 ```text
-Financial information for Apex Manufacturing Pvt Ltd for 2025:
-
-- Current Assets: 7,800,000
-- Current Liabilities: 5,000,000
-- Total Debt: 9,300,000
-- Shareholders' Equity: 5,000,000
-- Revenue: 9,000,000
-- Net Profit: 500,000
+What are the current ratio, debt-to-equity ratio, and net profit margin for Apex Manufacturing Pvt Ltd?
 ```
 
-**Financial ratio analysis**
+The agent should calculate:
 
 ```text
-- Current Ratio = 1.56
-- Debt-to-Equity Ratio = 1.86
-- Net Profit Margin = 5.56%
+Current Ratio:
+7,800,000 / 5,000,000 = 1.56
+
+Debt-to-Equity Ratio:
+9,300,000 / 5,000,000 = 1.86
+
+Net Profit Margin:
+(500,000 / 9,000,000) × 100 = 5.56%
 ```
 
-**Credit bureau information**
+The response should reference the financial information and assessment rules used for the calculations.
+
+### Test Case 4: Credit bureau information
+
+Enter:
 
 ```text
-- External Credit Bureau Score: 720
-- Industry: Manufacturing
-- Credit Bureau Status: No adverse records reported
+What is the external credit bureau score and industry for Apex Manufacturing Pvt Ltd?
 ```
 
-**Credit-risk assessment rules**
+The agent should retrieve:
 
 ```text
-The credit-risk assessment uses document verification,
-compliance checks, financial ratio analysis, external credit
-bureau information, and industry risk.
-
-The scorecard includes:
-- Compliance: 20
-- Liquidity: 20
-- Leverage: 15
-- Profitability: 15
-- External Credit Bureau: 15
-- Industry Risk: 15
+External Credit Bureau Score: 720
+Industry: Manufacturing
+Credit Bureau Status: No adverse records reported
 ```
 
-> **Note:** The exact response format and wording may differ. The important point is that the agent retrieves the relevant information from the connected Foundry IQ knowledge source and uses it to answer the questions.
+### Test Case 5: Credit-risk assessment rules
+
+Enter:
+
+```text
+What credit-risk assessment rules should be used for Apex Manufacturing Pvt Ltd?
+```
+
+The agent should retrieve information about:
+
+```text
+Document Verification
+Compliance
+Financial Analysis
+External Credit Bureau
+Industry Risk
+Scorecard
+Final Risk Classification
+Credit Recommendation
+```
+
+For Apex Manufacturing Pvt Ltd, the agent should identify **Manufacturing** as a **Medium Risk** industry according to the connected assessment rules.
 
 ### Review the results
 
-Consider the following aspects of the agent's responses:
+When testing the agent, verify that:
 
-* **MCP approval flow**: The client requests approval before performing the Foundry IQ lookup.
-* **Accuracy**: The agent retrieves information from the connected credit-risk assessment documents.
-* **Citations**: The response may include source references when available.
-* **Context awareness**: The same conversation is maintained across multiple questions.
-* **Grounding**: The agent should indicate when relevant information is not available in the knowledge source.
-* **Conversation history**: The `history` command displays the messages exchanged during the session.
+* The agent retrieves information from the connected Foundry IQ knowledge source.
+* Company, financial, and credit bureau information matches the provided documents.
+* Financial ratios are calculated using the assessment rules.
+* The agent can retrieve the credit-risk assessment rules.
+* Source citations are displayed when available.
+* Multiple questions can be asked within the same conversation.
+* The agent does not invent information that is not available in the connected knowledge source.
+
+> **Note:** The exact wording and formatting may differ because the response is generated by the AI agent. Focus on whether the retrieved information is accurate and grounded in the connected knowledge source.
+
+## End the session
+
+When you are finished testing, enter:
+
+```text
+quit
+```
+
+or:
+
+```text
+exit
+```
+
+You can also press **Ctrl+C** to stop the application.
+
+To start a new session later, run:
+
+```powershell
+python agent_client.py
+```
 
 ## Summary
 
-In this exercise, you:
+In this exercise, you connected a Python client to an existing Microsoft Foundry agent configured with Foundry IQ.
 
-* Connected a Python client to an existing Microsoft Foundry agent.
-* Created and maintained a conversation using the Conversations API.
-* Sent credit-risk assessment questions to the agent.
-* Connected the agent to the Foundry IQ knowledge source.
-* Implemented MCP approval handling so knowledge-base lookups require user approval.
-* Retrieved company documents, financial information, financial ratios, credit bureau information, and credit-risk assessment rules from the connected knowledge source.
-* Displayed available citations and maintained conversation history.
-* Tested the complete approval-controlled knowledge retrieval workflow from a Python client application.
+You reviewed the client code, created a conversation, sent questions about Apex Manufacturing Pvt Ltd, and verified that the agent could retrieve company documents, financial information, credit bureau information, and assessment rules from the connected knowledge source.
+
+The key takeaway is that the Python client provides a simple interface for interacting with a **Foundry IQ-enabled agent** and retrieving grounded information from the connected knowledge source.
