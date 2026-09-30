@@ -65,7 +65,6 @@ First, add instructions to your agent. Then create a search resource, upload the
     ```
 
 1. Select **Save** to save your current agent configuration.
-
 1. In the **Knowledge** section, expand the **Add** dropdown and select **Connect to Foundry IQ**.
 1. In the Foundry IQ setup window, select **Connect to an AI Search resource**, then select **Create new resource**.
 1. Create a search resource with the following settings:
@@ -266,7 +265,16 @@ This folder already contains the application files and the required code for thi
    pip install -r requirements.txt
    ```
 
-8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
+### 8. Configure the environment variables
+
+Open the **`.env`** file from the side panel and fill in the following:
+
+    ```env
+    PROJECT_ENDPOINT=https://hakunamatata11.services.ai.azure.com/api/projects/hakunamatata
+    AGENT_NAME=credit-risk-assessment-agent-<your_suffix>
+    ```
+
+Replace `<your_suffix>` with the unique suffix you used when creating the agent.
 
 ## Review the agent client code
 
