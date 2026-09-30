@@ -3,7 +3,7 @@ lab:
     title: 'Develop an Azure AI agent with the Microsoft Agent Framework SDK'
     description: 'Learn how to use the Microsoft Agent Framework SDK to create and use an Azure AI chat agent.'
     level: 300
-    duration: 30
+    duration: 40
     islab: true
     status: 'released'
 ---
@@ -12,9 +12,7 @@ lab:
 
 In this exercise, you'll use Azure AI Agent Service and Microsoft Agent Framework to create an AI agent that processes expense claims.
 
-This exercise should take approximately **30** minutes to complete.
-
-> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
+This exercise should take approximately **40** minutes to complete.
 
 ## Prerequisites
 
@@ -22,231 +20,414 @@ Before starting this exercise, ensure you have:
 
 - [Visual Studio Code](https://code.visualstudio.com/) installed on your local machine
 - An active [Azure subscription](https://azure.microsoft.com/free/)
-- [Python 3.13](https://www.python.org/downloads/) installed
+- [Python 3.12.10](https://www.python.org/downloads/) installed
 - [Git](https://git-scm.com/downloads) installed on your local machine
+- Foundry Toolkit VS Code extension
 
-> \* Python 3.14 isn't supported yet: some dependencies have no 3.14 build. This lab was tested with Python 3.13.12.
+> This lab was tested with Python 3.12.10.
 
-## Create a Foundry project with the Foundry Toolkit VS Code extension
+## Use the Deployed Model
 
-As a developer, you may spend some time working in the Foundry portal; but you’re also likely to spend a lot of time in Visual Studio Code. The Foundry Toolkit extension provides a convenient way to work with Foundry project resources without leaving the development environment.
+**Use the deployed model already available in your Microsoft Foundry project at [ai.azure.com](https://ai.azure.com/).**
 
-1. Open Visual Studio Code.
+# Get the application files from GitHub
 
-2. Select **Extensions** from the left pane (or press **Ctrl+Shift+X**).
+1. If you downloaded and extracted the repository during the previous day’s lab, delete the ZIP file and extracted folder from **Downloads**. If you copied the repository to the **Desktop**, your saved progress will remain there. This helps avoid potential long path issues when running the PowerShell commands below.
 
-3. Search the extensions marketplace for the `Foundry Toolkit` extension from Microsoft and select **Install**.
+2. Open a web browser and go to the [lab files on GitHub](https://github.com/Kiran-255666/AgenticAIEngineer).
 
-    > **Note**: The extension is currently listed as **Foundry Toolkit**, but some VS Code labels, commands, or older screenshots may still refer to **AI Toolkit**. In this lab, treat those names as referring to the same extension experience.
+3. On the repository page, select the green **`<> Code`** button, and then select **Download ZIP**.
 
-4. After installing the extension, select its icon in the sidebar to open the Foundry Toolkit view.
+4. Once the download finishes, extract the ZIP file.
 
-    You should be prompted to sign in to your Azure account if you haven't already.
+5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
-5. Select **Create Project** under **Microsoft Foundry Resources**.
+```powershell
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day06\lab01-agent-framework" "$env:USERPROFILE\Desktop\lab01-agent-framework" -Recurse  Day06\lab01-agent-framework.md
 
-    If a default project is already active, the project name will appear under **My Resources**. You can create a new project by right-clicking on the active project and selecting **Switch Default Project**.
+code "$env:USERPROFILE\Desktop\lab01-agent-framework"
+```
 
-6. Select your Azure subscription and resource group, then enter a name for your Foundry project to create a new project for this exercise.
+The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
 
-    When the deployment is complete, you should see the project appear in the Foundry Toolkit pane as the default project.
+This folder already contains the application files and the required code for this exercise.
 
-## Deploy a model
+6. You are now working from the ****Desktop**** folder, so there is no need to worry about the long path issue. Press ****Ctrl+Shift+`**** to open the integrated terminal.
 
-At the core of any generative AI project, there’s at least one generative AI model. In this task, you'll deploy a model from the Model Catalog to use with your agent.
+7. In the terminal, enter the following commands to create and activate a virtual environment and install the required Python packages:
 
-1. When the "Project deployed successfully" popup appears, select the **Deploy a model** button. This opens the Model Catalog.
-
-   > **Tip**: You can also access the Model Catalog by selecting the **+** icon next to **Models** in the Resources section, or by pressing **F1** and running the command **Foundry Toolkit: Show model catalog**.
-
-1. In the Model Catalog, locate the **gpt-5** model (you can use the search bar to find it quickly).
-
-1. Select **Deploy** next to the gpt-5 model.
-
-1. Configure the deployment settings:
-   - **Deployment name**: Enter a name like "gpt-5"
-   - **Deployment type**: Select **Global Standard** (or **Standard** if Global Standard is not available)
-   - **Model version**: Leave as default
-   - **Tokens per minute**: Leave as default
-
-1. Select **Deploy to Microsoft Foundry** in the bottom-left corner.
-
-1. Wait for the deployment to complete. Your deployed model will appear under the **Models** section in the Resources view.
-
-1. Right-click the name of the project deployment and select **Copy Project Endpoint**. You'll need this URL to connect your agent to the Foundry project in the next steps.
-
-    ![Screenshot of copying the project endpoint in the Foundry Toolkit VS Code extension.](../Media/vs-code-endpoint.png)
-
-## Clone the starter code repository
-
-For this exercise, you'll use starter code that will help you connect to your Foundry project and create an agent that can process expenses data. You'll clone this code from a GitHub repository.
-
-1. In VS Code, open the Command Palette (**Ctrl+Shift+P** or **View > Command Palette**).
-
-1. Type **Git: Clone** and select it from the list.
-
-1. Enter the repository URL:
-
-    ```
-   https://github.com/MicrosoftLearning/mslearn-ai-agents.git
-    ```
-
-1. Choose a location on your local machine to clone the repository.
-
-1. When prompted, select **Open** to open the cloned repository in VS Code.
-
-1. Once the repository opens, select **File > Open Folder** and navigate to `mslearn-ai-agents/Labfiles/07-agent-framework`, then choose **Select Folder**.
-
-1. In the Explorer pane, expand the **Python** folder to view the code files for this exercise.
-
-1. Right-click on the **requirements.txt** file and select **Open in Integrated Terminal**.
-
-1. In the terminal, enter the following command to install the required Python packages in a virtual environment:
-
-    ```
+   ```
    python -m venv labenv
    .\labenv\Scripts\Activate.ps1
    pip install -r requirements.txt
-    ```
+   ```
 
-1. Open the **.env** file, replace the **your_project_endpoint** placeholder with the endpoint for your project (copied from the project deployment resource in the Foundry Toolkit extension) and ensure that the MODEL_DEPLOYMENT_NAME variable is set to your model deployment name. Use **Ctrl+S** to save the file after making these changes.
+8. The ****.env**** file is already configured for you. You do not need to change any of the existing values.
 
-Now you're ready to create an AI agent that uses a custom tool to process expenses data.
+Yes man. Keep it cleaner. Remove all the Mermaid flows and the Delete vs Disable explanation. Just explain why we're deleting the temporary agent and give the deletion code.
 
-## Create an agent with a custom tool
+Here’s the cleaned-up full version:
 
-> **Tip**: As you add code, be sure to maintain the correct indentation. Use the existing comments as a guide, entering the new code at the same level of indentation.
+## Review the Credit Risk Assessment Agent
 
-1. Open the **agent-framework.py** file in the code editor.
+The `agent-framework.py` file already contains the code required to create and run the Credit Risk Assessment agent.
 
-1. Review the code in the file. It contains:
-    - Some **import** statements to add references to commonly used namespaces
-    - A *main* function that loads a file containing expenses data, asks the user for instructions, and and then calls...
-    - A **process_expenses_data** function in which the code to create and use your agent must be added
+> **Note:** The code has already been updated for the current Credit Risk Assessment use case. Before running the application, review the code in `agent-framework.py` and make sure the file paths, environment variables, and configuration are correct.
 
-1. At the top of the file, after the existing **import** statement, find the comment **Add references**, and add the following code to reference the namespaces in the libraries you'll need to implement your agent:
+1. Open the **`agent-framework.py`** file in the code editor.
 
-    ```python
-   # Add references
-   from agent_framework import tool, Agent
-   from agent_framework.foundry import FoundryChatClient
-   from azure.identity import AzureCliCredential
-   from pydantic import Field
-   from typing import Annotated
-    ```
+2. Review the project structure:
 
-1. Near the bottom of the file, find the comment **Create a tool function for the email functionality**, and add the following code to define a function that your agent will use to send email (tools are a way to add custom functionality to agents)
+```text
+lab01-agent-framework/
+├── .env
+├── agent-framework.py
+├── requirements.txt
+└── data/
+    ├── data.txt
+    └── instructions.txt
+```
 
-    ```python
-   # Create a tool function for the email functionality
-   @tool(approval_mode="never_require")
-   def submit_claim(
-       to: Annotated[str, Field(description="Who to send the email to")],
-       subject: Annotated[str, Field(description="The subject of the email.")],
-       body: Annotated[str, Field(description="The text body of the email.")]):
-           print("\nTo:", to)
-           print("Subject:", subject)
-           print(body, "\n")
-    ```
+3. Review the **`data`** folder.
 
-    > **Note**: The function *simulates* sending an email by printing it to the console. In a real application, you'd use an SMTP service or similar to actually send the email!
+The folder contains two `.txt` files:
 
-1. Back up above the **send_email** code, in the **process_expenses_data** function, find the comment **Create a foundry chat client**, and add the following code:
+* **`data.txt`** → contains the sample company information used for the credit-risk assessment.
+* **`instructions.txt`** → contains the credit-risk assessment rules and instructions followed by the agent.
 
-    (Be sure to maintain the indentation level)
+Keeping the company data and assessment instructions in separate files allows you to modify the information and rules without changing the Python application.
 
-    ```python
-   # Create a foundry chat client 
-   client = FoundryChatClient(
-       project_endpoint=os.getenv("PROJECT_ENDPOINT"),
-       model=os.getenv("MODEL_DEPLOYMENT_NAME"),
-       credential=AzureCliCredential()
-   )
-    ```
+4. Open the **`agent-framework.py`** file and review the references at the top:
 
-    Note that the **AzureCliCredential** object will allow your code to authenticate to your Azure account. This client will be used to interact with the Foundry agent services.
+```python
+import os
+import asyncio
+from pathlib import Path
+from dotenv import load_dotenv
+from azure.identity import DefaultAzureCredential
+from azure.ai.projects import AIProjectClient
+from azure.ai.projects.models import PromptAgentDefinition
+```
 
-2. Find the comment **Initialize an agent with the tool and instructions**, and add the following code:
+These libraries are used to load environment variables, read the `.txt` files, authenticate with Azure, connect to the Microsoft Foundry project, and create the agent.
 
-    (Be sure to maintain the indentation level)
+5. Review the **`load_file()`** function:
 
-    ```python
-   # Initialize an agent with the tool and instructions
-   async with (
-       Agent(
-           client=client,
-           name="ExpenseClaimAgent",
-           instructions="""You are an AI assistant for expense claim submission.
-                       At the user's request, create an expense claim and use the plug-in function to send an email to expenses@contoso.com with the subject 'Expense Claim`and a body that contains itemized expenses with a total.
-                       Then confirm to the user that you've done so. Don't ask for any more information from the user, just use the data provided to create the email.""",
-           tools=[submit_claim],
-       ) as agent,
-   ):
-    ```
-    In this code, the **Agent** object is initialized with the client, instructions for the agent, and the tool function you defined to send emails.
+```python
+def load_file(file_path: Path) -> str:
+    with file_path.open("r", encoding="utf-8") as file:
+        return file.read()
+```
 
-1. Find the comment **Use the agent to process the expenses data**, and add the following code to create a thread for your agent to run on, and then invoke it with a chat message.
+This function reads the contents of the files stored in the `data` folder.
 
-    (Be sure to maintain the indentation level):
+6. Review the **`main()`** function.
 
-    ```python
-   # Use the agent to process the expenses data
-   try:
-       # Add the input prompt to a list of messages to be submitted
-       prompt_messages = [f"{prompt}: {expenses_data}"]
-       # Invoke the agent for the specified thread with the messages
-       response = await agent.run(prompt_messages)
-       # Display the response
-       print(f"\n# Agent:\n{response}")
-   except Exception as e:
-       # Something went wrong
-       print (e)
-    ```
+The application locates the `data` folder and loads both the company information and assessment instructions:
 
-1. Review that the completed code for your agent, using the comments to help you understand what each block of code does, and then save your code changes (**CTRL+S**).
+```python
+script_dir = Path(__file__).parent
+data_dir = script_dir / "data"
+
+company_data = load_file(data_dir / "data.txt")
+instructions = load_file(data_dir / "instructions.txt")
+```
+
+The application then asks for an assessment request:
+
+```python
+user_prompt = input(
+    "What would you like me to assess?\n\n"
+)
+```
+
+7. Review the **Create the Foundry project client** section:
+
+```python
+project = AIProjectClient(
+    endpoint=os.environ["PROJECT_ENDPOINT"],
+    credential=DefaultAzureCredential(),
+)
+```
+
+`DefaultAzureCredential` authenticates the application using an available Azure identity. The `AIProjectClient` connects the application to the Microsoft Foundry project using the project endpoint configured in the `.env` file.
+
+8. Review the **Create the Credit Risk Assessment Agent** section:
+
+```python
+agent = project.agents.create_version(
+    agent_name="credit-risk-assessment-agent",
+    definition=PromptAgentDefinition(
+        model=os.environ["MODEL_DEPLOYMENT_NAME"],
+        instructions=instructions,
+    ),
+)
+```
+
+The agent uses the model deployment configured in the `.env` file. The instructions from `instructions.txt` are provided to the agent so that it can follow the defined credit-risk assessment process.
+
+9. Review the **Send the assessment request** section:
+
+```python
+response = openai.responses.create(
+    conversation=conversation.id,
+    input=f"""
+Company data:
+
+{company_data}
+
+Assessment request:
+
+{user_prompt}
+""",
+)
+```
+
+The company information from `data.txt` and the assessment request entered by the user are sent to the Credit Risk Assessment agent.
+
+10. Review the **Display the response** section:
+
+```python
+print("\nCredit Risk Assessment")
+print("----------------------")
+print(response.output_text)
+```
+
+This displays the response generated by the agent in the terminal.
 
 ## Test the application
 
-1. In the integrated terminal, enter the following commands to run the application:
+The application is now ready to run.
 
-    ```
-   az login
-    ```
+1. In the integrated terminal, verify that you are signed in to Azure:
 
-    ```
-   python agent-framework.py
-    ```
+```powershell
+az account show
+```
 
-    `az login` allows the AzureCliCredential to authenticate to your Azure account.
+If your Azure account details are displayed, continue with the next step.
 
-1. When asked what to do with the expenses data, enter the following prompt:
+If you are not signed in, run:
 
-    ```
-   Submit an expense claim
-    ```
+```powershell
+az login
+```
 
-1. When the application has finished, review the output. The agent should have composed an email for an expenses claim based on the data that was provided.
+Then run `az account show` again.
 
-    > **Tip**: If the app fails because the rate limit is exceeded. Wait a few seconds and try again. If there is insufficient quota available in your subscription, the model may not be able to respond.
+Yep man. Here’s the **full corrected section**, matching the new unlimited assessment flow and ending with the summary.
 
-1. When you're finished, enter `deactivate` in the terminal to exit the Python virtual environment.
+## Test the application
 
-## Clean up
+The application is now ready to run.
 
-If you've finished exploring Azure AI Agent Service, you should delete the resources you have created in this exercise to avoid incurring unnecessary Azure costs.
+1. In the integrated terminal, verify that you are signed in to Azure:
 
-### Delete your model
+```powershell
+az account show
+```
 
-1. In VS Code, refresh the **Azure Resources** view.
+If your Azure account details are displayed, continue with the next step.
 
-1. Expand the **Models** subsection.
+If you are not signed in, run:
 
-1. Right-click on your deployed model and select **Delete**.
+```powershell
+az login
+```
 
-### Delete the resource group
+Then run `az account show` again.
 
-1. Open the [Azure portal](https://portal.azure.com).
+2. If your virtual environment is not already active, activate it:
 
-1. Navigate to the resource group containing your Microsoft Foundry resources.
+```powershell
+.\labenv\Scripts\Activate.ps1
+```
 
-1. Select **Delete resource group** and confirm the deletion.
+3. Run the application:
+
+```powershell
+python agent-framework.py
+```
+
+4. When prompted, enter:
+
+```text
+Assess ABC Utilities Pvt Ltd for credit approval.
+```
+
+### Test Case 1: Low Risk
+
+The agent should produce an assessment similar to:
+
+```text
+Credit Risk Assessment
+----------------------
+
+Company: ABC Utilities Pvt Ltd
+
+Document Verification:
+Company Registration Certificate: Present
+GST Certificate: Present
+Result: Pass
+
+Company Name Verification:
+Registration Certificate Name: ABC Utilities Pvt Ltd
+GST Certificate Name: ABC Utilities Pvt Ltd
+Result: Pass
+
+MCA Status:
+Active
+
+Sanctions Check:
+No Match Found
+
+Financial Statements:
+Available
+
+Financial Analysis:
+Current Ratio:
+1.56
+
+Debt-to-Equity:
+1.86
+
+Net Profit Margin:
+5.56%
+
+D&B Score:
+720
+
+Industry Risk:
+Utilities - Low
+
+Total Score:
+90/100
+
+Risk Rating:
+Low
+
+Recommended Credit Limit:
+$5,000,000
+
+Recommended Payment Terms:
+60 days
+```
+
+5. At the next prompt, enter:
+
+```text
+Assess Nova Manufacturing Pvt Ltd for credit approval.
+```
+
+### Test Case 2: Medium Risk
+
+The agent should identify values similar to:
+
+```text
+Current Ratio: 1.27
+Debt-to-Equity: 1.83
+Net Profit Margin: 4.38%
+D&B Score: 670
+Industry Risk: Medium
+Total Score: 73/100
+Risk Rating: Medium
+Recommended Credit Limit: $2,000,000
+Recommended Payment Terms: 30 days
+```
+
+6. At the next prompt, enter:
+
+```text
+Assess Skyline Construction Ltd for credit approval.
+```
+
+### Test Case 3: High Risk
+
+The agent should identify values similar to:
+
+```text
+Current Ratio: 0.67
+Debt-to-Equity: 4.50
+Net Profit Margin: 0.71%
+D&B Score: 610
+Industry Risk: High
+Total Score: 28/100
+Risk Rating: High
+Recommended Credit Limit: No credit
+Recommended Payment Terms: Advance payment
+```
+
+7. You can continue entering additional assessment requests using the other companies in `data.txt`.
+
+8. To stop the application, enter:
+
+```text
+quit
+```
+
+or:
+
+```text
+exit
+```
+
+You can also press **Ctrl+C** to stop the application.
+
+> **Note:** The exact wording and formatting may differ because the response is generated by the AI agent. Focus on whether the agent correctly applies the rules from `instructions.txt` to the company information in `data.txt`.
+
+## Experiment with the `.txt` Files (Optional)
+
+After completing the test cases, experiment with the information in the `data` folder.
+
+Open **`data.txt`** and try changing values such as:
+
+* Current Assets
+* Current Liabilities
+* Total Debt
+* Total Equity
+* Revenue
+* Net Profit
+* D&B Score
+* Industry
+* MCA status
+* Certificate availability
+* Company names
+* Sanctions status
+
+For example, change the financial values and run the application again to see how the calculated ratios and risk score change.
+
+You can also create different scenarios by:
+
+* Removing one of the required certificates.
+* Changing the company name on one certificate.
+* Changing the MCA status to Inactive.
+* Adding a sanctions match.
+* Changing the industry from Low Risk to High Risk.
+* Adding a new company record with your own values.
+
+You can also review and modify **`instructions.txt`** to understand how the assessment rules control the agent's response.
+
+> **Note:** Save your changes before running the application again. For these experiments, modify the `.txt` files rather than changing the Python code.
+
+## Clean Up the Agent
+
+The codebase includes cleanup logic to remove the temporary agent version when the application exits.
+
+The `delete_version()` function removes the specific agent version created during the current run:
+
+```python
+project.agents.delete_version(
+    agent_name=agent.name,
+    agent_version=agent.version,
+)
+```
+
+The cleanup runs when you enter `quit`, enter `exit`, or press **Ctrl+C**.
+
+## Summary
+
+In this exercise, you used **Agent Framework** with Microsoft Foundry to create and test a Credit Risk Assessment agent.
+
+You reviewed the Python code, company data, and assessment instructions, tested different risk scenarios, and experimented with the `.txt` files to see how changes in the input affect the assessment.
+
+The key takeaway is that the **Python application, company data, and assessment rules are kept separate**, allowing you to test different credit-risk scenarios without changing the main application code.
