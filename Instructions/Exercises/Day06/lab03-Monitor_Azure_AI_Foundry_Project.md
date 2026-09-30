@@ -69,10 +69,6 @@ The main objective of this lab is to help learners understand how to monitor an 
 2. Expand Monitoring to view the available monitoring options.
 3. Review the available options before opening Metrics.
 
-![Screenshot](../../media/abcd1.png)
-
-*Figure 1: Monitoring menu showing Alerts, Metrics, Diagnostic settings, and Logs.*
-
 ### Step 4: Understand the Monitoring Options
 
 The Monitoring section contains several options. Explain the purpose of each option to learners before they start configuring metrics.
