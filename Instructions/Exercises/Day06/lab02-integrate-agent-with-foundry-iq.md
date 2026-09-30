@@ -246,9 +246,9 @@ Now that the agent and knowledge base work in the portal, use the provided Pytho
 5. Open ****PowerShell**** and run the following two commands to avoid long path issues:
 
 ```powershell
-Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day05\lab05-integrate-agent-with-foundry-iq" "$env:USERPROFILE\Desktop\lab05-integrate-agent-with-foundry-iq" -Recurse
+Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day06\lab02-integrate-agent-with-foundry-iq" "$env:USERPROFILE\Desktop\lab02-integrate-agent-with-foundry-iq" -Recurse
 
-code "$env:USERPROFILE\Desktop\lab05-integrate-agent-with-foundry-iq" 
+code "$env:USERPROFILE\Desktop\lab02-integrate-agent-with-foundry-iq"
 ```
 
 The first command copies the lab folder to your ****Desktop****, and the second command opens the copied folder directly in ****Visual Studio Code****.
@@ -265,15 +265,14 @@ This folder already contains the application files and the required code for thi
    pip install -r requirements.txt
    ```
 
-### 8. Configure the environment variables
-
+8. Configure the environment variables
 Open the **`.env`** file from the side panel and fill in the following:
 
-    ```env
+    ```
     PROJECT_ENDPOINT=https://hakunamatata11.services.ai.azure.com/api/projects/hakunamatata
     AGENT_NAME=credit-risk-assessment-agent-<your_suffix>
     ```
-
+    
 Replace `<your_suffix>` with the unique suffix you used when creating the agent.
 
 ## Review the agent client code
