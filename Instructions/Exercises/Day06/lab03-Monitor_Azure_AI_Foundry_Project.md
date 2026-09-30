@@ -7,7 +7,7 @@
 <table align="center">
 <tr>
 <th>Project</th>
-<td>AgenticAIEngineer</td>
+<td>hakunamatata11</td>
 </tr>
 <tr>
 <th>Platform</th>
@@ -23,7 +23,7 @@
 
 ## 1. Lab Overview
 
-In this lab, learners will monitor the Microsoft Foundry project named **AgenticAIEngineer** from the Azure portal. They will explore the Monitoring section, understand the purpose of each monitoring option, and create a Metrics view with multiple Azure OpenAI metrics.
+In this lab, learners will monitor the Microsoft Foundry project named **hakunamatata11** from the Azure portal. They will explore the Monitoring section, understand the purpose of each monitoring option, and create a Metrics view with multiple Azure OpenAI metrics.
 
 ## 2. Main Objective
 
@@ -31,7 +31,7 @@ The main objective of this lab is to help learners understand how to monitor an 
 
 ## 3. Learning Outcomes
 
-- Sign in to the Azure portal and open the **AgenticAIEngineer** Foundry project.
+- Sign in to the Azure portal and open the **hakunamatata11** Foundry project.
 - Identify the Monitoring options available in the resource menu.
 - Understand the purpose of Alerts, Metrics, Diagnostic settings, and Logs.
 - Build a metric chart by adding at least five Azure OpenAI metrics.
@@ -40,7 +40,7 @@ The main objective of this lab is to help learners understand how to monitor an 
 ## 4. Prerequisites
 
 - Azure portal access with the provided credentials.
-- Access to the **AgenticAIEngineer** Microsoft Foundry project.
+- Access to the **hakunamatata11** Microsoft Foundry project.
 - Sufficient permission to view Monitoring and Metrics for the resource.
 - Recent activity on the project is helpful so that metrics display meaningful values.
 
@@ -109,80 +109,82 @@ The Monitoring section contains several options. Explain the purpose of each opt
 
 </div>
 
-### Step 5: Open Metrics
+### **Step 5: Open Metrics**
 
-1. Under Monitoring, select **Metrics**.
-2. Confirm that the scope is set to **`hakunamatata11`**.
-3. Set the time range to an appropriate value, such as **Local Time: Last 24 hours**.
-4. Use **Add metric** to start adding metrics to the chart.
+1. Under **Monitoring**, select **Metrics**.
+
+2. Confirm that the **Scope** is set to **`hakunamatata11`**.
+
+3. Keep the **Time range** as the default **Local Time: Last 24 hours**.
+
+![Screenshot](../../media/abcd21.png)
+
+4. Click **Add metric** to start adding metrics to the chart.
 
 ![Screenshot](../../media/abcd2.png)
 
 *Figure 2: Metrics Explorer area where multiple metrics are added to the chart.*
 
-### Step 6: Add Metrics to the Chart
+### **Step 6: Add Metrics to the Chart**
 
-> **Important:** Add at least five metrics. Repeat the Add metric process for each metric listed below.
+> **Important:** Add at least five metrics. Each time you click **Add metric**, keep the following settings unchanged:
+>
+> * **Scope:** `hakunamatata11`
+> * **Metric Namespace:** **Cognitive Services / Azure OpenAI metrics**
+>
+> Only change the **Metric** and **Aggregation** as specified for each metric below.
 
-#### Metric 1: Azure OpenAI Requests
+#### **Metric 1: Azure OpenAI Requests**
 
 1. Click **Add metric**.
-2. Keep the Scope as **AgenticAIEngineer**.
-3. Select the appropriate Metric Namespace, such as **Cognitive Services / Azure OpenAI metrics**.
-4. In the Metric dropdown, select **Azure OpenAI Requests**.
-5. In Aggregation, select **Sum**.
-6. Confirm that the metric appears as a chip above the chart.
-7. Repeat the same Add metric process for the next metric.
+2. Keep the default **Scope** and **Metric Namespace**.
+3. In the **Metric** dropdown, select **Azure OpenAI Requests**.
+4. Set **Aggregation** to **Sum**.
+5. Confirm that the metric appears as a chip above the chart by clicking Finish editing metric
+
+![Screenshot](../../media/abcd11.png)
 
 > **Why this metric is useful:** Shows the total number of Azure OpenAI requests during the selected time range.
 
-#### Metric 2: Data In
+#### **Metric 2: Data In**
 
 1. Click **Add metric**.
-2. Keep the Scope as **AgenticAIEngineer**.
-3. Select the appropriate Metric Namespace, such as **Cognitive Services / Azure OpenAI metrics**.
-4. In the Metric dropdown, select **Data In**.
-5. In Aggregation, select **Sum**.
-6. Confirm that the metric appears as a chip above the chart.
-7. Repeat the same Add metric process for the next metric.
+2. Keep the default **Scope** and **Metric Namespace**.
+3. In the **Metric** dropdown, select **Data In**.
+4. Set **Aggregation** to **Sum**.
+5. Confirm that the metric appears as a chip above the chart.
 
 > **Why this metric is useful:** Shows how much input data is sent to the service.
 
-#### Metric 3: Time Between Token
+#### **Metric 3: Time Between Token**
 
 1. Click **Add metric**.
-2. Keep the Scope as **AgenticAIEngineer**.
-3. Select the appropriate Metric Namespace, such as **Cognitive Services / Azure OpenAI metrics**.
-4. In the Metric dropdown, select **Time Between Token**.
-5. In Aggregation, select **Average**.
-6. Confirm that the metric appears as a chip above the chart.
-7. Repeat the same Add metric process for the next metric.
+2. Keep the default **Scope** and **Metric Namespace**.
+3. In the **Metric** dropdown, select **Time Between Token**.
+4. Set **Aggregation** to **Average**.
+5. Confirm that the metric appears as a chip above the chart.
 
 > **Why this metric is useful:** Shows the average delay between streamed tokens and helps review response streaming performance.
 
-#### Metric 4: Time to First Byte
+#### **Metric 4: Time to First Byte**
 
 1. Click **Add metric**.
-2. Keep the Scope as **AgenticAIEngineer**.
-3. Select the appropriate Metric Namespace, such as **Cognitive Services / Azure OpenAI metrics**.
-4. In the Metric dropdown, select **Time to First Byte**.
-5. In Aggregation, select **Average**.
-6. Confirm that the metric appears as a chip above the chart.
-7. Repeat the same Add metric process for the next metric.
+2. Keep the default **Scope** and **Metric Namespace**.
+3. In the **Metric** dropdown, select **Normalized Time to First Byte**.
+4. Set **Aggregation** to **Average**.
+5. Confirm that the metric appears as a chip above the chart.
 
 > **Why this metric is useful:** Shows how quickly the service starts returning the response after a request is submitted.
 
-#### Metric 5: Azure OpenAI Availability Rate
+#### **Metric 5: Azure OpenAI Availability Rate**
 
 1. Click **Add metric**.
-2. Keep the Scope as **AgenticAIEngineer**.
-3. Select the appropriate Metric Namespace, such as **Cognitive Services / Azure OpenAI metrics**.
-4. In the Metric dropdown, select **Azure OpenAI Availability Rate**.
-5. In Aggregation, select **Average**.
-6. Confirm that the metric appears as a chip above the chart.
-7. Repeat the same Add metric process for the next metric.
+2. Keep the default **Scope** and **Metric Namespace**.
+3. In the **Metric** dropdown, select **Azure OpenAI Availability Rate**.
+4. Set **Aggregation** to **Average**.
+5. Confirm that the metric appears as a chip above the chart.
 
-> **Why this metric is useful:** Shows service availability for the selected time range.
+> **Why this metric is useful:** Shows service availability during the selected time range.
 
 ![Screenshot](../../media/abcd3.png)
 
@@ -205,6 +207,6 @@ The Monitoring section contains several options. Explain the purpose of each opt
 
 ## 6. Lab Conclusion
 
-In this lab, we monitored the **AgenticAIEngineer** Microsoft Foundry project from the Azure portal. We explored the Monitoring section and understood how Alerts, Metrics, Diagnostic settings, and Logs support operational visibility.
+In this lab, we monitored the **`hakunamatata11`** Microsoft Foundry project from the Azure portal. We explored the Monitoring section and understood how Alerts, Metrics, Diagnostic settings, and Logs support operational visibility.
 
 > **Key takeaway:** Monitoring is important because it gives visibility into how an AI resource is performing and being used. Metrics provide a quick operational view, while logs and diagnostic settings support deeper troubleshooting and long-term analysis.
