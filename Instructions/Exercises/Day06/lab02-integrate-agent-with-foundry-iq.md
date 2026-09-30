@@ -132,10 +132,10 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
 1. On the knowledge base creation page, for **Chat completions model** dropdown select **gpt-5.2** and leave the remaining settings unchanged.
 1. Select **Save knowledge base**. Refresh the browser until the knowledge source status is **active**.
 1. Select the back button to return to the **Knowledge** page, then select **Manage** next to the **Connection** dropdown.
-    ![Screenshot](../media/Manage.png)
+    ![Screenshot](../../media/Manage.png)
 1. Scroll to **Connected resources**, select your search service, and find the **Authentication** section.
 1. Select **Key authentication**, then select **Edit authentication**.
-    ![Screenshot](../media/Edit authentication.png)
+    ![Screenshot](../../media/Edit authentication.png)
 1. You will be redirected to Edit authentication Change Auth Type to API via drop down and you will be needed to add API KEY 
 1. Return reopen the azure portal there under keys > Manage admin keys > Primary admin key Copy key of it and paste it in **API Key**
 1. Click Save
