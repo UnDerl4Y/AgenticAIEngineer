@@ -8,53 +8,20 @@ lab:
     status: 'released'
 ---
 
-# Lab: Monitor Your Azure AI Foundry Project
+# Monitor Your Azure AI Foundry Project
 
-<div align="center">
+In this exercise, you'll monitor your **Microsoft Foundry project `hakunamatata11`** from the Azure portal. You'll explore **Azure Monitor Alerts, Metrics, Diagnostic settings, and Logs**, create a Metrics chart with Azure OpenAI metrics, and review signals such as request count, data usage, latency, and availability.
 
-*Using Azure Monitor metrics, alerts, diagnostic settings, and logs*
+This exercise should take approximately **45** minutes to complete.
 
-<table align="center">
-<tr>
-<th>Project</th>
-<td>hakunamatata11</td>
-</tr>
-<tr>
-<th>Platform</th>
-<td>Microsoft Azure Portal / Microsoft Foundry</td>
-</tr>
-<tr>
-<th>Lab Type</th>
-<td>Monitoring and observability</td>
-</tr>
-</table>
-
-</div>
-
-## 1. Lab Overview
-
-In this lab, learners will monitor the Microsoft Foundry project named **hakunamatata11** from the Azure portal. They will explore the Monitoring section, understand the purpose of each monitoring option, and create a Metrics view with multiple Azure OpenAI metrics.
-
-## 2. Main Objective
-
-The main objective of this lab is to help learners understand how to monitor an Azure AI Foundry project so that usage, performance, availability, and troubleshooting signals can be reviewed from one place.
-
-## 3. Learning Outcomes
-
-* Signing in to the Azure portal and opening the **hakunamatata11** Foundry project.
-* Identifying the Monitoring options available in the resource menu.
-* Understanding the purpose of **Alerts, Metrics, Diagnostic settings, and Logs**.
-* Building a metric chart by adding at least five Azure OpenAI metrics.
-* Using the chart to review operational signals such as request count, data usage, latency, and availability.
-
-## 4. Prerequisites
+## Prerequisites
 
 - Azure portal access with the provided credentials.
 - Access to the **hakunamatata11** Microsoft Foundry project.
 - Sufficient permission to view Monitoring and Metrics for the resource.
 - Recent activity on the project is helpful so that metrics display meaningful values.
 
-## 5. Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ### Step 1: Sign in to the Azure Portal
 
@@ -203,7 +170,7 @@ The Monitoring section contains several options. Explain the purpose of each opt
 - Generated Prompt Tokens
 - Total Tokens
 
-### Step 7: Review the Metrics Chart
+### Review the Metrics Chart
 
 1. Review the chart after all selected metrics are added.
 2. Check whether the lines or values show request activity, data usage, latency, or availability patterns.
@@ -211,7 +178,7 @@ The Monitoring section contains several options. Explain the purpose of each opt
 4. Use the time range selector if you want to review another time window.
 5. Optionally, use **Save to dashboard** if the chart should be reused later.
 
-## 6. Conclusion
+## Conclusion
 
 In this lab, we monitored the **`hakunamatata11`** Microsoft Foundry project from the Azure portal. We explored the Monitoring section and understood how Alerts, Metrics, Diagnostic settings, and Logs support operational visibility.
 
