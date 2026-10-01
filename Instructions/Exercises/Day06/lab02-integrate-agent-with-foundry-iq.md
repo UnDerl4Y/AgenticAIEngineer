@@ -26,6 +26,32 @@ Before starting this exercise, ensure you have:
 - An existing Foundry project with deployed chat and embedding models
 - Basic familiarity with the Microsoft Foundry portal and Python programming
 
+## Introduction to Foundry IQ
+
+In the previous labs, you worked with data that was either stored locally in the project, loaded through application code, or provided directly to the model.
+
+In this lab, we introduce **Foundry IQ**, which provides a knowledge layer that allows an AI agent to search and retrieve information from connected data sources when answering questions.
+
+For this lab, you can see the credit-risk documents in:
+
+`lab02-integrate-agent-with-foundry-iq\data`
+
+These files are provided so you can **refer to the source documents and understand the data being used**. They are not loaded or read directly by the Python application. Instead, the documents are stored in an Azure data source and connected to the agent through **Foundry IQ**.
+
+```mermaid
+flowchart LR
+    A[Source Documents<br/>PDF Files] --> B[Azure Storage<br/>Blob Storage]
+    B --> C[Foundry IQ<br/>Knowledge Base]
+    C --> D[AI Agent]
+
+    style A fill:#f5f5f5,stroke:#666
+    style B fill:#e8f1ff,stroke:#0078d4
+    style C fill:#e8f1ff,stroke:#0078d4
+    style D fill:#f5f5f5,stroke:#666
+```
+
+This means the agent can search the connected knowledge source and retrieve relevant information when you ask a question, rather than requiring the documents to be included directly in the application code or model prompt.
+
 ## Use your Foundry project and deployed models
 
 This lab uses the Foundry project and deployed models that are already available to you. You don't need to create a new Foundry project or deploy a new model for this exercise.
@@ -45,19 +71,8 @@ Create an agent that will search the credit-risk knowledge base.
 
 3. Select **Create**.
 
-4. After the agent is created, the agent playground opens. You'll now configure the agent with credit-risk assessment information from Foundry IQ.
-
-
-## Configure data and Foundry IQ
-
-> **Important:** The following resource creation steps are **optional**. We have already provisioned the required Azure AI Search and Storage Account resources for this lab, so you can skip these steps and use the provided resources. You can still go through these steps separately to explore and learn how these resources are created and configured.
-
-<details>
-<summary>Click here to view the resource creation and Foundry IQ configuration steps</summary>
-
-First, add instructions to your agent. Then create a search resource, upload the credit-risk assessment documents, and create a knowledge base that connects those documents to the agent.
-
-1. Give your agent the following instructions:
+4. After the agent is created, the agent playground opens
+5. Give your agent the following instructions to make it a **credit-risk assessment agent**:
 
     ```
     You are a helpful AI assistant for credit-risk assessment.
@@ -66,8 +81,16 @@ First, add instructions to your agent. Then create a search resource, upload the
     Provide detailed, accurate information and always cite your sources.
     If you don't find relevant information in the knowledge base, say so clearly.
     ```
+    
+6. Select **Save** to save your current agent configuration.
+7. You'll now use configured the agent with credit-risk assessment information from Foundry IQ.
 
-1. Select **Save** to save your current agent configuration.
+
+## Configure Foundry IQ
+
+<details>
+<summary>View the resource creation and Foundry IQ configuration setup steps from scratch</summary>
+    
 1. In the **Knowledge** section, expand the **Add** dropdown and select **Connect to Foundry IQ**.
 1. In the Foundry IQ setup window, select **Connect to an AI Search resource**, then select **Create new resource**.
 1. Create a search resource with the following settings:
@@ -149,22 +172,22 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
 
 Your Foundry IQ knowledge base is now connected to the credit-risk assessment documents and ready for use by your agent.
 
+1. Navigate back to your agent from the project home page. Select **View Deployments**, then select **Agents** from the side panel. Click the agent you created earlier, such as `credit-risk-assessment-agent-<unique_suffix>`.
+
 </details>
 
 ## Configure the playground
 
-1. Navigate back to your agent from the project home page. Select **View Deployments**, then select **Agents** from the side panel. Click the agent you created earlier, such as `credit-risk-assessment-agent-<unique_suffix>`.
+1. Under **Tools**, select **Knowledge**, click **Add**, and then select **Connect to Foundry IQ**.
 
-2. Under **Tools**, select **Knowledge**, click **Add**, and then select **Connect to Foundry IQ**.
-
-3. In the **Connect to Foundry IQ** pop-up, configure the following:
+2. In the **Connect to Foundry IQ** pop-up, configure the following:
 
    * **Connection**: Selected displayed Connection
    * **Knowledge base**: Select Knowledge base
 
    Then select **Connect**.
 
-4. Click Save
+3. Click Save
 
 ## Test the agent in the playground
 
