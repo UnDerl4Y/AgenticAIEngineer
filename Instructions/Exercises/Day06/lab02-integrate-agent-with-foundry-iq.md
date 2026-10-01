@@ -88,6 +88,8 @@ Create an agent that will search the credit-risk knowledge base.
 
 ## Configure Foundry IQ
 
+**Optional**: The required Azure AI Search, Storage Account, and Foundry IQ resources are already provisioned for this lab. You can skip the steps below and continue with Configure the playground. If you want to create and configure the resources yourself, expand the section below.
+
 <details>
 <summary>View the resource creation and Foundry IQ configuration setup steps from scratch</summary>
     
