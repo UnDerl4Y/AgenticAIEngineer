@@ -192,7 +192,8 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
 
 ## Test the agent in the playground
 
-Use the following expected responses to verify that the agent is successfully retrieving information from the Foundry IQ knowledge source.
+1. **Note:** **You may notice minor parsing or rendering differences in the agent's responses, such as formatting, emojis, special characters, or line breaks. Kindly ignore these differences when comparing the responses.**
+2. Use the following expected responses to verify that the agent is successfully retrieving information from the Foundry IQ knowledge source.
 
 #### Query 1
 
