@@ -85,13 +85,12 @@ Create an agent that will search the credit-risk knowledge base.
 6. Select **Save** to save your current agent configuration.
 7. You'll now use configured the agent with credit-risk assessment information from Foundry IQ.
 
+<details>
+<summary>View the resource creation and Foundry IQ configuration setup steps from scratch</summary>
 
 ## Configure Foundry IQ
 
 **Optional**: The required Azure AI Search, Storage Account, and Foundry IQ resources are already provisioned for this lab. You can skip the steps below and continue with Configure the playground. If you want to create and configure the resources yourself, expand the section below.
-
-<details>
-<summary>View the resource creation and Foundry IQ configuration setup steps from scratch</summary>
     
 1. In the **Knowledge** section, expand the **Add** dropdown and select **Connect to Foundry IQ**.
 1. In the Foundry IQ setup window, select **Connect to an AI Search resource**, then select **Create new resource**.
@@ -172,7 +171,7 @@ The search resource provides the retrieval layer for the knowledge base. Next, u
 1. Return to the Azure portal. Under **Keys** > **Manage admin keys** > **Primary admin key**, copy the key and paste it into **API Key**.
 1. Click **Save**.
 
-Your Foundry IQ knowledge base is now connected to the credit-risk assessment documents and ready for use by your agent.
+1. Your Foundry IQ knowledge base is now connected to the credit-risk assessment documents and ready for use by your agent.
 
 1. Navigate back to your agent from the project home page. Select **View Deployments**, then select **Agents** from the side panel. Click the agent you created earlier, such as `credit-risk-assessment-agent-<unique_suffix>`.
 
