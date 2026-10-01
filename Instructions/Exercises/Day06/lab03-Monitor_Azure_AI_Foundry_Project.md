@@ -31,11 +31,11 @@ The main objective of this lab is to help learners understand how to monitor an 
 
 ## 3. Learning Outcomes
 
-- Sign in to the Azure portal and open the **hakunamatata11** Foundry project.
-- Identify the Monitoring options available in the resource menu.
-- Understand the purpose of Alerts, Metrics, Diagnostic settings, and Logs.
-- Build a metric chart by adding at least five Azure OpenAI metrics.
-- Use the chart to review operational signals such as request count, data usage, latency, and availability.
+* Signing in to the Azure portal and opening the **hakunamatata11** Foundry project.
+* Identifying the Monitoring options available in the resource menu.
+* Understanding the purpose of **Alerts, Metrics, Diagnostic settings, and Logs**.
+* Building a metric chart by adding at least five Azure OpenAI metrics.
+* Using the chart to review operational signals such as request count, data usage, latency, and availability.
 
 ## 4. Prerequisites
 
