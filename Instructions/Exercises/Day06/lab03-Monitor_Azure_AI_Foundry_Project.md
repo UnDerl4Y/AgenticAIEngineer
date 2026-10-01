@@ -1,3 +1,13 @@
+---
+lab:
+    title: 'Monitor Your Azure AI Foundry Project'
+    description: 'Use Azure Monitor metrics, alerts, diagnostic settings, and logs to monitor an Azure AI Foundry project.'
+    level: 300
+    duration: 45
+    islab: true
+    status: 'released'
+---
+
 # Lab: Monitor Your Azure AI Foundry Project
 
 <div align="center">
@@ -201,7 +211,7 @@ The Monitoring section contains several options. Explain the purpose of each opt
 4. Use the time range selector if you want to review another time window.
 5. Optionally, use **Save to dashboard** if the chart should be reused later.
 
-## 6. Lab Conclusion
+## 6. Conclusion
 
 In this lab, we monitored the **`hakunamatata11`** Microsoft Foundry project from the Azure portal. We explored the Monitoring section and understood how Alerts, Metrics, Diagnostic settings, and Logs support operational visibility.
 
