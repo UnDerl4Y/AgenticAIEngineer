@@ -1,12 +1,11 @@
 ---
-
 lab:
-title: Microsoft Foundry Prompt Evaluations
-description: Learn how to evaluate generative AI applications in Microsoft Foundry using dataset-based evaluations to assess response quality, relevance, coherence, and safety.
-level: 300
-duration: 25
-islab: true
-status: 'released'
+   title: Microsoft Foundry Prompt Evaluations
+   description: Learn how to evaluate generative AI applications in Microsoft Foundry using dataset-based evaluations to assess response quality, relevance, coherence, and safety.
+   level: 300
+   duration: 25
+   islab: true
+   status: 'released'
 ---
 
 # Microsoft Foundry Prompt Evaluations
@@ -19,20 +18,22 @@ This exercise will take approximately **25** minutes.
 
 ## Prerequisites
 
-* Active Azure subscription.
-* Access to Microsoft Foundry.
-* Permission to use or deploy the required model.
-* Prepared JSONL dataset for evaluation.
-* Browser access to the Microsoft Foundry portal.
+To complete this exercise, you need:
 
-### Open Azure AI Foundry
+- Active Azure subscription.
+- Access to Microsoft Foundry.
+- Permission to use or deploy the required model.
+- Prepared JSONL dataset for evaluation.
+- Browser access to the Microsoft Foundry portal.
+
+# Open Azure AI Foundry
 
 1. Open Microsoft Edge.
 2. Go to the Microsoft Foundry portal: https://ai.azure.com/
 3. Sign in using the provided credentials.
 4. Select the project `hakunamatata1`.
 
-### Go to Evaluation
+## Go to Evaluation
 
 1. From the project page, click the **Build** tab on the top-right menu.
 
@@ -50,7 +51,7 @@ This exercise will take approximately **25** minutes.
 
 7. After the dataset is uploaded, click **Next**.
 
-### Select Evaluation Scope
+## Select Evaluation Scope
 
 1. In the **Scope** section, select **Individual turns**. This option is suitable for this lab because the JSONL file contains separate question-and-response pairs rather than complete multi-turn conversations.
 
@@ -62,18 +63,18 @@ This exercise will take approximately **25** minutes.
 
 2. Review the mapping based on the available columns, such as **Question** and **ExpectedResponse**. Do not change anything here and click **Next**.
 
-### Criteria
+## Criteria
 
 1. In the **Criteria** section, observe the evaluators that are automatically suggested to assess the dataset responses.
 2. Click **Next**.
 
-### Submit the Evaluation
+## Submit the Evaluation
 
 1. Review the evaluation configuration.
 2. Provide a meaningful evaluation name.
 3. Submit the evaluation run.
 
-### Review Evaluation Results
+## Review Evaluation Results
 
 1. Refresh the evaluation status if needed.
 2. Open the completed evaluation run.
