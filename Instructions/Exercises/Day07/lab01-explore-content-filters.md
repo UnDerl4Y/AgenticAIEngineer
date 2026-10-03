@@ -16,8 +16,6 @@ In this exercise, you'll explore the effects of guardrails in Foundry.
 
 This exercise will take approximately **25** minutes.
 
-> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
-
 ## Prerequisites
 
 To complete this exercise, you need:
