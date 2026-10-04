@@ -90,7 +90,15 @@ To complete this exercise, you need:
 ## Criteria
 
 1. In the **Criteria** section, observe the evaluators that are automatically suggested to assess the dataset responses.
-2. Click **Next**.
+1. Under **Add evaluators**, select the following three evaluators:
+
+* **Relevance-Evaluator**
+* **Response-Completeness-Evaluator-(Preview)**
+* **Similarity-Evaluator**
+
+1. Review the selected evaluators and continue to the next step.
+
+1. Click **Next**.
 
 ## Submit the Evaluation
 
