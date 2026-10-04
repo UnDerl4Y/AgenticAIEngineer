@@ -56,7 +56,7 @@ To complete this exercise, you need:
 
    ![Screenshot](../../media/TargetDataset.png)
 
-5. Open the following GitHub folder and manually download the `credit_risk_management.jsonl` file:
+5. Open the following GitHub folder and manually download the `credit-risk-prompt-evaluation.jsonl` file:
 
    https://github.com/Kiran-255666/AgenticAIEngineer/tree/main/labfiles/Day07/lab02-microsoft-foundry-prompt-evaluations/ 
    
@@ -64,7 +64,7 @@ To complete this exercise, you need:
 
 6. On the **Dataset** page, click **Upload new dataset** in the top-right corner.
 
-7. In the **Upload new dataset** dialog, enter a name for the dataset, such as `credit_risk_management_<your_unique_prefix>`.
+7. In the **Upload new dataset** dialog, enter a name for the dataset, such as `credit-risk-prompt-evaluation-<your_unique_prefix>`.
 
 8. Upload the downloaded JSONL dataset and click **Upload**.
 
@@ -74,44 +74,33 @@ To complete this exercise, you need:
 
 ## Select Evaluation Scope
 
-1. In the **Scope** section, select **Individual turns**. The current dataset contains separate question-and-response pairs, so **Individual turns** is appropriate for evaluating each response independently.
+1. In the **Scope** section, verify that **Individual turns** is selected by default. The current dataset contains separate question-and-response pairs, so each response can be evaluated independently.
 
-| Option                 | Use When                                                                                                                |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **Individual turns**   | The dataset contains separate question-and-response pairs, where each user query has a corresponding expected response. |
-| **Full conversations** | The dataset contains complete multi-turn conversations with multiple back-and-forth messages.                           |
+| Option                 | Use When                                                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Individual turns**   | The dataset contains separate question-and-response pairs, with each response evaluated independently. |
+| **Full conversations** | The dataset contains complete multi-turn conversations with multiple back-and-forth messages.          |
 
-**Recommendation:** Use **Individual turns** for the current lab. **Full conversations** is not required because the current dataset is designed as separate Q&A examples.
-
-1. Review the available field mapping. The evaluator should use the user query and corresponding assistant response from the dataset. **Do not change the default mapping.** Click **Next** to continue to the evaluator configuration.
-
-1. Continue to the evaluator configuration.
+2. Click **Next**
 
 ## Criteria
 
-1. In the **Criteria** section, observe the evaluators that are automatically suggested to assess the dataset responses.
-1. Under **Add evaluators**, select the following three evaluators:
-
-* **Relevance-Evaluator**
-* **Response-Completeness-Evaluator-(Preview)**
-* **Similarity-Evaluator**
-
-1. Review the selected evaluators and continue to the next step.
-
+1. In the **Criteria** section, observer the evaluators that are auto suggested to assess the dataset responses. 
 1. Click **Next**.
 
-## Submit the Evaluation
+## Review & Submit the Evaluation
 
-1. Review the evaluation configuration.
-2. Provide a meaningful evaluation name.
-3. Submit the evaluation run.
+1. For **Evaluation name** provide a meaningful evaluation name.
+2. Click Submit.
 
 ## Review Evaluation Results
 
-1. Refresh the evaluation status if needed.
+1. Refresh the evaluation status if needed and wait till **Status** turns form **In progress** to **Completed**
 2. Open the completed evaluation run.
 3. Review the scores, metrics, reasoning, and detailed data view.
 4. Use the results to identify where prompt, model, or dataset improvements are required.
+   
+   ![Screenshot](../../media/O4xResult.png)
 
 ## Conclusion
 
