@@ -29,13 +29,24 @@ To complete this exercise, you need:
 # Open Azure AI Foundry
 
 1. Open Microsoft Edge.
-2. Go to the Microsoft Foundry portal: https://ai.azure.com/
-3. Sign in using the provided credentials.
-4. Select the project `hakunamatata1`.
+
+2. Go to the **Microsoft Foundry portal**: https://ai.azure.com/
+
+3. Sign in using the provided credentials if you haven’t logged in before or if you have logged out.
+
+4. By default, it should take you to the `hakunamatata1` project's home page.
+
+   <details>
+   <summary>If you are not redirected to the project</summary>
+
+   Click **Select the project**, choose `hakunamatata1`, and you will be redirected to the project's home page.
+
+   </details>
+
 
 ## Go to Evaluation
 
-1. From the project page, click the **Build** tab on the top-right menu.
+1. From the project's **home page**, click the **Build** tab on the top-right menu.
 
 2. From the left navigation pane, select **Evaluation**.
 
@@ -43,25 +54,38 @@ To complete this exercise, you need:
 
 4. Select **Target: Dataset** and click **Upload new dataset**.
 
+   ![Screenshot](../../media/TargetDataset.png)
+
 5. Open the following GitHub folder and manually download the `credit_risk_management.jsonl` file:
 
-   https://github.com/Kiran-255666/AgenticAIEngineer/tree/main/labfiles/Day07/lab02-microsoft-foundry-prompt-evaluations/
+   https://github.com/Kiran-255666/AgenticAIEngineer/tree/main/labfiles/Day07/lab02-microsoft-foundry-prompt-evaluations/ 
+   
+   ![Screenshot](../../media/JSONLDownload.png)
 
-6. Give a name to the dataset, upload the downloaded dataset, and click **Upload**.
+6. On the **Dataset** page, click **Upload new dataset** in the top-right corner.
 
-7. After the dataset is uploaded, click **Next**.
+7. In the **Upload new dataset** dialog, enter a name for the dataset, such as `credit_risk_management_<your_unique_prefix>`.
+
+8. Upload the downloaded JSONL dataset and click **Upload**.
+
+9. After the dataset is uploaded, click **Next**.
+   
+   ![Screenshot](../../media/NEXT.png)
 
 ## Select Evaluation Scope
 
-1. In the **Scope** section, select **Individual turns**. This option is suitable for this lab because the JSONL file contains separate question-and-response pairs rather than complete multi-turn conversations.
+1. In the **Scope** section, select **Individual turns**. The current dataset contains separate question-and-response pairs, so **Individual turns** is appropriate for evaluating each response independently.
 
-| Evaluation scope | Description |
-| --- | --- |
-| **Individual turns** | Use this option when each record contains a separate question and response, such as **Question** and **ExpectedResponse**. |
+| Option                 | Use When                                                                                                                |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Individual turns**   | The dataset contains separate question-and-response pairs, where each user query has a corresponding expected response. |
+| **Full conversations** | The dataset contains complete multi-turn conversations with multiple back-and-forth messages.                           |
 
-> **Important:** For this lab, select **Individual turns**. Do not change this setting.
+**Recommendation:** Use **Individual turns** for the current lab. **Full conversations** is not required because the current dataset is designed as separate Q&A examples.
 
-2. Review the mapping based on the available columns, such as **Question** and **ExpectedResponse**. Do not change anything here and click **Next**.
+1. Review the available field mapping. The evaluator should use the user query and corresponding assistant response from the dataset. **Do not change the default mapping.** Click **Next** to continue to the evaluator configuration.
+
+1. Continue to the evaluator configuration.
 
 ## Criteria
 
