@@ -1,4 +1,20 @@
-# Lab1: Building a Booking Request Agent with Copilot Studio 
+---
+lab:
+  title: Build a booking request agent with Copilot Studio
+  description: Learn how to create and configure a real estate booking agent using Microsoft Copilot Studio, Dataverse, topics, variables, and conversational nodes.
+  level: 300
+  duration: 55
+  islab: true
+  status: 'released'
+---
+
+# Build a booking request agent with Copilot Studio
+
+Microsoft Copilot Studio enables you to create agents that can interact with users and perform tasks based on configured topics, knowledge, and conversational flows. In this lab, you'll create a real estate booking agent and configure it to collect customer details, handle property viewing requests, and guide users through a booking conversation.
+
+In this exercise, you'll create and configure a booking request agent using Copilot Studio.
+
+This exercise will take approximately **55** minutes.
 
 ## Create a Power Platform environment
 
