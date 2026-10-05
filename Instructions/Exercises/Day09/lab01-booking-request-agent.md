@@ -47,33 +47,23 @@ Before you start the lab exercises, you must create a development environment fo
 
 ### Access Copilot Studio
 
-1. In a new browser tab, navigate to **Copilot Studio** https://copilotstudio.microsoft.com/ and sign in if prompted.
+1. In a new browser tab, open **Copilot Studio** https://copilotstudio.microsoft.com/ and sign in if prompted.
 
    <details>
-   <summary>Didn't your environment load automatically? Click here</summary>
+   <summary>Does your Copilot Studio interface look different from the one shown in Step 5? Click here</summary>
 
+   ![Copilot Studio interface.](../../media/newuserxp.png)
 
-   a. Go to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments.
-
-   b. Select your environment.
-
-   c. In the **Details** section, copy the **Environment ID**.
-
-   d. Open https://copilotstudio.microsoft.com/environments/<your-environment-id>/home, replacing `<your-environment-id>` with the copied environment ID.
+   If your interface looks different from the image above, select **...** (More options) at the bottom of the page. Under **Explore**, select **Open Classic Experience**. These labs use the **Classic Experience**.
 
    </details>
 
-2. If prompted, select **Get Started** and keep the default country or region settings.
+3. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
 
-3. Skip any welcome messages.
-
-4. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
-
-5. Check the **Environment Selector**. If your *named environment* is already displayed, use it.
+4. Check the **Environment Selector**. If your *named environment* is already displayed, use it.
 
    <details>
    <summary>Can't see your named environment? Click here</summary>
-   
 
    a. Select the **Environment Selector**.
 
