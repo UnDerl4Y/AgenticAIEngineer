@@ -251,13 +251,13 @@ In this exercise, you will access the Microsoft Copilot Studio portal, the Devel
 
    ![Environment Selector.](../../media/OneAgent.png)
 
-3. In the Name your agent dialog, enter **`Real-Estate-Booking-Service-<your_unique_suffix>`**
+3. In the Name your agent dialog, enter **`Real Estate Booking Service`**
 
    ![Environment Selector.](../../media/TwoAgent.png)
 
-4. Click **Agent Settings** and verify the Solution is set to **Bookings**
+4. Expand **Agent Settings** and verify the **Solution** is set to **Bookings**.
 
-5. In Schema name, leave it default.
+5. Leave the automatically generated **Schema name** as it is.
 
 6. Select Create.
 
@@ -321,6 +321,14 @@ In this exercise, you will access the Microsoft Copilot Studio portal and add kn
 
 12. View your agent response. 
 
+   ![Environment Selector.](../../media/FiveAgent.png)
+
+13. Select **Publish** at the top of the page.
+
+14. Enable **Force newest version**, then select **Publish** again.
+
+15. Wait until the publishing process completes successfully before continuing.
+
 ## Manage topics 
 
 ### Scenario 
@@ -357,8 +365,10 @@ In this exercise, you will remove topics in an agent.
 
 ##### Task 1.1 – Disable topics 
 
-1. Navigate to the Microsoft Copilot Studio portal https://copilotstudio.microsoft.com and ensure you are in the appropriate environment. 
+1. Navigate to the Microsoft Copilot Studio portal https://copilotstudio.microsoft.com and ensure you are in classic experince UI and in the appropriate environment.
+
 2. Select Agents from the left navigation pane. 
+
 3. Select the Real Estate Booking Service agent you created in the previous lab. 
 4. Select the Topics tab. 
 5. Toggle Enabled to Off for the Start Over topic. 
