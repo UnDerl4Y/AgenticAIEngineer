@@ -405,49 +405,65 @@ In this exercise, you will create topics in an agent and add trigger phrases.
 
 3. Select the second Question node What is your email address? 
 
-4. In the Edit with Copilot panel, in the What do you want to do? field, enter the following text: 
+   ![Environment Selector.](../../media/EmailAddress.png)
 
-Change "What is your email address?" to say thank you to the Name variable from the previous node and then proceed to ask the email address question. 
+4. In the Edit with Copilot panel, in the What do you want to do? field, enter the following text: **`Change "What is your email address?" to say thank you to the Name variable from the previous node and then proceed to ask the email address question`** 
+
+   ![Environment Selector.](../../media/OneUpdate.png)
 
 5. Select Update. 
 
-**Note:** The message should be updated to include the Name variable from the prior node, and should look similar to the screenshot above. If Edit with copilot did not update the question node correctly, select Undo, and retry with a different prompt. 
+   ![Environment Selector.](../../media/ThankYou.png)
+
+> **Note:** The message should be updated to include the Name variable from the prior node, and should look similar to the screenshot above. If Edit with copilot did not update the question node correctly, select Undo, and retry with a different prompt. 
 
 6. Select Save. 
 
-##### Task 2.3 – Add nodes with natural language 
+##### Task 2.3 – Add nodes with natural language
 
-In addition to adding updating existing nodes, you can use Copilot to add new ones. 
+In addition to updating existing nodes, you can use Copilot to add new nodes.
 
-1. Make sure that no node is selected by selecting the empty space in the authoring 
-canvas. 
-2. In the Edit with Copilot panel, in the What do you want to do? field, enter the following text: 
+1. Make sure no node is selected by selecting an empty area of the authoring canvas.
 
-Summarize the information collected in an adaptive card 
+2. In the **Edit with Copilot** panel, in the **What do you want to do?** field, enter:
 
-3. Select Update. 
-4. A message node with an Adaptive Card is added to the end of the topic. 
-5. Make sure that no node is selected by selecting the empty space in the authoring 
-canvas. 
-6. In the What do you want to do? field, enter the following text: 
+   `Summarize the information collected in an adaptive card`
 
-Add a new multiple choice question to prompt the user if the details are correct with two options Yes or No 
+3. Select **Update**.
 
-7. Select Update. 
-8. A new question node is added to the end of the topic with options for the user to 
-select. 
-9. Select Save. 
+4. A message node with an Adaptive Card is added to the end of the topic.
 
-##### Task 2.4 - Test the topic 
+   ![Environment Selector.](../../media/OneSummary.png)
 
-1. If the Test your agent panel is closed, select the Test icon in the upper-right of the 
-page. 
-2. Select the Start new test session icon at the top of the testing panel. 
-3. In the Ask a question or describe what you need text box, enter Customer 
-information. 
-4. Enter your name and email address. 
-5. Select Yes. 
-6. Select Save 
+5. Again, select an empty area of the authoring canvas to make sure no node is selected.
+
+6. In the **What do you want to do?** field, enter:
+
+   `Add a new multiple choice question to ask the user if the details are correct, with two options: Yes or No`
+
+7. Select **Update**.
+
+8. A new question node is added to the end of the topic with **Yes** and **No** options.
+
+   ![Environment Selector.](../../media/yesornosummary.png)
+
+9. Select **Save**.
+
+#### Task 2.4 - Test the topic**
+
+1. If the **Test your agent** panel is closed, select the **Test** icon in the upper-right corner.
+
+2. At the top of the testing panel, select **+** to start a new test session.
+
+3. In the **Ask a question or describe what you need** text box, enter one of the trigger phrases configured in the **Trigger** node which you can find at the top and press **Enter**.
+
+   ![Environment Selector.](../../media/Triggerp.png)
+
+4. When prompted, enter your name and email address.
+
+5. Review the generated summary and select **Yes** to confirm the details.
+
+6. Select **Save**.
 
 #### Exercise 3 - Author topics manually 
 
