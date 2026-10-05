@@ -1,11 +1,11 @@
 ---
 lab:
-title: Work with entities
-description: Learn how to create and use prebuilt and custom entities in Microsoft Copilot Studio to help the agent understand specific information provided by users.
-level: 300
-duration: 20
-islab: true
-status: 'released'
+  title: Work with entities
+  description: Learn how to create and use prebuilt and custom entities in Microsoft Copilot Studio to help the agent understand specific information provided by users.
+  level: 300
+  duration: 20
+  islab: true
+  status: 'released'
 ---
 
 # Work with entities
