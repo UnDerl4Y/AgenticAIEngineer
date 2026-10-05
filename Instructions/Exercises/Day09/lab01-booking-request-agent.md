@@ -243,57 +243,47 @@ In this exercise, you will:
 
 In this exercise, you will access the Microsoft Copilot Studio portal, the Developer environment and create a new agent. 
 
-#### Task 1.1 – Open Bookings solution 
+#### Create an agent
 
-1. In a new browser tab, navigate to https://make.powerapps.com and make sure you are in the environment you created earlier.
+1. Open **Copilot Studio** https://copilotstudio.microsoft.com/ and make sure you are using the **Classic Experience**.
 
-3. Verify the Bookings solution exists.
+2. Under "Start building from scratch", select Agent.
 
-4. Select **Agents** from the left pane.
+   ![Environment Selector.](../../media/OneAgent.png)
 
-   <details>
-   <summary>Can't see Agents? Click here</summary>
+3. In the Name your agent dialog, enter **`Real-Estate-Booking-Service-<your_unique_suffix>`**
 
-   Select **... More** from the left pane, then select **Agents**.
+   ![Environment Selector.](../../media/TwoAgent.png)
 
-   </details>
+4. Click **Agent Settings** and verify the Solution is set to **Bookings**
 
-5. Select **Create new agent**. You will be redirected to a page with a different interface. Switch to the **Classic Experience** before continuing.
+5. In Schema name, leave it default.
 
-#### Task 1.2 – Create an agent
+6. Select Create.
 
-1. Under "Start building from scratch", select Agent.
+7. Wait for the agent to be provisioned to edit the following things.
 
-2. In the Name your agent dialog, enter **`Real-Estate-Booking-Service-<your_unique_suffix>`**
-
-3. Click **Agent Settings** and verify the Solution is set to **Bookings**
-
-4. In Schema name, leave it default.
-
-5. Select Create.
-
-6. Wait for the agent to be provisioned to edit the following things.
-
-7. Once the agent provisions, update the following details:
+8. Once the agent provisions, update the following details:
 
    **Name:** `Real Estate Booking Service`
 
    **Description:** `Create bookings for real estate properties`
 
-8. Click Save.
-
-9. In the Instructions section, enter: **`Create an agent for topics relating to creating bookings for real estate properties`**
-
 9. Click Save.
 
-10. In the **Test your agent** pane on the right, enter **`How do I make a booking?`** and press **Enter**.
+10. In the Instructions section, enter: **`Create an agent for topics relating to creating bookings for real estate properties`**
 
-11. Review the response and leave this window open for now.
+11. Click Save.
+
+12. In the **Test your agent** pane on the right, enter **`How do I make a booking?`** and press **Enter**.
+
+   ![Environment Selector.](../../media/ThreeAgent.png)
+
+13. Review the response and leave this window open for now.
 
 ### Exercise 2 - Add Generative AI answers 
 
-In this exercise, you will access the Microsoft Copilot Studio portal and add knowledge that 
-the agent will use to answer questions by using Generative AI. 
+In this exercise, you will access the Microsoft Copilot Studio portal and add knowledge that the agent will use to answer questions by using Generative AI. 
 
 #### Task 2.1 - Disable generative orchestration 
 
