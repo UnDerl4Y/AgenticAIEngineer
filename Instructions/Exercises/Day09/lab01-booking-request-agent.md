@@ -1,35 +1,54 @@
-# Lab1: Building a Booking Request Agent 
-# with Copilot Studio 
+# Lab1: Building a Booking Request Agent with Copilot Studio 
 
 Let's first create an environment. 
 
-## Create an environment 
+## Create a Power Platform environment
 
-Before you start the lab exercise, you must create a development environment for yaou to 
-work in. 
+### Power Platform Admin Center
 
-1. Open a web browser, navigate to 
-https://admin.powerplatform.microsoft.com/manage/environments, and sign in using your 
-credentials for this exercise. If prompted, choose the option to stay signed in. 
-2. Close any pop-up messages that are displayed. 
-3. Select +New and create a new environment with the following settings: 
-   a. Name: Your name 
-   b. Region: Choose the default region 
-   c. Get new features early: No 
-   d. Type: Trial 
-   e. Purpose: Lab exercises 
-   f. Add a Dataverse data store: Yes 
-   g. Pay-as-you-go with Azure: No 
-4. Click on Next  
-5. Add Dataverse options: 
-   i. Language: English 
-   ii. 
-   iii. Currency: USD ($)/INR 
-   Security Group: None 
-   iv. Deploy sample apps and data: No 
-6. Save and wait until the state of your environment is Ready (you can use the Refresh 
-button to update the display) 
-7. Navigate to https://copilotstudio.microsoft.com/ (sign in with your credentials if 
+Before you start the lab exercises, you must create a development environment for you to work in.
+
+1. Open a web browser and navigate to the **[Power Platform admin center](https://admin.powerplatform.microsoft.com/manage/environments)**. If you are already signed in with your **@hackable.in** account, ensure you sign out first, then sign in with the new **@justlabs.online** account provided for this lab.
+1. If prompted, choose the option to stay signed in.
+1. Close any pop-up messages that are displayed.
+
+### Create a new environment
+
+1. In the sidebar, select **Manage**.
+1. In the **Environments** page, select **+ New**.
+   ![Environment page's select new.](../../media/ClickNew.png)
+1. In the **New environment** panel, set **Type** to Trial and **Region** to the default region shown (a local region provides quicker data access).
+   ![Environment page's Type and Region.](../../media/TypeRegion.png)
+1. Enter your name in the **Name** field.
+   ![Environment page's set Your Name.](../../media/YourName.png)
+1. Expand **Change default settings**. You'll see **Add a Dataverse data store?** and **Pay-as-you-go with Azure?**. Toggle **Add a Dataverse data store?** to **Yes**.
+   ![Environment page's select new.](../../media/ToggleYes.png)
+   > [!NOTE]
+   > Pay-as-you-go with Azure is unavailable for Trial environments — only Production and Sandbox environments support this setting.
+
+1. Select **Next**. In the **Add Dataverse** panel, set the following:
+   - **Language**: leave as it is if already English (United States), otherwise select English (United States) and move to the next field
+   - **Currency**: leave as default
+   - **Security group**: Click **+ Select** and in **Edit security group** find **open access** click **None** and Click **Done**
+   ![Environment Done Button.](../../media/done.png)
+   - **URL**: leave as default
+   - **Enable Dynamics 365 apps?**: leave as it is (locked to No), move to the next field
+   - **Deploy sample apps and data?**: No
+
+   > [!NOTE]
+   > Currency defaults based on your region (for example, INR for India). Enable Dynamics 365 apps is disabled for Trial environments — it's only available for Production or Sandbox environments.
+   ![Environment Save Button.](../../media/Save.png)
+
+1. Select **Save** and wait until the environment state is **Ready** (use **Refresh** to update the display).
+
+   > [!NOTE]
+   > Environment provisioning can take several minutes depending on tenant configuration.
+
+   ![Environment created in the Power Platform Admin center.](../../media/environment-created.png)
+
+### Access Copilot Studio
+
+1. Navigate to https://copilotstudio.microsoft.com/ (sign in with your credentials if 
 prompted). 
 
 **Note:** The first time you open Copilot Studio, it may display a chat interface to create your 
@@ -37,11 +56,11 @@ first agent. If this happens, click the ... menu at the top right (next to the C
 select Cancel agent creation to leave the chat interface and view the Copilot Studio home 
 page. 
 
-8. If prompted, select the option to start a free trial. 
-9. Skip any welcome messages. 
-10. At the top of the page, select Environment. Then in the Select environment pane, 
+1. If prompted, select the option to start a free trial. 
+1. Skip any welcome messages. 
+1. At the top of the page, select Environment. Then in the Select environment pane
 select the environment you just created. 
-11. When Copilot Studio reopens, you may close any welcome messages. 
+1. When Copilot Studio reopens, you may close any welcome messages. 
 
 ## Import Dataverse solution 
 
