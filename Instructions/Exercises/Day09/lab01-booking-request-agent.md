@@ -695,3 +695,9 @@ Enter **`Tomorrow 10:00 AM`**.
 7. Select the **X** in the upper-right to close out of the Settings. 
 
 Congratulations, you have completed Lab1. Please close the current document and move to the next one.
+
+## Conclusion
+
+In this lab, you created and configured a real estate booking agent using Microsoft Copilot Studio. You created a Power Platform environment, imported a Dataverse solution, configured the agent and its knowledge source, created and managed topics, added conversational nodes and variables, tested the booking flow, and configured authentication.
+
+You are now ready to continue with the next lab and build on these concepts.
