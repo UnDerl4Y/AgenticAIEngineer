@@ -62,6 +62,8 @@ Before you start the lab exercises, you must create a development environment fo
 
 2. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
 
+   ![Environment.](../../media/u1.png)
+
 3. Check the **Environment Selector**. If your *named environment* is already displayed, use it.
 
    <details>
@@ -98,27 +100,32 @@ the tables needed for the labs.
 
 1. Open the following link to download the **Bookings_1_0_0_0.zip** file: https://vectorsenselabs.blob.core.windows.net/isodata/Accelerate-Agentic_AI/Bookings_1_0_0_0?sp=r&st=2026-02-16T20:07:28Z&se=2027-03-03T04:22:28Z&spr=https&sv=2024-11-04&sr=b&sig=81FJ9Yp9L9xQqzHSXUSpz70FCTX%2BKDjL1MQpV3sls3A%3D
 
-2. Extract the downloaded **Bookings_1_0_0_0.zip** file.
+#### Task 1.2 – Import solution
 
-#### Task 1.2 – Import solution 
+1. In a new browser tab, navigate to https://make.powerapps.com.
 
-1. In a new browser tab, navigate to https://make.powerapps.com. 
-2. If prompted for credentials, sign in with your email address and password. 
-3. If prompted for contact information, set the Country/region and select Get Started. 
-4. In the upper-right of the screen, verify that the Environment is set to your 
-environment. This is where you will be working for the entirety of the labs. If it is not, 
-select the appropriate environment. 
+2. If prompted, sign in using your **@justlabs.online** credentials.
+
+3. Ensure **India** is selected as the country/region, then select **Get Started**.
+
+4. In the upper-right corner, verify that your recently created environment is selected.
+
+   <details>
+   <summary>Need to switch environments? Click here</summary>
+
+   Select the **Environment** dropdown. Under **Build apps with Dataverse**, select your recently created environment.
+
+   </details>
+
 5. In the left navigation, select Solutions. 
 6. In the top bar, select Import solution. 
-7. Select Browse and locate the Bookings_1_0_0_0.zip file from your Downloads folder 
-and select Open. 
+7. Select Browse and locate the Bookings_1_0_0_0.zip file from your Downloads folder and select Open. 
 8. Select Next. 
 9. Select Import. 
 
-The solution will import in the background. This may take a few minutes. You may refresh 
-the window. 
+The solution will import in the background. This may take a few minutes. You may refresh the window. 
 
-**Alert:** Wait until the solution has finished importing before continuing to the next step. 
+> **TIP** Wait until the solution has finished importing before continuing to the next step. 
 
 10. When the solution has imported successfully, open the Bookings solution. 
 11. In the left navigation, select the Overview tab. 
@@ -129,7 +136,7 @@ the window.
 1. Click on Go back to Solutions from the left pane. 
 2. Select Manage in the Current preferred solution tile under Solutions. 
 3. Select Bookings (contoso). 
-4. Select Apply. 
+4. Select Apply.
 
 #### Task 1.4 – Test data 
 
