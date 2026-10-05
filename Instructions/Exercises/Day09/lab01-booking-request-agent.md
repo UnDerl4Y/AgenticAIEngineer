@@ -49,29 +49,45 @@ Before you start the lab exercises, you must create a development environment fo
 
 1. In a new browser tab, navigate to **Copilot Studio** https://copilotstudio.microsoft.com/ and sign in if prompted.
 
-<details>
-<summary>Click if your environment does not load automatically</summary>
+   <details>
+   <summary>Click if your environment does not load automatically</summary>
 
-1. Go to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments .
-2. Select your environment.
-3. In the **Details** section, copy the **Environment ID**.
-4. Open https://copilotstudio.microsoft.com/environments/<your-environment-id>/home, replacing `<your-environment-id>` with the copied environment ID.
+   a. Go to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments.
 
-</details>
+   b. Select your environment.
+
+   c. In the **Details** section, copy the **Environment ID**.
+
+   d. Open https://copilotstudio.microsoft.com/environments/<your-environment-id>/home, replacing `<your-environment-id>` with the copied environment ID.
+
+   </details>
 
 2. If prompted, select **Get Started** and keep the default country or region settings.
+
 3. Skip any welcome messages.
+
 4. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
+
 5. Check the **Environment Selector**. If your *named environment* is already displayed, **skip to Task 1.4 - Create a solution**. If it is not displayed, continue with the following steps to select your *named environment*.
-6. If your **named environment** is not shown, click the **Environment Selector**.
+
+6. If your **named environment** is not shown, select the **Environment Selector**.
+
    ![Environment Selector.](../../media/u1.png)
+
 7. The **Switch environment** menu will open.
+
    ![Environment Selector.](../../media/u2.png)
+
 8. You will see **Default environments** and **Supported environments**.
-9. Under **Supported environments**, click your **named environment**.
+
+9. Under **Supported environments**, select your **named environment**.
+
    ![Environment Selector.](../../media/u3.png)
-10. Your **named environment** should now be shown in the Environment Selector.
-   ![Environment Selector.](../../media/u4.png)
+
+10. Your **named environment** should now be shown in the **Environment Selector**.
+
+![Environment Selector.](../../media/u4.png)
+
 
 ## Import Dataverse solution 
 
