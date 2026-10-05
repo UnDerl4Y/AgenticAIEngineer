@@ -3,7 +3,7 @@ lab:
   title: Apply guardrails to prevent the output of harmful content
   description: Learn how to apply content filters that mitigate potentially offensive or harmful output in your generative AI app.
   level: 300
-  duration: 25
+  duration: 35
   islab: true
   status: 'released'
 ---
@@ -14,7 +14,7 @@ Microsoft Foundry includes default guardrails to help ensure that potentially ha
 
 In this exercise, you'll explore the effects of guardrails in Foundry.
 
-This exercise will take approximately **25** minutes.
+This exercise will take approximately **35** minutes.
 
 ## Prerequisites
 
