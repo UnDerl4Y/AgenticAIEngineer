@@ -1,25 +1,20 @@
-# Lab 2: Work with entities
+---
+lab:
+title: Work with entities
+description: Learn how to create and use prebuilt and custom entities in Microsoft Copilot Studio to help the agent understand specific information provided by users.
+level: 300
+duration: 20
+islab: true
+status: 'released'
+---
 
-## Scenario
+# Work with entities
 
-In this exercise, you will:
+Microsoft Copilot Studio uses entities to identify and understand specific types of information provided by users, such as property types and numbers. You can use prebuilt entities or create custom entities to meet the needs of your agent.
 
-* Create and use entities
+In this lab, you'll explore prebuilt entities, create custom entities for property types and bedroom counts, and use them in the booking conversation.
 
-## What you will learn
-
-* How to create and use entities to improve the agent
-
-## High-level lab steps
-
-* Create entities
-* Use entities in nodes
-
-## Prerequisites
-
-* Must have completed previous exercise: Manage nodes
-
-## Detailed steps
+This exercise will take approximately **20** minutes.
 
 ### Exercise 1 - Create entities
 
@@ -94,3 +89,9 @@ Use entities in the conversational flow to improve the agent.
 12. Select Save.
 
 Congratulations, you have completed Lab2. Please close the current document and move to the next one.
+
+## Conclusion
+
+In this lab, you explored prebuilt entities and created custom entities for property types and the number of bedrooms. You also used these entities in the booking conversation to help the agent collect and understand specific information from users.
+
+You have now learned how to create and use entities to improve the conversational flow of an agent in Copilot Studio.
