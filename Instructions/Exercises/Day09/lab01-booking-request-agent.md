@@ -172,11 +172,17 @@ The solution will import in the background. This may take a 2-3 minutes. You may
 4. Enter the following data: 
 
    a. **Property Name:** 1100 High Villas 
+
    b. **Owner:** Ensure it is set to **Copilot User X**, where **X** is your assigned number.
+
    c. **Asking Price:** 250,000 
+
    d. **Street:** Main Avenue 
+
    e. **City:** Redmond 
+
    f. **Bedrooms:** 3 
+
    g. **Bathrooms:** 2 
 
 5. Select Save & Close. 
@@ -186,11 +192,17 @@ The solution will import in the background. This may take a 2-3 minutes. You may
 7. Enter the following data: 
 
    a. **Property Name:** 555 Oak Lane 
+
    b. **Owner:** Ensure it is set to **Copilot User X**, where **X** is your assigned number.
+   
    c. **Asking Price:** 300,000 
+
    d. **Street:** Oak Lane 
+
    e. **City:** Denver 
+
    f. **Bedrooms:** 4 
+
    g. **Bathrooms:** 3 
 
 8. Select Save & Close. 
