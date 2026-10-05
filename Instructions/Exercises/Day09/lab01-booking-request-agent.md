@@ -472,32 +472,40 @@ Topics can be created manually by adding trigger phrases.
 ##### Task 3.1 - Create a topic from blank 
 
 1. Select the Topics tab in the top bar of Real Estate Booking Service. 
-2. Select + Add a topic and select From blank. 
-3. Select the Details icon to open the Topic details dialog (you may need to select More 
-> Details). 
-4. In the Name field, enter the following text: 
 
-Book Showing 
+2. Select **+ Add** a topic and **From blank**. 
 
-5. In the Display Name field, enter the following text: 
+3. Select the Details icon to open the Topic details dialog (If you didn't find details you may need to select More > Details). 
 
-Book a Real Estate Showing 
+   ![Environment Selector.](../../media/Onedet.png)
 
-6. In the Description field, enter the following text: 
+4. In the Name field, enter the following text: **Book Showing**
 
-Select the property and requested date and create a booking request 
+5. In the Display Name field, enter the following text: **Book a Real Estate Showing** 
 
-7. Select Save. 
+6. In the Description field, enter the following text: **Select the property and requested date and create a booking request** 
 
-##### Task 3.2 - Add trigger phrases 
+7. **Status:** Keep the default value, **On**.
 
-1. Select Edit under User says a phrase in the Trigger. 
-2. Enter I want to book a real estate showing under Add phrases and select the + icon. 
-3. Enter Schedule a real estate showing under Add phrases and select the + icon. 
-4. Enter Arrange the viewing for a real estate property under Add phrases and select the + icon. 
-5. Enter Set up an appointment to view a house under Add phrases and select the + icon. 
-6. Enter Plan a property viewing under Add phrases and select the + icon. 
-7. Select Save. 
+8. Select Save. 
+
+#### Task 3.2 - Add trigger phrases
+
+1. Select **Edit** under **User says a phrase** in the **Trigger** node.
+
+   ![Environment Selector.](../../media/Tenedit.png)
+
+2. Enter **`I want to book a real estate showing`** in **Add phrases** and select the **+** icon.
+
+3. Enter **`Schedule a real estate showing`** in **Add phrases** and select the **+** icon.
+
+4. Enter **`Arrange the viewing for a real estate property`** in **Add phrases** and select the **+** icon.
+
+5. Enter **`Set up an appointment to view a house`** in **Add phrases** and select the **+** icon.
+
+6. Enter **`Plan a property viewing`** in **Add phrases** and select the **+** icon.
+
+7. Select **Save**.
 
 ## Manage nodes 
 
@@ -506,6 +514,7 @@ Select the property and requested date and create a booking request
 In this exercise, you will: 
 
 • Author the conversational flow 
+
 • Manage variables 
 
 ### What you will learn 
@@ -515,7 +524,9 @@ In this exercise, you will:
 ### High-level lab steps 
 
 • Configure variable scope 
+
 • Create and edit nodes 
+
 • Test the agent and configure authentication 
 
 ### Prerequisites 
@@ -530,16 +541,26 @@ Enable variables to be be accessed by other topics.
 
 ##### Task 1.1 - Configure the scope of the variables 
 
-1. Navigate to the Copilot Studio portal https://copilotstudio.microsoft.com and ensure you 
-are in the appropriate environment. 
+1. Navigate to the Copilot Studio portal https://copilotstudio.microsoft.com and ensure you are in the appropriate environment you created earlier.
+
 2. Select Agents from the left navigation pane. 
+
 3. Select the Real Estate Booking Service agent you created in the earlier lab. 
+
 4. Select the Topics tab. 
+
 5. Select the Customer Details topic. 
-6. Select Variables in the top bar to open the Variables pane (you may need to select 
-More > Variables). 
+
+6. Select Variables in the top bar to open the Variables pane you can find it by **{X}** Icon. (If you didn't find details you may need to select More > Details). 
+
+   ![Environment Selector.](../../media/Onevar.png)
+
 7. Select and expand Topic variables. 
+
 8. Select the right-hand check boxes for the three topic variables. 
+
+   ![Environment Selector.](../../media/Tentopic.png)
+
 9. Select Save. 
 
 #### Exercise 2 - Author topics manually 
@@ -548,90 +569,129 @@ The conversational flow in a topic can be created manually by adding nodes.
 
 ##### Task 2.1 - Add a message node 
 
-1. Select the Topics tab. 
-2. Select the Book Showing topic. 
-3. Select the + icon under the Trigger node and select Send a message. 
-4. In the Enter a message field, enter the following text: 
+1. Select the **Topics** tab. 
 
-Hi, I can help you with booking a real estate property showing. 
+2. Select the **Book Showing** topic. 
+
+3. Select the **+ icon** under the Trigger node and select Send a message. 
+
+   ![Environment Selector.](../../media/Senmes.png)
+
+4. In the Enter a message field, enter the following text: **`Hi, I can help you with booking a real estate property showing`**. 
+
+   ![Environment Selector.](../../media/s3ndmsg.png)
 
 5. Select Save. 
 
 ##### Task 2.2 - Add a Topic management node 
 
-1. Select the + icon under the Message node, then select Topic management > Go to 
-another topic > Customer Details. 
+1. Select the **+** icon under the Message node, then select Topic management > Go to another topic > Customer Details. 
+
+   ![Environment Selector.](../../media/goto.png)
+
 2. Select Save. 
 
 ##### Task 2.3 - Add condition node 
 
-1. Select the + icon under the Topic node and select Add a condition. 
-2. In the Condition node, select the DetailsCorrect variable. 
+1. Select the **+ icon** under the Topic node and select Add a condition. 
+
+2. In the Condition node, You will be seeing **Select a variable** Click it
+
+3. Then you see **DetailsCorrect variable** Click it. 
+
+   ![Environment Selector.](../../media/Dcorrect.png)
+
 3. Select is equal to. 
+
 4. Select Yes. 
+
+   ![Environment Selector.](../../media/Equalyes.png) 
+
 5. Select Save. 
 
 ##### Task 2.4 - Add question nodes 
 
-1. Select the + icon under the left Condition node and select Ask a question. 
-2. In the Enter a message field, enter the following text: 
+1. Select the **+ icon** under the left Condition node and select Ask a question. 
 
-Which property do you want to see? 
+   ![Environment Selector.](../../media/leftleft.png) 
+
+2. In the Enter a message field, enter the following text: **`Which property do you want to see?`** 
 
 3. Select User's entire response for Identify. 
-4. Click on Var1 in the Save user response as and enter PropertyName for Variable 
-name. 
-5. Select Save. 
-6. Select the + icon under the new Question node and select Ask a question. 
-7. In the Enter a message field, enter the following text: 
 
-What date and time do you want to see the property? 
+   ![Environment Selector.](../../media/uer.png) 
+
+4. Click on Var1 in the Save user response as and enter **`PropertyName`** for Variable name. 
+
+   ![Environment Selector.](../../media/v3rname.png) 
+
+5. Select Save. 
+
+6. Select the + icon under the new Question node and select Ask a question. 
+
+7. In the Enter a message field, enter the following text: **`What date and time do you want to see the property?`**
 
 8. Select Date and time for Identify. 
-9. Click on Var1 under the Save user response as and enter VisitDateTime for Variable 
-name 
-10. Select the + icon under the left Question node and select Send a messsage. 
-11. In the Enter a message field, enter the following text: 
 
-Great! Let me get that scheduled for you. 
+9. Click on Var1 under the Save user response as and enter VisitDateTime for Variable name 
+
+10. Select the **+ icon** under the left Question node and select Send a messsage. 
+
+11. In the Enter a message field, enter the following text: **`Great! Let me get that scheduled for you`**
 
 12. Select Save. 
 
 ##### Task 2.5 - Test the agent 
 
-1. If the Test your agent panel is not open, select the Test icon in the upper-right of the 
-page to open the testing panel. 
-2. Select the ellipses ... menu at the top of the testing panel in the upper-right of the 
-page. 
+1. If the Test your agent panel is not open, select the Test icon in the upper-right of the page to open the testing panel. 
+
+2. Select the **ellipses ...** menu at the top of the testing panel in the upper-right of the page. 
+
 3. If it's not enabled, enable Track between topics. 
-4. Select the Start new test session icon at the top of the testing panel. 
-5. When the Conversation Start message appears, your agent will start a conversation. 
-In response, enter a trigger phrase for the topic that you've created: 
 
-I want to book a real estate showing 
+4. Select the Start new test session icon at the top of the testing panel you can do it by clicking **+** symbol.
 
-6. The agent responds with the "What is your name?" question, as shown in the 
-following image. 
+5. When the Conversation Start message appears, your agent will start a conversation. In response, enter a trigger phrase for the topic that you've created: **`I want to book a real estate showing`**
+
+6. The agent responds with the "What is your name?" question, as shown in the following image. 
+
+   ![Environment Selector.](../../media/whatsyourname.png) 
+
 7. Enter your name. 
+
 8. Enter your email address. 
-9. After you supply the information, an Adaptive Card displays the information that you 
-entered and asks if the details are correct. Select Yes. 
-10. Enter 555 Oak Lane, Denver, CO 80203 to the Which property to you want to see? 
-prompt 
-11. Enter Tomorrow 10:00 AM to the What date and time do you want to see the 
-property? prompt. 
+
+9. After you supply the information, an Adaptive Card displays the information that you entered and asks if the details are correct. Select Yes. 
+
+10. Enter **`555 Oak Lane, Denver, CO 80203`** when prompted with **Which property do you want to see?**
+
+   <details>
+   <summary>If asked for the date and time, enter the details below. Ignore this if not asked.</summary>
+
+Enter **`Tomorrow 10:00 AM`**.
+
+   </details>
+
+11. Verify that the agent responds with something similar to **Great! Let me get that scheduled for you.**
+
+   ![Environment Selector.](../../media/greatresp.png) 
 
 #### Exercise 3 - Configure authentication 
 
 ##### Task 3.1 - Configure authentication 
 
-1. Select Settings in the upper-right of Real Estate Booking Service. 
-2. Select the Security tab. 
-3. Select Authentication. 
-4. Select No authentication. 
-5. Select Save. 
-6. Select Save in the confirmation window. 
-7. Select the X in the upper-right to close out of the Settings. 
+1. Select Settings in the upper-right of Real Estate Booking Service.
 
-Congratulations, you have completed Lab1. Please close the current document and move to 
-the next one.
+2. Select the Security tab. 
+
+3. Select Authentication. 
+
+4. Select No authentication. 
+
+5. Select Save. 
+
+6. Select Save in the confirmation window. 
+
+7. Select the **X** in the upper-right to close out of the Settings. 
+
+Congratulations, you have completed Lab1. Please close the current document and move to the next one.
