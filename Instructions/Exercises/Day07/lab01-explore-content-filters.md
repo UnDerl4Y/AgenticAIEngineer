@@ -26,19 +26,7 @@ To complete this exercise, you need:
 
 Microsoft Foundry uses projects to organize models, resources, data, and other assets used to develop an AI solution.
 
-1. In a web browser, click the [Microsoft Foundry portal](https://ai.azure.com) hyperlink to redirect to the portal, then sign in using your Azure credentials. Close any tips or quick start panes that are opened the first time you sign in.
-
-1. Locate the project that is already created with the name **hakunamtata1**.
-
-   ![Screenshot of the hakunamtata1 project in Microsoft Foundry portal](../../media/hakunamtata1-project.png)
-
-1. Hover over the project text. Three dots (**⋮**) appear next to it.
-
-   ![Screenshot of the hakunamtata1 project in Microsoft Foundry portal](../../media/hover-project.png)
-
-1. Click the three dots to open the context menu. You will see two options: **Open project** and **Manage project**.
-
-1. Select **Open project**.
+1. In a web browser, click the [Microsoft Foundry portal](https://ai.azure.com) hyperlink to redirect to the portal. Then, sign in using your Azure credentials if you haven’t already. Close any tips or Quick Start panes that appear the first time you sign in.
 
 1. In the project view, click the purple **View deployments** button.
 
@@ -132,7 +120,7 @@ When the default guardrail doesn't meet your needs, you can create custom guardr
 
    ![Screenshot of Create guardrail controls page](../../media/create-guardrail-controls-page.png)
 
-1. Under **Add controls**, select the **Risk** dropdown.
+1. Under **Content harms (4)**, you can find the **Risk** dropdown.
 
     You can select the risk you specifically want to address with your content filter.
 
@@ -152,7 +140,7 @@ When the default guardrail doesn't meet your needs, you can create custom guardr
 
 1. Select **Next** when you've modified the content filter settings for all four risk categories.
 
-1. On the **Select agents and models** section, select **Models**, and then apply the new guardrail to the **gpt-5.4-mini** model, then click **Next**.
+1. In the **Select agents and models** section, scroll down to **Models** and check the checkbox next to **gpt-5.4-mini**. Then apply the new guardrail and click **Next**.
 
    ![Screenshot of Create guardrail controls page](../../media/agents-and-models.png)
 
