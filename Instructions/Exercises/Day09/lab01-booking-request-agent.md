@@ -369,9 +369,15 @@ In this exercise, you will remove topics in an agent.
 
 2. Select Agents from the left navigation pane. 
 
-3. Select the Real Estate Booking Service agent you created in the previous lab. 
-4. Select the Topics tab. 
+3. Select the **Real Estate Booking Service** agent you created earlier. 
+
+   ![Environment Selector.](../../media/EarlierAgent.png)
+
+4. Select the **Topics** tab. 
+
 5. Toggle Enabled to Off for the Start Over topic. 
+
+   ![Environment Selector.](../../media/OffStartOverOff.png)
 
 #### Exercise 2 - Create topics with natural language 
 
@@ -379,31 +385,33 @@ In this exercise, you will create topics in an agent and add trigger phrases.
 
 ##### Task 2.1 – Add a topic using copilot 
 
-1. Select + Add a topic and select Create from description with Copilot. A new window 
-appears. 
-2. In the Name your topic text box, enter Customer Details. 
-3. In the Create a topic to... text box, enter Ask the customer for their name and email 
-address. 
-4. Select Create. 
-5. Select Save. 
+1. Select **+ Add a topic** and select **Add from description with Copilot**. A new window appears.
+ 
+2. In the **Name your topic** text box, enter **`Customer Details`**. 
+
+3. In the **Create a topic to...** text box, enter **`Ask the customer for their name and email address`**.
+
+4. Select **Create**. 
+
+5. Select **Save**. 
 
 ##### Task 2.2 – Update nodes with natural language 
 
 1. If the Test your agent pane is open, close the pane. 
-2. If the Edit with Copilot pane is not shown on the right side of the Customer Details 
-pane, select the Copilot icon in the upper part of the authoring canvas. 
-3. Select the second Question node What is your email address? 
-4. In the Edit with Copilot panel, in the What do you want to do? field, enter the 
-following text: 
 
-Change "What is your email address?" to say thank you to the Name variable from the previous node and then 
-proceed to ask the email address question. 
+2. If the Edit with Copilot pane is not shown on the right side of the Customer Details pane, select the Copilot icon in the upper part of the authoring canvas. 
+
+   ![Environment Selector.](../../media/CopilotIcon.png)
+
+3. Select the second Question node What is your email address? 
+
+4. In the Edit with Copilot panel, in the What do you want to do? field, enter the following text: 
+
+Change "What is your email address?" to say thank you to the Name variable from the previous node and then proceed to ask the email address question. 
 
 5. Select Update. 
 
-**Note:** The message should be updated to include the Name variable from the prior node, 
-and should look similar to the screenshot above. If Edit with copilot did not update the 
-question node correctly, select Undo, and retry with a different prompt. 
+**Note:** The message should be updated to include the Name variable from the prior node, and should look similar to the screenshot above. If Edit with copilot did not update the question node correctly, select Undo, and retry with a different prompt. 
 
 6. Select Save. 
 
