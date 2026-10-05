@@ -68,26 +68,28 @@ Before you start the lab exercises, you must create a development environment fo
 
 4. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
 
-5. Check the **Environment Selector**. If your *named environment* is already displayed, **skip to Task 1.4 - Create a solution**. If it is not displayed, continue with the following steps to select your *named environment*.
+5. Check the **Environment Selector**. If your *named environment* is already displayed, use it.
 
-6. If your **named environment** is not shown, select the **Environment Selector**.
+   <details>
+   <summary>Can't see your named environment? Click here</summary>
+
+   a. Select the **Environment Selector**.
 
    ![Environment Selector.](../../media/u1.png)
 
-7. The **Switch environment** menu will open.
+   b. The **Switch environment** menu will open.
 
    ![Environment Selector.](../../media/u2.png)
 
-8. You will see **Default environments** and **Supported environments**.
-
-9. Under **Supported environments**, select your **named environment**.
+   c. Under **Supported environments**, select your **named environment**.
 
    ![Environment Selector.](../../media/u3.png)
 
-10. Your **named environment** should now be shown in the **Environment Selector**.
+   d. Your **named environment** should now be shown in the **Environment Selector**.
 
-![Environment Selector.](../../media/u4.png)
+   ![Environment Selector.](../../media/u4.png)
 
+   </details>
 
 ## Import Dataverse solution 
 
