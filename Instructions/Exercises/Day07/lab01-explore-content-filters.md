@@ -166,6 +166,8 @@ Now that the custom guardrail has been applied to **gpt-5.4-mini**, test the mod
 
    > **Note:** Please keep these experiments within the scope of this lab and use them for **educational purposes only**. Avoid going beyond the content categories covered in this exercise or trying to generate content that could cause real-world harm.
 
+   ![Screenshot](../../media/Exam.png)
+
 4. Observe whether the model refuses the request or the Foundry guardrail blocks the interaction. You may see a response similar to:
 
    > I'm sorry, but I cannot assist with that request.
