@@ -170,6 +170,7 @@ The solution will import in the background. This may take a 2-3 minutes. You may
    ![Environment Selector.](../../media/NewNewNew.png)
 
 4. Enter the following data: 
+
    a. **Property Name:** 1100 High Villas 
    b. **Owner:** Ensure it is set to **Copilot User X**, where **X** is your assigned number.
    c. **Asking Price:** 250,000 
@@ -183,6 +184,7 @@ The solution will import in the background. This may take a 2-3 minutes. You may
 6. Select + New. 
 
 7. Enter the following data: 
+
    a. **Property Name:** 555 Oak Lane 
    b. **Owner:** Ensure it is set to **Copilot User X**, where **X** is your assigned number.
    c. **Asking Price:** 300,000 
