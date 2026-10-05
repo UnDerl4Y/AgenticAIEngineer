@@ -449,7 +449,7 @@ In addition to updating existing nodes, you can use Copilot to add new nodes.
 
 9. Select **Save**.
 
-#### Task 2.4 - Test the topic**
+#### Task 2.4 - Test the topic
 
 1. If the **Test your agent** panel is closed, select the **Test** icon in the upper-right corner.
 
