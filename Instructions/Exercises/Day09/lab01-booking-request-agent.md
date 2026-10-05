@@ -104,12 +104,9 @@ the tables needed for the labs.
 
 #### Task 1.1 – Download solution 
 
-1. In a new browser tab, navigate to 
-https://vectorsenselabs.blob.core.windows.net/isodata/Accelerate
-Agentic_AI/Bookings_1_0_0_0?sp=r&st=2026-02-16T20:07:28Z&se=2027-03
-03T04:22:28Z&spr=https&sv=2024-11
-04&sr=b&sig=81FJ9Yp9L9xQqzHSXUSpz70FCTX%2BKDjL1MQpV3sls3A%3D  
-to download the Bookings_1_0_0_0.zip file. 
+1. Open the following link to download the **Bookings_1_0_0_0.zip** file: https://vectorsenselabs.blob.core.windows.net/isodata/Accelerate-Agentic_AI/Bookings_1_0_0_0?sp=r&st=2026-02-16T20:07:28Z&se=2027-03-03T04:22:28Z&spr=https&sv=2024-11-04&sr=b&sig=81FJ9Yp9L9xQqzHSXUSpz70FCTX%2BKDjL1MQpV3sls3A%3D
+
+2. Extract the downloaded **Bookings_1_0_0_0.zip** file.
 
 #### Task 1.2 – Import solution 
 
