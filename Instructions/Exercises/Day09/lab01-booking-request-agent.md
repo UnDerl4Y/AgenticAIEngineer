@@ -50,7 +50,8 @@ Before you start the lab exercises, you must create a development environment fo
 1. In a new browser tab, navigate to **Copilot Studio** https://copilotstudio.microsoft.com/ and sign in if prompted.
 
    <details>
-   <summary>Click if your environment does not load automatically</summary>
+   <summary>Didn't your environment load automatically? Click here</summary>
+
 
    a. Go to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments.
 
@@ -72,6 +73,7 @@ Before you start the lab exercises, you must create a development environment fo
 
    <details>
    <summary>Can't see your named environment? Click here</summary>
+   
 
    a. Select the **Environment Selector**.
 
