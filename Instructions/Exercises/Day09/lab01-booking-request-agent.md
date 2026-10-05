@@ -49,18 +49,20 @@ Before you start the lab exercises, you must create a development environment fo
 
 1. In a new browser tab, open **Copilot Studio** https://copilotstudio.microsoft.com/ and sign in if prompted.
 
-   <details>
-   <summary>Does your Copilot Studio interface look different from the one shown in Step 5? Click here</summary>
+   ![Copilot Studio interface.](../../media/olduserxp.png)
 
+   <details>
+   <summary>Does your interface look different? Click here</summary>
+   
    ![Copilot Studio interface.](../../media/newuserxp.png)
 
-   If your interface looks different from the image above, select **...** (More options) at the bottom of the page. Under **Explore**, select **Open Classic Experience**. These labs use the **Classic Experience**.
-
+   Select **...** (More options) at the bottom of the page. Under **Explore**, select **Open Classic Experience**. These labs use the **Classic Experience**.
+   
    </details>
 
-3. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
+2. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
 
-4. Check the **Environment Selector**. If your *named environment* is already displayed, use it.
+3. Check the **Environment Selector**. If your *named environment* is already displayed, use it.
 
    <details>
    <summary>Can't see your named environment? Click here</summary>
