@@ -288,26 +288,38 @@ In this exercise, you will access the Microsoft Copilot Studio portal and add kn
 #### Task 2.1 - Disable generative orchestration 
 
 1. Select Settings. 
-2. For Use generative AI orchestration for your agent's responses? select No - Use 
-classic orchestration, limiting responses to the content and behavior defined in 
-your agent's topics. This turns Orchestration off for the purpose of this lab. 
+
+2. For Use generative AI orchestration for your agent's responses? Select **`No - Use  classic orchestration, limiting responses to the content and behavior defined in your agent's topics`**. This turns Orchestration off for the purpose of this lab. 
+
 3. Select Save. 
-4. Wait for the changes to get saved then close out of the Settings window. 
+
+4. Wait for the changes to save, then select **X** at the top to close the **Settings** window.
 
 #### Task 2.2 – Add a knowledge source 
 
 1. Select the Knowledge tab. 
-2. Select + Add knowledge. 
-3. Select Public websites 
-4. In the Public website link text box, enter https://word.cloud.microsoft/. 
-5. Select Add. 
-6. Select Add to agent. 
+
+2. Select **+ Add knowledge**.
+
+3. Select **Public websites** 
+
+4. In the Public website link text box, enter **`https://word.cloud.microsoft/`** . 
+
+5. Select **Add** .
+
+6. Select **Add to agent**. 
+
 7. Select the Overview tab. 
-8. Select the ellipses … menu at the top of the Test your agent pane. 
+
+8. Select the **ellipses ... *** menu at the top of the **Test your agent** pane. 
+
 9. Enable Track between topics. 
-10. At the top of the Test your agent pane, select the Start new test session icon. 
-11. In the Ask a question or describe what you need text box, enter How do I boost real 
-estate promotion? View your response. 
+
+10. At the top of the **Test your agent pane**, select the **Start new test session** by clicking **+* symbol.
+
+11. In the Ask a question or describe what you need text box, enter **`How do I boost real estate promotion?`** 
+
+12. View your agent response. 
 
 ## Manage topics 
 
@@ -316,7 +328,9 @@ estate promotion? View your response.
 In this exercise, you will: 
 
 • Manage existing topics 
+
 • Create and edit topics by using natural language 
+
 • Create a topic manually by using trigger phrases 
 
 ### What you will learn 
@@ -326,12 +340,14 @@ In this exercise, you will:
 ### High-level lab steps 
 
 • Disable topics 
+
 • Create new and edit topics with natural language 
+
 • Create a new topic and add trigger phrases 
 
 ### Prerequisites 
 
-• Must have completed above Exercise: Build an initial agent 
+• Must have completed above **Exercise: Build an initial agent** 
 
 ### Detailed steps 
 
