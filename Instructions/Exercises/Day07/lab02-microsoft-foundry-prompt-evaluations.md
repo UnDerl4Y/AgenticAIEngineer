@@ -60,7 +60,7 @@ To complete this exercise, you need:
 
    https://github.com/Kiran-255666/AgenticAIEngineer/blob/main/labfiles/Day07/lab02-microsoft-foundry-prompt-evaluations/credit-risk-prompt-evaluation.jsonl
    
-   ![Screenshot](../../media/JSONLDownload.png)
+   ![Screenshot](../../media/JSONLDownload1.png)
 
 6. On the **Dataset** page, click **Upload new dataset** in the top-right corner.
 
