@@ -1,14 +1,12 @@
 # Lab1: Building a Booking Request Agent with Copilot Studio 
 
-Let's first create an environment. 
-
 ## Create a Power Platform environment
 
 ### Power Platform Admin Center
 
 Before you start the lab exercises, you must create a development environment for you to work in.
 
-1. Open a web browser and navigate to the **[Power Platform admin center](https://admin.powerplatform.microsoft.com/manage/environments)**. If you are already signed in with your **@hackable.in** account, ensure you sign out first, then sign in with the new **@justlabs.online** account provided for this lab.
+1. Open a web browser and navigate to the **Power Platform admin center** (`https://admin.powerplatform.microsoft.com/manage/environments`). If you are already signed in with your **@hackable.in** account, ensure you sign out first, then sign in with the new **@justlabs.online** account provided for this lab.
 1. If prompted, choose the option to stay signed in.
 1. Close any pop-up messages that are displayed.
 
@@ -48,19 +46,31 @@ Before you start the lab exercises, you must create a development environment fo
 
 ### Access Copilot Studio
 
-1. Navigate to https://copilotstudio.microsoft.com/ (sign in with your credentials if 
-prompted). 
+1. In a new browser tab, navigate to **Copilot Studio** (`https://copilotstudio.microsoft.com/`) and sign in if prompted.
 
-**Note:** The first time you open Copilot Studio, it may display a chat interface to create your 
-first agent. If this happens, click the ... menu at the top right (next to the Create button) and 
-select Cancel agent creation to leave the chat interface and view the Copilot Studio home 
-page. 
+<details>
+<summary>Click if your environment does not load automatically</summary>
 
-1. If prompted, select the option to start a free trial. 
-1. Skip any welcome messages. 
-1. At the top of the page, select Environment. Then in the Select environment pane
-select the environment you just created. 
-1. When Copilot Studio reopens, you may close any welcome messages. 
+1. Go to the **Power Platform admin center** (`https://admin.powerplatform.microsoft.com/manage/environments`).
+2. Select your environment.
+3. In the **Details** section, copy the **Environment ID**.
+4. Open `https://copilotstudio.microsoft.com/environments/<your-environment-id>/home`, replacing `<your-environment-id>` with the copied environment ID.
+
+</details>
+
+2. If prompted, select **Get Started** and keep the default country or region settings.
+3. Skip any welcome messages.
+4. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
+5. Check the **Environment Selector**. If your *named environment* is already displayed, **skip to Task 1.4 - Create a solution**. If it is not displayed, continue with the following steps to select your *named environment*.
+6. If your **named environment** is not shown, click the **Environment Selector**.
+   ![Environment Selector.](../../media/u1.png)
+7. The **Switch environment** menu will open.
+   ![Environment Selector.](../../media/u2.png)
+8. You will see **Default environments** and **Supported environments**.
+9. Under **Supported environments**, click your **named environment**.
+   ![Environment Selector.](../../media/u3.png)
+10. Your **named environment** should now be shown in the Environment Selector.
+   ![Environment Selector.](../../media/u4.png)
 
 ## Import Dataverse solution 
 
