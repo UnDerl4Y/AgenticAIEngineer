@@ -123,50 +123,77 @@ the tables needed for the labs.
 8. Select Next. 
 9. Select Import. 
 
-The solution will import in the background. This may take a few minutes. You may refresh the window. 
+The solution will import in the background. This may take a 2-3 minutes. You may refresh the window. 
 
 > **TIP** Wait until the solution has finished importing before continuing to the next step. 
 
 10. When the solution has imported successfully, open the Bookings solution. 
-11. In the left navigation, select the Overview tab. 
-12. Select Publish all customizations. 
+
+   ![Environment Selector.](../../media/Bookings.png)
+
+11. In the left navigation, select the **Overview** tab.
+
+   ![Environment Selector.](../../media/PublishApp.png)
+
+12. Select **Publish all customizations** and wait for the process to complete. This may take approximately **2–3 minutes**.
+
+13. You could verify it by a green notification appears at the top confirming **Publish all customizations succeeded**.
 
 #### Task 1.3 – Set preferred solution 
 
-1. Click on Go back to Solutions from the left pane. 
-2. Select Manage in the Current preferred solution tile under Solutions. 
-3. Select Bookings (contoso). 
+1. Select **← Back to Solutions** in the left pane.
+
+2. On the **Current preferred solution** card, select **Manage**.
+
+   ![Environment Selector.](../../media/SolManage.png)
+
+3. For **Set your preferred solution** Select Bookings (contoso). 
+
+   ![Environment Selector.](../../media/preferredsolutionbooking.png)
+
 4. Select Apply.
 
 #### Task 1.4 – Test data 
 
-1. Click on Bookings. In the left navigation of the Bookings solution, select the Objects 
-tab. 
-2. Select the ellipses … menu for the Real Estate Property Management Model-Driven 
-App, and select Play. This is a simple model-driven app that will allow you to create 
-new Real Estate Property records. 
-3. Select + New. 
+1. Click on Bookings
+
+   ![Environment Selector.](../../media/ClickBookingsAgain.png)
+
+2. In the left navigation of the Bookings solution, select the Objects tab. 
+
+3. Select the **ellipses …** menu for the **Real Estate Property Management** Model-Driven App, and select **Play**. This is a simple model-driven app that will allow you to create new Real Estate Property records.
+
+   ![Environment Selector.](../../media/ModelDrivenAppPlay.png)
+
+4. Select + New. 
+
+   ![Environment Selector.](../../media/NewNewNew.png)
+
 4. Enter the following data: 
-   a. Property Name: 1100 High Villas 
-   b. Owner: Select your user (search for your provided username) 
-   c. Asking Price: 250,000 
-   d. Street: Main Avenue 
-   e. City: Redmond 
-   f. Bedrooms: 3 
-   g. Bathrooms: 2 
+   a. **Property Name:** 1100 High Villas 
+   b. **Owner:** Ensure it is set to **Copilot User X**, where **X** is your assigned number.
+   c. **Asking Price:** 250,000 
+   d. **Street:** Main Avenue 
+   e. **City:** Redmond 
+   f. **Bedrooms:** 3 
+   g. **Bathrooms:** 2 
+
 5. Select Save & Close. 
+
 6. Select + New. 
+
 7. Enter the following data: 
-   a. Property Name: 555 Oak Lane 
-   b. Owner: Select your user 
-   c. Asking Price: 300,000 
-   d. Street: Oak Lane 
-   e. City: Denver 
-   f. Bedrooms: 4 
-   g. Bathrooms: 3 
+   a. **Property Name:** 555 Oak Lane 
+   b. **Owner:** Ensure it is set to **Copilot User X**, where **X** is your assigned number.
+   c. **Asking Price:** 300,000 
+   d. **Street:** Oak Lane 
+   e. **City:** Denver 
+   f. **Bedrooms:** 4 
+   g. **Bathrooms:** 3 
 
 8. Select Save & Close. 
-You now have 2 Active Real Estate Properties in the view. 
+
+> **Note:** Now you have 2 Active Real Estate Properties in the view. 
 
 ## Build an initial agent 
 
