@@ -194,7 +194,7 @@ The solution will import in the background. This may take a 2-3 minutes. You may
    a. **Property Name:** 555 Oak Lane 
 
    b. **Owner:** Ensure it is set to **Copilot User X**, where **X** is your assigned number.
-   
+
    c. **Asking Price:** 300,000 
 
    d. **Street:** Oak Lane 
@@ -216,35 +216,43 @@ The solution will import in the background. This may take a 2-3 minutes. You may
 In this exercise, you will: 
 
 • Create and name an agent 
+
 • Add description for what the agent should do 
+
 • Configure Generative AI answers 
 
 ### What you will learn 
 
 • How to create an agent using natural language 
+
 • How to configure Generative AI answers for an agent 
 
 ### High-level lab steps 
 
 • Create a new agent 
+
 • Tell your agent what its primary purpose is and how it should act 
+
 • Add Generative AI instructions 
 
 ### Prerequisites 
 
-• Must have completed Exercise: Import Dataverse solution 
+• Must have completed above **Exercise: Import Dataverse solution**
 
 ### Exercise 1 - Create agent 
 
-In this exercise, you will access the Microsoft Copilot Studio portal, the Developer 
-environment and create a new agent. 
+In this exercise, you will access the Microsoft Copilot Studio portal, the Developer environment and create a new agent. 
 
 #### Task 1.1 – Open Bookings solution 
 
-1. In a new browser tab, navigate to https://make.powerapps.com. 
-2. Make sure that you are in the appropriate environment. 
+1. In a new browser tab, navigate to https://make.powerapps.com
+
+2. Make sure you are in the environment you created earlier.
+
 3. Select Solutions > Bookings 
+
 4. Click on Agents from the left pane.  
+
 5. Select New > Agent > Agent 
 
 #### Task 1.2 – Create an agent 
