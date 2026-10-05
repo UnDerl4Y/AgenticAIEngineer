@@ -6,7 +6,7 @@
 
 Before you start the lab exercises, you must create a development environment for you to work in.
 
-1. Open a web browser and navigate to the **Power Platform admin center** (`https://admin.powerplatform.microsoft.com/manage/environments`). If you are already signed in with your **@hackable.in** account, ensure you sign out first, then sign in with the new **@justlabs.online** account provided for this lab.
+1. Open a web browser and navigate to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments. If you are already signed in with your **@hackable.in** account, ensure you sign out first, then sign in with the new **@justlabs.online** account provided for this lab.
 1. If prompted, choose the option to stay signed in.
 1. Close any pop-up messages that are displayed.
 
@@ -35,6 +35,7 @@ Before you start the lab exercises, you must create a development environment fo
 
    > [!NOTE]
    > Currency defaults based on your region (for example, INR for India). Enable Dynamics 365 apps is disabled for Trial environments — it's only available for Production or Sandbox environments.
+   
    ![Environment Save Button.](../../media/Save.png)
 
 1. Select **Save** and wait until the environment state is **Ready** (use **Refresh** to update the display).
@@ -46,15 +47,15 @@ Before you start the lab exercises, you must create a development environment fo
 
 ### Access Copilot Studio
 
-1. In a new browser tab, navigate to **Copilot Studio** (`https://copilotstudio.microsoft.com/`) and sign in if prompted.
+1. In a new browser tab, navigate to **Copilot Studio** https://copilotstudio.microsoft.com/ and sign in if prompted.
 
 <details>
 <summary>Click if your environment does not load automatically</summary>
 
-1. Go to the **Power Platform admin center** (`https://admin.powerplatform.microsoft.com/manage/environments`).
+1. Go to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments .
 2. Select your environment.
 3. In the **Details** section, copy the **Environment ID**.
-4. Open `https://copilotstudio.microsoft.com/environments/<your-environment-id>/home`, replacing `<your-environment-id>` with the copied environment ID.
+4. Open https://copilotstudio.microsoft.com/environments/<your-environment-id>/home, replacing `<your-environment-id>` with the copied environment ID.
 
 </details>
 
