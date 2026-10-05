@@ -128,8 +128,6 @@ When the default guardrail doesn't meet your needs, you can create custom guardr
 
     > **Note:** In most versions of Azure AI Foundry, the **Hate** category is selected by default with the blocking threshold set to **Medium blocking**. If it isn't selected, select it first. Then, drag the slider to change the blocking threshold to **Highest blocking**.
 
-   ![Screenshot of Create guardrail controls page](../../media/content-harm.png)
-
 1. Repeat the same steps for the **Violence**, **Sexual**, and **Self-harm** categories, setting the blocking threshold to **Highest blocking** for each category.
 
     > **Note:** In most versions of Azure AI Foundry, these categories are selected by default. If any category isn't selected, select it first, then drag its blocking threshold slider to **Highest blocking**.
@@ -140,7 +138,7 @@ When the default guardrail doesn't meet your needs, you can create custom guardr
 
 1. Select **Next** when you've modified the content filter settings for all four risk categories.
 
-1. In the **Select agents and models** section, scroll down to **Models** and check the checkbox next to **gpt-5.4-mini**. Then apply the new guardrail and click **Next**.
+1. In the **Select agents and models** section, scroll down to **Models** and check the checkbox next to **gpt-5.4-mini**. Then apply the new guardrail and click Next.
 
    ![Screenshot of Create guardrail controls page](../../media/agents-and-models.png)
 
@@ -156,4 +154,32 @@ When the default guardrail doesn't meet your needs, you can create custom guardr
 
 > **Note**: The default guardrail is generally pretty effective against the kinds of offensive content we can include in a lab such as this; so the more restrictive guardrail we created may not change the response from the prompts tried earlier in this lab. However, it will be more effective against prompts that reference extreme violence, sexual content, hate speech, or self-harm.
 
-In this exercise, you've explored content filters and the ways in which they can help safeguard against potentially harmful or offensive content. Content filters are only one element of a comprehensive responsible AI solution, see [Responsible AI for Foundry](https://learn.microsoft.com/azure/ai-foundry/responsible-use-of-ai-overview) for more information.
+## Test the custom guardrail
+
+Now that the custom guardrail has been applied to **gpt-5.4-mini**, test the model again in the playground.
+
+1. Select **Try in playground** for the **gpt-5.4-mini** deployment.
+
+2. Retry the prompts from the previous section and observe the responses. The responses will generally be similar to what you saw with the default guardrail, as the default guardrail is already effective at handling these prompts. **We highly recommend trying the prompts again to verify that the custom guardrail is working as expected.**
+
+3. Feel free to try a few **jailbreak-style prompts** of your own to see how the model and guardrail handle attempts to bypass the safety controls.
+
+   > **Note:** Please keep these experiments within the scope of this lab and use them for **educational purposes only**. Avoid going beyond the content categories covered in this exercise or trying to generate content that could cause real-world harm.
+
+4. Observe whether the model refuses the request or the Foundry guardrail blocks the interaction. You may see a response similar to:
+
+   > I'm sorry, but I cannot assist with that request.
+
+   Or a guardrail message such as:
+
+   > **Interaction blocked** This interaction was blocked by a safety and security control in this asset's Foundry guardrail. **Risk type:** **Hate (Low)** is detected at **User Input**.
+
+   The exact response and risk level may vary depending on the prompt and model behavior.
+
+## Conclusion
+
+In this exercise, you've explored content filters and how custom guardrails can help safeguard AI applications against potentially harmful or offensive content. You also tested different prompts and jailbreak-style attempts to understand how these controls work in practice.
+
+In real-world applications, guardrails can help protect models from harmful requests, jailbreak attempts, and accidental exposure of sensitive or confidential information when the model is used by customers or other users. This becomes especially important when AI applications work with business data or other sensitive information.
+
+Content filters are only one element of a comprehensive responsible AI solution. See [Responsible AI for Foundry](https://learn.microsoft.com/azure/ai-foundry/responsible-use-of-ai-overview) for more information.
