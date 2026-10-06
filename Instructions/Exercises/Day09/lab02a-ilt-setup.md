@@ -25,7 +25,7 @@ Before you start the lab exercises, you must create a development environment fo
 
 ### Task 1.2 - Create a new environment
 
-1. In the **Environments** page, select **+ New**.
+1. In the sidebar, select **Manage**. Then in the **Environments** page, select **+ New**.
    ![Environment page's select new.](../../media/ClickNew.png)
 1. In the **New environment** panel, set **Type** to Trial and **Region** to the default region shown (a local region provides quicker data access).
    ![Environment page's Type and Region.](../../media/TypeRegion.png)
