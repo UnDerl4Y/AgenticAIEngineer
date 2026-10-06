@@ -169,7 +169,7 @@ In this exercise, you will create a new agent using natural language to answer q
 
 ### Task 2.1 – Create an agent to answer questions about government benefits
 
-1. In the **Copilot Studio** home page `https://copilotstudio.microsoft.com/`, verify that you are in the environment that you created.
+1. In the **Copilot Studio** home page `https://copilotstudio.microsoft.com/`, Verify that you are working in the environment you created earlier and that you are using the **Classic Experience** UI.
 
 1. Select **Agents** in the left-hand navigation.
 
