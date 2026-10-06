@@ -61,7 +61,7 @@ In this exercise, you will create an agent by using a template, and then test th
 
 ### Task 1.1 – Create an agent from the Safe Travels template
 
-1. Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
+Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
 
 > [!IMPORTANT]
 > You might notice a new Copilot Studio experience. Some features used in these labs are not available in the new experience, so for these labs use the **Classic Experience**.
