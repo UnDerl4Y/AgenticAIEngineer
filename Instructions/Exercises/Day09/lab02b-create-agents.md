@@ -159,9 +159,7 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
 
    The **Fallback** topic should be selected, and agent should ask you to try rephrasing.
 
-1. Repeat the same prompt two more times. Depending on your environment and orchestration behavior, the agent may trigger the **Fallback** or **Escalate** system topics. You may see a response similar to:
-
-> I'm sorry, I'm not sure how to help with that. Can you try rephrasing?
+1. Repeat the same prompt two more times. Depending on your environment and orchestration behavior, the agent may trigger the **Fallback** or **Escalate** system topics. You may see a response similar to: **I'm sorry, I'm not sure how to help with that. Can you try rephrasing?**
 
 1. Select **Agents** in the left-hand navigation. The **Safe Travels** agent should be listed.
 
