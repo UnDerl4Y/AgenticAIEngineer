@@ -79,7 +79,7 @@ In this exercise, you will create an agent by using a template, and then test th
 >
 > </details>
 
-1. In the upper-right corner of the page, verify that you are working in the environment you want to use for this exercise. If the correct environment is not selected, follow [Task 1.3 - Access Copilot Studio](https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs/blob/main/Instructions/Exercises/Day-09/Lab-00-ILT-setup.md) in `Lab-00-ILT-setup.md`.
+1. In the **upper-right corner** of the page, verify that the **environment you created for this exercise** is selected. If the correct environment is not selected, follow [Task 1.3 - Access Copilot Studio](https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs/blob/main/Instructions/Exercises/Day-09/Lab-00-ILT-setup.md) in `Lab-00-ILT-setup.md`.
 
 1. Select **Agents** in the left-hand navigation.
 
