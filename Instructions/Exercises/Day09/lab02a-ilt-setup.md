@@ -11,21 +11,20 @@ lab:
     - Microsoft Copilot Studio
 ---
 
-## Exercise 1 - Create a Power Platform environment
+## Exercise 1 Create a Power Platform environment
 
 ### Task 1.1 - Power Platform Admin Center
 
 Before you start the lab exercises, you must create a development environment for you to work in.
 
 1. Open a web browser and navigate to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments. If you are already signed in with your **@hackable.in** account, ensure you sign out first, then sign in with the new **@justlabs.online** account provided for this lab.
-   
-   ![Environment page's select new.](../../media/ami.png)
 1. If prompted, choose the option to stay signed in.
 1. Close any pop-up messages that are displayed.
 
 ### Task 1.2 - Create a new environment
 
-1. In the sidebar, select **Manage**. Then in the **Environments** page, select **+ New**.
+1. In the sidebar, select **Manage**.
+1. In the **Environments** page, select **+ New**.
    ![Environment page's select new.](../../media/ClickNew.png)
 1. In the **New environment** panel, set **Type** to Trial and **Region** to the default region shown (a local region provides quicker data access).
    ![Environment page's Type and Region.](../../media/TypeRegion.png)
@@ -47,6 +46,7 @@ Before you start the lab exercises, you must create a development environment fo
 
    > [!NOTE]
    > Currency defaults based on your region (for example, INR for India). Enable Dynamics 365 apps is disabled for Trial environments — it's only available for Production or Sandbox environments.
+   
    ![Environment Save Button.](../../media/Save.png)
 
 1. Select **Save** and wait until the environment state is **Ready** (use **Refresh** to update the display).
@@ -58,28 +58,45 @@ Before you start the lab exercises, you must create a development environment fo
 
 ### Task 1.3 - Access Copilot Studio
 
-1. In a new browser tab, navigate to `https://copilotstudio.microsoft.com/` and sign in if prompted.
+1. In a new browser tab, open **Copilot Studio** https://copilotstudio.microsoft.com/ and sign in if prompted.
 
-   > [!NOTE]
-   > If Copilot Studio does not automatically load your environment, open it directly using the environment ID:
-   >
-   > 1. Go to the [Power Platform admin center](https://admin.powerplatform.microsoft.com/manage/environments).
-   > 2. Select your environment.
-   > 3. In the **Details** section, copy the **Environment ID**.
-   > 4. Open `https://copilotstudio.microsoft.com/environments/<your-environment-id>/home`, replacing `<your-environment-id>` with the copied environment ID.
-2. If prompted, select **Get Started** and keep the default country or region settings.
-3. Skip any welcome messages.
-4. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
-5. Check the **Environment Selector**. If your *named environment* is already displayed, **skip to Task 1.4 - Create a solution**. If it is not displayed, continue with the following steps to select your *named environment*.
-6. If your **named environment** is not shown, click the **Environment Selector**.
+   ![Copilot Studio interface.](../../media/olduserxp.png)
+
+   <details>
+   <summary>Does your interface look different? Click here</summary>
+   
+   ![Copilot Studio interface.](../../media/newuserxp.png)
+
+   Select **...** (More options) at the bottom of the page. Under **Explore**, select **Open Classic Experience**. These labs use the **Classic Experience**.
+   
+   </details>
+
+2. Look at the **upper-right corner** of the page. Just to the left of the **Settings** ⚙️ icon, you will see the **Environment Selector** showing your current environment.
+
+   ![Environment.](../../media/u1.png)
+
+3. Check the **Environment Selector**. If your *named environment* is already displayed, use it.
+
+   <details>
+   <summary>Can't see your named environment? Click here</summary>
+
+   a. Select the **Environment Selector**.
+
    ![Environment Selector.](../../media/u1.png)
-7. The **Switch environment** menu will open.
+
+   b. The **Switch environment** menu will open.
+
    ![Environment Selector.](../../media/u2.png)
-8. You will see **Default environments** and **Supported environments**.
-9. Under **Supported environments**, click your **named environment**.
+
+   c. Under **Supported environments**, select your **named environment**.
+
    ![Environment Selector.](../../media/u3.png)
-10. Your **named environment** should now be shown in the Environment Selector.
+
+   d. Your **named environment** should now be shown in the **Environment Selector**.
+
    ![Environment Selector.](../../media/u4.png)
+
+   </details>
 
 ### Task 1.4 - Create a solution
 
