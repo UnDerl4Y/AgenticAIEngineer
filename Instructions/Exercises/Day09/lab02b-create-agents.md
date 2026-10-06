@@ -121,7 +121,7 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
 
 1. If the **Test** pane is not visible, select the **Test** icon in the upper-right of the page.
 
-1. In the **Test** pane, select the ellipses (**...**) next to the variables **{x}** icon, and toggle **Track between topics** to **On**.
+1. In the **Test** pane, select the ellipses (**...**) next to the **{x}** icon, then turn **Track between topics** **On**.
 
    ![Track between topics.](../../media/track-between-topics.png)
 
