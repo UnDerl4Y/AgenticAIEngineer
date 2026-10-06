@@ -44,12 +44,12 @@ This exercise will take approximately **45** minutes to complete.
 ## Prerequisites
 
 - Have a Microsoft Entra ID account
-- Have a Copilot Studio license or have signed up for a [free trial](https://go.microsoft.com/fwlink/p/?linkid=2252605).
+- Have a Copilot Studio license or have signed up for a free trial.
 - Have access to a Power Platform environment and a solution where you can create agents and related assets.
 - You can use:
   - the environment and **Lab Exercises** solution created in the **ILT Setup** lab, or
   - your own existing environment and solution.
-- If you do not already have an environment and solution prepared, complete the steps in the [**ILT Setup**](https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs/blob/main/Instructions/Exercises/Day-09/Lab-00-ILT-setup.md) lab before continuing.
+- If you do not already have an environment and solution prepared, complete the steps in the **ILT Setup** lab before continuing.
 
 ## Key concept: Agent components and behavior
 
