@@ -3,7 +3,7 @@ lab:
   title: Create agents with Copilot Studio
   module: Create agents in Microsoft Copilot Studio
   description: In this exercise, you will access the Microsoft Copilot Studio portal, select the appropriate environment, and create a new agent.
-  duration: 45 minutes
+  duration: 55 minutes
   level: 200
   islab: true
   primarytopics:
