@@ -109,22 +109,23 @@ Before you start the lab exercises, you must create a development environment fo
    ![List of solutions in Maker portal.](../../media/solutions-list.png)
 
 1. Select **+ New solution**.
-1. Enter `Lab Exercises` in the **Display name** field. The **Name** field should automatically populate with Lab Exercises, matching the Display name exactly.
+1. Enter `Lab Exercises` in the **Display name** field. The **Name** field should automatically populate with **LabExercises**, matching the Display name exactly.
 1. Select **+ New publisher** below the **Publisher** drop-down.
 1. Enter `Fabrikam_unique_Suffix` for Display name, `fabrikam_unique_suffix` for Name, Leave the Description field empty and proceed to the next field, Prefix. Now fill `fab` for Prefix, then select **Save**.
 
-   ![List of solutions in Maker portal.](../../media/newpus.png)
+   ![List of solutions in Maker portal.](../../media/fabone.png)
      
-1. Confirm **Fabrikam (fabrikam)** is selected in the **Publisher** drop-down.
+1. Confirm **Fabrikam_unique_suffix (fabrikam_unique_suffix)** is selected in the **Publisher** drop-down.
+1. Leave **Version** as the default value.
 1. Select the **Set as your preferred solution** checkbox.
 
    > [!NOTE]
    > Setting this as your preferred solution ensures new assets created during later labs are added to the Lab Exercises solution by default.
 
-   ![New solution.](../../media/new-solution.png)
+   ![New solution.](../../media/newsolutionone.png)
 
 1. Select **Create**.
 1. Close the **Solutions** browser tab, then refresh the **Copilot Studio** page.
-![New solution.](../../media/Sol.png)
+![New solution.](../../media/labex.png)
 
 You now have a Power Platform environment and solution to work in.
