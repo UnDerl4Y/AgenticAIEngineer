@@ -114,6 +114,8 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
    ![Conversation Start topic from the Safe Travels template.](../../media/aaaaa.png)
 
 1. In the drop-down in the upper-left of the page that is showing Conversation Start, select the custom **What can I ask** topic.
+   
+   ![Conversation Start topic from the Safe Travels template.](../../media/whatcaniask.png) 
 
 ### Task 1.2 – Test the agent
 
