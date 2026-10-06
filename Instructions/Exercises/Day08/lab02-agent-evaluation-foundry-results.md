@@ -47,6 +47,27 @@ The model deployment is used by the evaluation script for model-based evaluation
 
 > **Important:** Use the **model deployment name**, not only the underlying model name.
 
+## Create the agent
+
+Create a new agent in the same Microsoft Foundry project.
+
+Use the following name:
+
+```text
+<your_unique_prefix>-credit-risk-assessment-agent
+```
+
+Configure the agent for the **Credit Risk Assessment** use case and make sure it uses the model deployment selected above.
+
+After creating the agent, use the same agent name in the `.env` file:
+
+```env
+AGENT_NAME="<your_unique_prefix>-credit-risk-assessment-agent"
+```
+
+> **Important:** Replace `<your_unique_prefix>` with a unique prefix assigned to you before creating the agent.
+
+
 ## Get the application files from GitHub
 
 1. Open a web browser and go to the [AgenticAIEngineer repository](https://github.com/Kiran-255666/AgenticAIEngineer).
