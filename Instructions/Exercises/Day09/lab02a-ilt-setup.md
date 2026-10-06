@@ -122,10 +122,15 @@ Before you start the lab exercises, you must create a development environment fo
    > [!NOTE]
    > Setting this as your preferred solution ensures new assets created during later labs are added to the Lab Exercises solution by default.
 
+1. Select **Create**.
+
    ![New solution.](../../media/newsolutionone.png)
 
-1. Select **Create**.
 1. Close the **Solutions** browser tab, then refresh the **Copilot Studio** page.
-![New solution.](../../media/labex.png)
+![New solution.](../../media/labex1.png)
 
 You now have a Power Platform environment and solution to work in.
+
+## Summary
+
+In this exercise, you created a Power Platform trial environment with Dataverse, accessed Microsoft Copilot Studio, selected your environment, and created a **Lab Exercises** solution with a custom publisher. This environment and solution will be used throughout the remaining labs.
