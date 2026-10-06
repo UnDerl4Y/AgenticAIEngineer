@@ -109,7 +109,7 @@ Before you start the lab exercises, you must create a development environment fo
    ![List of solutions in Maker portal.](../../media/solutions-list.png)
 
 1. Select **+ New solution**.
-1. Enter `Lab Exercises` in the **Display name** field. The **Name** field should automatically populate with **LabExercises**, matching the Display name exactly.
+1. Enter `Lab Exercises` in the **Display name** field. The **Name** field should automatically populate as **LabExercises**, with the space removed.
 1. Select **+ New publisher** below the **Publisher** drop-down.
 1. Enter `Fabrikam_unique_Suffix` for Display name, `fabrikam_unique_suffix` for Name, Leave the Description field empty and proceed to the next field, Prefix. Now fill `fab` for Prefix, then select **Save**.
 
