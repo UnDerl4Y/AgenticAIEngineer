@@ -1,13 +1,12 @@
 ---
-
 lab:
-title: 'Evaluate an Azure AI agent using the Python SDK'
-description: 'Learn how to evaluate an existing Azure AI agent using the Python SDK and review evaluation results in Microsoft Foundry.'
-level: 300
-duration: 40
-islab: true
-status: 'released'
-------------------
+  title: 'Evaluate an Azure AI agent using the Python SDK'
+  description: 'Learn how to evaluate an existing Azure AI agent using the Python SDK and review evaluation results in Microsoft Foundry.'
+  level: 300
+  duration: 40
+  islab: true
+  status: 'released'
+---
 
 # Evaluate an Azure AI agent using the Python SDK
 
