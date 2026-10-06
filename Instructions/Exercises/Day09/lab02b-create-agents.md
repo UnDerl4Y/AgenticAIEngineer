@@ -51,9 +51,6 @@ This exercise will take approximately **45** minutes to complete.
   - your own existing environment and solution.
 - If you do not already have an environment and solution prepared, complete the steps in the [**ILT Setup**](https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs/blob/main/Instructions/Exercises/Day-09/Lab-00-ILT-setup.md) lab before continuing.
 
-> [!IMPORTANT]
-> You may notice a new Copilot Studio experience that is currently in preview. These labs use the current Copilot Studio interface, so some steps and screenshots may not match the preview experience. To follow the lab instructions successfully, use the current Copilot Studio UI throughout these exercises.
-
 ## Key concept: Agent components and behavior
 
 When generative orchestration is enabled, the agent can use instructions, knowledge, topics, and tools to generate responses dynamically.
@@ -65,6 +62,22 @@ In this exercise, you will create an agent by using a template, and then test th
 ### Task 1.1 – Create an agent from the Safe Travels template
 
 1. Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
+
+> [!IMPORTANT]
+> You might notice a new Copilot Studio experience. Some features used in these labs are not available in the new experience, so for these labs use the **Classic Experience**.
+>
+> The image below shows the **Classic Experience** UI. If your interface looks like this, you're good to go. Continue to the next section. If it looks different, expand the section below and switch back to the **Classic Experience**.
+>
+> ![Copilot Studio Classic Experience interface.](../../media/olduserxp.png)
+>
+> <details>
+> <summary>Does your interface look different? Click here</summary>
+>
+> ![Copilot Studio new experience interface.](../../media/newuserxp.png)
+>
+> Select **...** (More options) at the bottom of the page. Under **Explore**, select **Open Classic Experience** to switch back to the **Classic Experience**.
+>
+> </details>
 
 1. In the upper-right corner of the page, verify that you are working in the environment you want to use for this exercise. If the correct environment is not selected, follow [Task 1.3 - Access Copilot Studio](https://github.com/Kiran-255666/agentic-ai-azure-ai-foundry-labs/blob/main/Instructions/Exercises/Day-09/Lab-00-ILT-setup.md) in `Lab-00-ILT-setup.md`.
 
