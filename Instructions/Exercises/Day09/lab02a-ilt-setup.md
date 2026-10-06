@@ -43,7 +43,7 @@ Before you start the lab exercises, you must create a development environment fo
    - **Currency**: leave as default
    - **Security group**: Click **+ Select** and in **Edit security group** find **open access** click **None** and Click **Done**
    ![Environment Done Button.](../../media/done.png)
-   - **URL**: leave as default
+   - * **URL**: No changes are required.
    - **Enable Dynamics 365 apps?**: leave as it is (locked to No), move to the next field
    - **Deploy sample apps and data?**: No
 
