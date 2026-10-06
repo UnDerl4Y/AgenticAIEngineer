@@ -109,9 +109,9 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
 
    ![System Filter.](../../media/System.png)
 
-1. Select the **Conversational Start** topic. Review the contents of the **Message** node. Note that the contents of the message are displayed in the **Test** pane.
-
-   ![Conversation Start topic from the Safe Travels template.](../../media/safe-travels-conversation-start-topic.png)
+1. Select the **Conversational Start** topic. Review the contents of the **Message** node. The message is displayed in the **Test** pane. The message content may vary slightly. The snippet below is provided for reference.
+   
+   ![Conversation Start topic from the Safe Travels template.](../../media/aaaaa.png)
 
 1. In the drop-down in the upper-left of the page that is showing Conversation Start, select the custom **What can I ask** topic.
 
