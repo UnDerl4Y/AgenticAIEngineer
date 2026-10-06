@@ -18,6 +18,9 @@ lab:
 Before you start the lab exercises, you must create a development environment for you to work in.
 
 1. Open a web browser and navigate to the **Power Platform admin center** https://admin.powerplatform.microsoft.com/manage/environments. If you are already signed in with your **@hackable.in** account, ensure you sign out first, then sign in with the new **@justlabs.online** account provided for this lab.
+   
+   ![Environment page's select new.](../../media/ami.png)
+   
 1. If prompted, choose the option to stay signed in.
 1. Close any pop-up messages that are displayed.
 
