@@ -131,7 +131,7 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
    Hello
    ```
 
-   The **Greeting** topic should be selected and the response is provided from the message node in the Greeting topic.
+   The agent will use the default **Greeting** topic and respond with a greeting, typically asking how it can help you. The exact response may vary.
 
 1. At the top of the **Test** pane, select the **Start new test session** icon **+**.
 
@@ -143,11 +143,11 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
    What can I ask?
    ```
 
-   The **What Can I Ask** topic should be triggered and present several prompt options to continue the conversation.
+   The **What Can I Ask** topic will be triggered and present several prompt options to continue the conversation.
 
 1. Select the **How do I get a passport?** option.
 
-   The response should be generated using the configured knowledge source and may reference the Conversational boosting system topic.
+   The response may vary slightly from the example shown below. It is generated using the configured knowledge source and may reference the **Conversational boosting** system topic.
 
    ![Screenshot of the test pane.](../../media/safe-travels-test.png)
 
@@ -159,8 +159,9 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
 
    The **Fallback** topic should be selected, and agent should ask you to try rephrasing.
 
-1. Repeat the same prompt twice more.
-  Depending on your environment and orchestration behavior, the agent may trigger the Fallback or Escalate system topics.
+1. Repeat the same prompt two more times. Depending on your environment and orchestration behavior, the agent may trigger the **Fallback** or **Escalate** system topics. You may see a response similar to:
+
+> I'm sorry, I'm not sure how to help with that. Can you try rephrasing?
 
 1. Select **Agents** in the left-hand navigation. The **Safe Travels** agent should be listed.
 
