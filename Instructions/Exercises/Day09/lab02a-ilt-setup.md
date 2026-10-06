@@ -104,7 +104,7 @@ Before you start the lab exercises, you must create a development environment fo
 ### Task 1.4 - Create a solution
 
 1. In the left navigation pane, select the ellipses (**...**), then select **Solutions**.
-1. Confirm you see the *Default Solution* and *Common Data Services Default Solution* listed.
+1. Verify that **Default Solution** and **Common Data Services Default Solution** are listed.
 
    ![List of solutions in Maker portal.](../../media/solutions-list.png)
 
