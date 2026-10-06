@@ -67,41 +67,44 @@ AGENT_NAME="<your_unique_prefix>-credit-risk-assessment-agent"
 
 > **Important:** Replace `<your_unique_prefix>` with a unique prefix assigned to you before creating the agent.
 
-
 ## Get the application files from GitHub
 
 1. Open a web browser and go to the [AgenticAIEngineer repository](https://github.com/Kiran-255666/AgenticAIEngineer).
+
+   > **Important:** Before downloading, make sure you don't already have an older ZIP file or extracted `AgenticAIEngineer-main` folder from a previous download. Delete or move the old files if needed.
 
 2. Select **<> Code**, and then select **Download ZIP**.
 
 3. Extract the downloaded ZIP file.
 
-4. Open the extracted repository and navigate to the Day 08 Lab 02 folder:
+4. Open **PowerShell** and run the following command to copy the `lab02-agent-evaluation-foundry-results` folder to your Desktop:
 
-   ```text
-   Instructions/Exercises/Day08/lab04-agent-evaluation-foundry-results
+   ```powershell
+   Copy-Item "C:\Users\agenticuser\Downloads\AgenticAIEngineer-main\AgenticAIEngineer-main\labfiles\Day08\lab02-agent-evaluation-foundry-results" "$env:USERPROFILE\Desktop\lab02-agent-evaluation-foundry-results" -Recurse
    ```
 
-5. Copy the `lab04-agent-evaluation-foundry-results` folder to your Desktop.
+5. Run the following command to open the copied lab folder from your Desktop in Visual Studio Code:
 
-6. Open the copied folder in Visual Studio Code.
+   ```powershell
+   code "$env:USERPROFILE\Desktop\lab02-agent-evaluation-foundry-results"
+   ```
 
-7. In Visual Studio Code, select **Terminal > New Terminal**.
+   > Update the source path in step 4 if the extracted ZIP is in a different location or has a different folder name.
 
-8. Create and activate a virtual environment:
+6. In Visual Studio Code, select **Terminal > New Terminal**.
+
+7. Create and activate a virtual environment:
 
    ```powershell
    python -m venv .venv
    .\.venv\Scripts\Activate.ps1
    ```
 
-9. Install the required Python packages:
+8. Install the required Python packages:
 
    ```powershell
    pip install -r requirements.txt
    ```
-
-> **Note:** If you downloaded the repository to a different location, use that location when opening the lab folder.
 
 ## Configure the environment
 
