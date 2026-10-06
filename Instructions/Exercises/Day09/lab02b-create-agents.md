@@ -103,7 +103,7 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
 
 1. Verify that **Orchestration** is set to **No - Use classic orchestration, limiting responses to the content and behavior defined in your agent's topics**.
 
-1. In the upper-right of the Settings page, select **X** Icon to close settings.
+1. In the upper-right of the Settings page, select **X** icon to close settings.
 
 1. Select the **Topics** tab and select the **System** filter.
 
