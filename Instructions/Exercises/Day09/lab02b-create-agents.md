@@ -342,6 +342,8 @@ In this exercise, you will create a new agent using natural language to answer q
    ```
 
    The response should reference information from the configured knowledge source and may include citations or source references.
+   
+   ![Screenshot of Channels in Copilot Studio.](../../media/finaloo.png)
 
 1. Try a few more questions and view the responses from your agent. It will have limited functionality, but should be able to provide relevant answers to questions about benefits.
 
