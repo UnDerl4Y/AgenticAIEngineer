@@ -99,7 +99,9 @@ Open the **Copilot Studio** home page: `https://copilotstudio.microsoft.com/`
 
 1. In the upper-right of the page, select the **Settings** button.
 
-1. Note that **Orchestration** is set to **No - Use classic orchestration, limiting responses to the content and behavior defined in your agent's topics**.
+   ![Safe Travels template.](../../media/sixset.png)
+
+1. Verify that **Orchestration** is set to **No - Use classic orchestration, limiting responses to the content and behavior defined in your agent's topics**.
 
 1. In the upper-right of the Settings page, select **X** to close settings.
 
