@@ -59,6 +59,12 @@ Use the following name:
 
 Configure the agent for the **Credit Risk Assessment** use case and make sure it uses the model deployment selected above.
 
+If you want to provide custom instructions, you can replace the default instructions with the following:
+
+```text
+You are a Credit Risk Assessment Agent. Help users understand factors that may affect credit risk and provide clear, concise responses based on the information provided.
+```
+
 After creating the agent, use the same agent name in the `.env` file:
 
 ```env
@@ -110,7 +116,7 @@ AGENT_NAME="<your_unique_prefix>-credit-risk-assessment-agent"
 
 The lab includes a `.env` file with the configuration required by the evaluation script.
 
-Open the `.env` file and verify the following values:
+Open the `.env` file and replace these placeholders value with your actual values:
 
 ```env
 AZURE_AI_PROJECT_ENDPOINT="https://<your-foundry-resource>.services.ai.azure.com/api/projects/<your-project-name>"
